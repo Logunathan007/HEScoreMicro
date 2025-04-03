@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HEScoreMicro.Domain\HEScoreMicro.Domain.csproj" />
+    <ProjectReference Include="..\HEScoreMicro.Persistence\HEScoreMicro.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

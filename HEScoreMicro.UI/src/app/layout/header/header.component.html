@@ -1,0 +1,14 @@
+<header class="header-section">
+  <div class="container">
+    <div
+      class="d-flex flex-wrap align-items-center justify-content-md-evenly justify-content-center navs border-bottom"
+    >
+      <div
+        class="nav-body text-center mb-md-0 mb-2 cursor-pointer"
+        *ngFor="let ele of headerNavs"
+      >
+        <a (click)="navigateTo('/' + ele.routerLink)">{{ ele?.name }}</a>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,1 +1,126 @@
-/* You can add global styles to this file, and also import other style files */
+@import "@ng-select/ng-select/themes/default.theme.css";
+@import "ngx-toastr/toastr";
+
+:root {
+  --input-margin: 15px 0px 15px 0px;
+}
+
+.input-box {
+  margin: var(--input-margin);
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  input,
+  textarea {
+    width: 100%;
+    height: 36px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    padding-left: 10px;
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  textarea {
+    padding-top: 10px;
+    height: 100px;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.errormsg {
+  label {
+    font-size: 12px !important;
+    font-weight: 600;
+  }
+}
+
+.select-box {
+  margin: var(--input-margin);
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+}
+
+.disable {
+  opacity: 0.5;
+}
+
+.btn-style {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  height: 36px;
+  min-width: 80px;
+  padding: 0% 1% 0% 1%;
+  color: white;
+  display: block;
+}
+
+.icon-btn {
+  background: white;
+  border: none;
+  padding: 0px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-box {
+  position: relative;
+  overflow: hidden;
+  ::after {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-color: rgba(255, 0, 0, 0.05);
+  }
+}
+.parentLoader{
+  position: relative;
+  .loader {
+    width: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+label {
+  &.required {
+    position: relative;
+    &::after {
+      position: absolute;
+      content: "*";
+      top: 0px;
+      font-size: 20px;
+      color: red;
+      padding-left: 3px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  :root {
+    --input-margin: 15px 0px 10px 0px !important;
+  }
+}
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+/* Importing Datepicker SCSS file. */
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker";

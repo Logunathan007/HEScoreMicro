@@ -1,0 +1,202 @@
+<section class="address-section">
+  <div class="container">
+    <form [formGroup]="addressForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-box">
+            <label for="streetAddress"> Street Address </label>
+            <input
+              formControlName="streetAddress"
+              type="text"
+              id="streetAddress"
+              placeholder="Address 1"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['streetAddress']?.touched ||
+                  addressControl['streetAddress']?.dirty) &&
+                addressControl['streetAddress']?.invalid
+              "
+            >
+              <label
+                for="streetAddress"
+                class="text-danger fw-semibold position-absolute"
+              >
+                Street Address is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-box">
+            <label for="addressLine"> Address Line </label>
+            <input
+              formControlName="addressLine"
+              type="text"
+              id="addressLine"
+              placeholder="Address Line"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['addressLine']?.touched ||
+                  addressControl['addressLine']?.dirty) &&
+                addressControl['addressLine']?.invalid
+              "
+            >
+              <label
+                for="addressLine"
+                class="text-danger fw-semibold position-absolute"
+              >
+                Address Line is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="input-box">
+            <label for="city"> City </label>
+            <input
+              formControlName="city"
+              type="text"
+              id="city"
+              placeholder="City"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['city']?.touched ||
+                  addressControl['city']?.dirty) &&
+                addressControl['city']?.invalid
+              "
+            >
+              <label
+                for="city"
+                class="text-danger fw-semibold position-absolute"
+              >
+                City is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="input-box">
+            <label for="State"> State </label>
+            <input
+              formControlName="state"
+              type="text"
+              id="State"
+              placeholder="State"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['state']?.touched ||
+                  addressControl['state']?.dirty) &&
+                addressControl['state']?.invalid
+              "
+            >
+              <label
+                for="State"
+                class="text-danger fw-semibold position-absolute"
+              >
+                State is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="input-box">
+            <label for="zipCode"> Zipcode </label>
+            <input
+              formControlName="zipCode"
+              id="zipCode"
+              type="number"
+              placeholder="zipCode"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['zipCode']?.touched ||
+                  addressControl['zipCode']?.dirty) &&
+                addressControl['zipCode']?.invalid
+              "
+            >
+              <label
+                for="yearBuilt"
+                class="text-danger fw-semibold position-absolute"
+              >
+                Zipcode is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="select-box">
+            <label> Dwelling Unit Type </label>
+            <ng-select
+              [items]="dwellingUnitTypeOptions"
+              bindLabel="name"
+              [clearable]="true"
+              [closeOnSelect]="true"
+              bindValue="value"
+              placeholder="Dwelling Unit Type"
+              id="dwellingUnitType"
+              formControlName="dwellingUnitType"
+            >
+            </ng-select>
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['dwellingUnitType']?.touched ||
+                  addressControl['dwellingUnitType']?.dirty) &&
+                addressControl['dwellingUnitType']?.invalid
+              "
+            >
+              <label class="text-danger fw-semibold position-absolute">
+                Dwelling Unit Type is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="select-box">
+            <label> Assessment Type </label>
+            <ng-select
+              [items]="assessmentType"
+              bindLabel="name"
+              [clearable]="true"
+              [closeOnSelect]="true"
+              bindValue="value"
+              placeholder="Assessment Type"
+              id="assessmentType"
+              formControlName="assessmentType"
+            >
+            </ng-select>
+            <div
+              class="errormsg"
+              *ngIf="
+                (addressControl['assessmentType']?.touched ||
+                  addressControl['assessmentType']?.dirty) &&
+                addressControl['assessmentType']?.invalid
+              "
+            >
+              <label class="text-danger fw-semibold position-absolute">
+                Assessment Type is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end gap-3 mt-4">
+        <button type="button" class="bg-primary btn-style" (click)="onSave()">
+          {{ this.addressForm.value?.id ? "Update" : "Save" }}
+        </button>
+        <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+          Next
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

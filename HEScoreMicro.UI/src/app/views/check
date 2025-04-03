@@ -1,0 +1,28 @@
+<div class="col-md-6">
+  <div class="select-box">
+    <label> Dwelling Unit Type </label>
+    <ng-select
+      [items]="leakinessObservedVisualInspectionOptions"
+      bindLabel="name"
+      [clearable]="true"
+      [closeOnSelect]="true"
+      bindValue="value"
+      placeholder="Dwelling Unit Type"
+      id="dwellingUnitType"
+      formControlName="dwellingUnitType"
+    >
+    </ng-select>
+    <div
+      class="errormsg"
+      *ngIf="
+        (addressControl['dwellingUnitType']?.touched ||
+          addressControl['dwellingUnitType']?.dirty) &&
+        addressControl['dwellingUnitType']?.invalid
+      "
+    >
+      <label class="text-danger fw-semibold position-absolute">
+        Dwelling Unit Type is invalid
+      </label>
+    </div>
+  </div>
+</div>
