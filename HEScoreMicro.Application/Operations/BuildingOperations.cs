@@ -1,5 +1,6 @@
 ﻿
 
+using AutoMapper;
 using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.CrudOperations;
 using HEScoreMicro.Domain.Entity;
@@ -12,8 +13,8 @@ namespace HEScoreMicro.Application.Operations
         public Task<ResponseDTO<BuildingDTO>> CreateNewBuilding();
     }
     public class BuildingOperations(
-        DbConnect _context
-        ) : CrudOperations<Building, BuildingDTO>(_context, _context.Building), IBuildingOperations
+        DbConnect _context, IMapper _mapper
+        ) : CrudOperations<Building, BuildingDTO>(_context, _context.Building,_mapper), IBuildingOperations
     {
         public async Task<ResponseDTO<BuildingDTO>> CreateNewBuilding()
         {

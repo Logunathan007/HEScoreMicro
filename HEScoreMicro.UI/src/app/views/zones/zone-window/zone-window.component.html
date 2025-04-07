@@ -1,0 +1,347 @@
+<div class="container">
+  <form [formGroup]="zoneWindowForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-box">
+          <label for="windowAreaFront"> Window Area Front </label>
+          <input
+            formControlName="windowAreaFront"
+            type="number"
+            id="windowAreaFront"
+            placeholder="Window Area Front"
+          />
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowAreaFront')?.touched ||
+                      zoneWindowForm.get('windowAreaFront')?.dirty) &&
+                    zoneWindowForm.get('windowAreaFront')?.invalid
+            "
+          >
+            <label
+              for="windowAreaFront"
+              class="text-danger fw-semibold position-absolute"
+            >
+              Window Area Front is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-box">
+          <label for="windowAreaBack"> Window Area Back </label>
+          <input
+            formControlName="windowAreaBack"
+            type="number"
+            id="windowAreaBack"
+            placeholder="Window Area Back"
+          />
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowAreaBack')?.touched ||
+                      zoneWindowForm.get('windowAreaBack')?.dirty) &&
+                    zoneWindowForm.get('windowAreaBack')?.invalid
+            "
+          >
+            <label
+              for="windowAreaBack"
+              class="text-danger fw-semibold position-absolute"
+            >
+              Window Area Back is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-box">
+          <label for="windowAreaLeft"> Window Area Left </label>
+          <input
+            formControlName="windowAreaLeft"
+            type="number"
+            id="windowAreaLeft"
+            placeholder="Window Area Left"
+          />
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowAreaLeft')?.touched ||
+                      zoneWindowForm.get('windowAreaLeft')?.dirty) &&
+                    zoneWindowForm.get('windowAreaLeft')?.invalid
+            "
+          >
+            <label
+              for="windowAreaLeft"
+              class="text-danger fw-semibold position-absolute"
+            >
+              Window Area Left is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="input-box">
+          <label for="windowAreaRight"> Window Area Right </label>
+          <input
+            formControlName="windowAreaRight"
+            type="number"
+            id="windowAreaRight"
+            placeholder="Window Area Right"
+          />
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowAreaRight')?.touched ||
+                      zoneWindowForm.get('windowAreaRight')?.dirty) &&
+                    zoneWindowForm.get('windowAreaRight')?.invalid
+            "
+          >
+            <label
+              for="windowAreaRight"
+              class="text-danger fw-semibold position-absolute"
+            >
+              Window Area Right is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="select-box">
+          <label> Windows are same type </label>
+          <ng-select
+            [items]="booleanOptions"
+            bindLabel="name"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            bindValue="value"
+            placeholder="Windows are same"
+            id="windowsSame"
+            formControlName="windowsSame"
+          >
+          </ng-select>
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowsSame')?.touched ||
+                zoneWindowForm.get('windowsSame')?.dirty) &&
+              zoneWindowForm.get('windowsSame')?.invalid
+            "
+          >
+            <label class="text-danger fw-semibold position-absolute">
+              Windows Same is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container formArrayName="windows">
+        <ng-container
+          *ngFor="let windowItem of windowsObj.controls; let windowIndex = index"
+        >
+          <ng-container [formGroupName]="windowIndex">
+            <h4 class="col-12 my-3">Window {{ windowIndex + 1 }}</h4>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label>Solar Screen is present</label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Solar Screen"
+                  id="solarScreen"
+                  formControlName="solarScreen"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('solarScreen')?.touched ||
+                      windowItem.get('solarScreen')?.dirty) &&
+                    windowItem.get('solarScreen')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                   Solar Screen is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label>Do you Know Window Specification </label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Know Window Specification "
+                  id="knowWindowSpecification"
+                  formControlName="knowWindowSpecification"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('knowWindowSpecification')?.touched ||
+                      windowItem.get('knowWindowSpecification')?.dirty) &&
+                    windowItem.get('knowWindowSpecification')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Know Window Specification is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="uFactor"> UFactor </label>
+                <input
+                  formControlName="uFactor"
+                  type="number"
+                  id="uFactor"
+                  placeholder="UFactor"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('uFactor')?.touched ||
+                      windowItem.get('uFactor')?.dirty) &&
+                    windowItem.get('uFactor')?.invalid
+                  "
+                >
+                  <label
+                    for="uFactor"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    UFactor is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="shgc"> SHGC </label>
+                <input
+                  formControlName="shgc"
+                  type="number"
+                  id="shgc"
+                  placeholder="SHGC"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('shgc')?.touched ||
+                      windowItem.get('shgc')?.dirty) &&
+                    windowItem.get('shgc')?.invalid
+                  "
+                >
+                  <label
+                    for="shgc"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    SHGC is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Panes </label>
+                <ng-select
+                  [items]="paneOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Panes"
+                  id="panes"
+                  formControlName="panes"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('panes')?.touched ||
+                      windowItem.get('panes')?.dirty) &&
+                    windowItem.get('panes')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Panes is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Frame Material </label>
+                <ng-select
+                  [items]="frameMaterialOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Frame Material"
+                  id="frameMaterial"
+                  formControlName="frameMaterial"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('frameMaterial')?.touched ||
+                      windowItem.get('frameMaterial')?.dirty) &&
+                    windowItem.get('frameMaterial')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Frame Material is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Glazing Type </label>
+                <ng-select
+                  [items]="glazingTypeOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Glazing Type"
+                  id="glazingType"
+                  formControlName="glazingType"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (windowItem.get('glazingType')?.touched ||
+                      windowItem.get('glazingType')?.dirty) &&
+                    windowItem.get('glazingType')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Glazing Type is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex justify-content-end gap-3 mt-4">
+      <button type="button" class="bg-primary btn-style" (click)="onSave()">
+        {{ this.zoneWindowForm.value?.id ? "Update" : "Save" }}
+      </button>
+      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+        Next
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,493 @@
+<div class="container">
+  <form [formGroup]="heatingCoolingSystemForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="select-box">
+          <label> System Count </label>
+          <ng-select
+            [items]="systemCountOptions"
+            bindLabel="name"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            bindValue="value"
+            placeholder="System Count"
+            id="systemCount"
+            formControlName="systemCount"
+          >
+          </ng-select>
+          <div
+            class="errormsg"
+            *ngIf="
+              (heatingCoolingSystemForm.get('systemCount')?.touched ||
+                heatingCoolingSystemForm.get('systemCount')?.dirty) &&
+              heatingCoolingSystemForm.get('systemCount')?.invalid
+            "
+          >
+            <label class="text-danger fw-semibold position-absolute">
+              System Count is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container formArrayName="systems">
+        <ng-container
+          *ngFor="
+            let systemItem of systemsObj.controls;
+            let systemIndex = index
+          "
+        >
+          <ng-container [formGroupName]="systemIndex">
+            <h4 class="col-12 my-3">System {{ systemIndex + 1 }}</h4>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="percentAreaServed">
+                  Percentage of Area Served
+                </label>
+                <input
+                  formControlName="percentAreaServed"
+                  type="number"
+                  id="percentAreaServed"
+                  placeholder="Percent Area Served"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('percentAreaServed')?.touched ||
+                      systemItem.get('percentAreaServed')?.dirty) &&
+                    systemItem.get('percentAreaServed')?.invalid
+                  "
+                >
+                  <label
+                    for="percentAreaServed"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Percent Area Served is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Heating System Type </label>
+                <ng-select
+                  [items]="heatingSystemTypeOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Heating System Type"
+                  id="heatingSystemType"
+                  formControlName="heatingSystemType"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('heatingSystemType')?.touched ||
+                      systemItem.get('heatingSystemType')?.dirty) &&
+                    systemItem.get('heatingSystemType')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Heating System Type is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Know Heating Efficiency </label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Know Heating Efficiency"
+                  id="knowHeatingEfficiency"
+                  formControlName="knowHeatingEfficiency"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('knowHeatingEfficiency')?.touched ||
+                      systemItem.get('knowHeatingEfficiency')?.dirty) &&
+                    systemItem.get('knowHeatingEfficiency')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Know Heating Efficiency is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="heatingSystemEfficiencyValue">
+                  Heating System Efficiency Value
+                </label>
+                <input
+                  formControlName="heatingSystemEfficiencyValue"
+                  type="number"
+                  id="heatingSystemEfficiencyValue"
+                  placeholder="Heating System Efficiency Value"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('heatingSystemEfficiencyValue')?.touched ||
+                      systemItem.get('heatingSystemEfficiencyValue')?.dirty) &&
+                    systemItem.get('heatingSystemEfficiencyValue')?.invalid
+                  "
+                >
+                  <label
+                    for="heatingSystemEfficiencyValue"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Heating System Efficiency Value is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="heatingSystemYearInstalled">
+                  Heating System Year Installed
+                </label>
+                <input
+                  formControlName="heatingSystemYearInstalled"
+                  type="number"
+                  id="heatingSystemYearInstalled"
+                  placeholder="Heating System Year Installed"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('heatingSystemYearInstalled')?.touched ||
+                      systemItem.get('heatingSystemYearInstalled')?.dirty) &&
+                    systemItem.get('heatingSystemYearInstalled')?.invalid
+                  "
+                >
+                  <label
+                    for="heatingSystemYearInstalled"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Heating System Year Installed is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Cooling System Type </label>
+                <ng-select
+                  [items]="coolingSystemTypeOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Cooling System Type"
+                  id="coolingSystemType"
+                  formControlName="coolingSystemType"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('coolingSystemType')?.touched ||
+                      systemItem.get('coolingSystemType')?.dirty) &&
+                    systemItem.get('coolingSystemType')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Cooling System Type is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Know Cooling Efficiency </label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Know Cooling Efficiency"
+                  id="knowCoolingEfficiency"
+                  formControlName="knowCoolingEfficiency"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('knowCoolingEfficiency')?.touched ||
+                      systemItem.get('knowCoolingEfficiency')?.dirty) &&
+                    systemItem.get('knowCoolingEfficiency')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Know Cooling Efficiency is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Cooling System Efficiency Unit </label>
+                <ng-select
+                  [items]="coolingEfficiencyUnitOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Cooling System Efficiency Unit"
+                  id="coolingSystemEfficiencyUnit"
+                  formControlName="coolingSystemEfficiencyUnit"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('coolingSystemEfficiencyUnit')?.touched ||
+                      systemItem.get('coolingSystemEfficiencyUnit')?.dirty) &&
+                    systemItem.get('coolingSystemEfficiencyUnit')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Cooling System Efficiency Unit is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="coolingSystemEfficiencyValue">
+                  Cooling System Efficiency Value
+                </label>
+                <input
+                  formControlName="coolingSystemEfficiencyValue"
+                  type="number"
+                  id="coolingSystemEfficiencyValue"
+                  placeholder="Cooling System Efficiency Value"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('coolingSystemEfficiencyValue')?.touched ||
+                      systemItem.get('coolingSystemEfficiencyValue')?.dirty) &&
+                    systemItem.get('coolingSystemEfficiencyValue')?.invalid
+                  "
+                >
+                  <label
+                    for="coolingSystemEfficiencyValue"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Cooling System Efficiency Value is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="coolingSystemYearInstalled">
+                  Cooling System Year Installed
+                </label>
+                <input
+                  formControlName="coolingSystemYearInstalled"
+                  type="number"
+                  id="coolingSystemYearInstalled"
+                  placeholder="Cooling System Year Installed"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('coolingSystemYearInstalled')?.touched ||
+                      systemItem.get('coolingSystemYearInstalled')?.dirty) &&
+                    systemItem.get('coolingSystemYearInstalled')?.invalid
+                  "
+                >
+                  <label
+                    for="coolingSystemYearInstalled"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Cooling System Year Installed is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Duct Leakage Test Performed </label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Duct Leakage Test Performed"
+                  id="ductLeakageTestPerformed"
+                  formControlName="ductLeakageTestPerformed"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('ductLeakageTestPerformed')?.touched ||
+                      systemItem.get('ductLeakageTestPerformed')?.dirty) &&
+                    systemItem.get('ductLeakageTestPerformed')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Duct Leakage Test Performed is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Duct Are Professionally Sealed </label>
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Duct Are Professionally Sealed"
+                  id="ductAreProfessionallySealed"
+                  formControlName="ductAreProfessionallySealed"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('ductAreProfessionallySealed')?.touched ||
+                      systemItem.get('ductAreProfessionallySealed')?.dirty) &&
+                    systemItem.get('ductAreProfessionallySealed')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Duct Are Professionally Sealed is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Duct Location Count </label>
+                <ng-select
+                  [items]="ductLocationCountOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Duct Location Count"
+                  id="ductLocationCount"
+                  formControlName="ductLocationCount"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('ductLocationCount')?.touched ||
+                      systemItem.get('ductLocationCount')?.dirty) &&
+                    systemItem.get('ductLocationCount')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Duct Location Count is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <ng-container formArrayName="ductLocations">
+              <ng-container
+                *ngFor="
+                  let ductLocationItem of ductLocationsObj(systemIndex)
+                    .controls;
+                  let ductLocationIndex = index
+                "
+              >
+                <ng-container [formGroupName]="ductLocationIndex">
+                  <h5 class="mt-4 col-12">
+                    Duct Location {{ ductLocationIndex + 1 }}
+                  </h5>
+                  <div class="col-md-6">
+                    <div class="select-box">
+                      <label> Location </label>
+                      <ng-select
+                        [items]="ductLocationOptions"
+                        bindLabel="name"
+                        [clearable]="true"
+                        [closeOnSelect]="true"
+                        bindValue="value"
+                        placeholder="Location"
+                        id="location"
+                        formControlName="location"
+                      >
+                      </ng-select>
+                      <div
+                        class="errormsg"
+                        *ngIf="
+                          (systemItem.get('location')?.touched ||
+                            systemItem.get('location')?.dirty) &&
+                          systemItem.get('location')?.invalid
+                        "
+                      >
+                        <label
+                          class="text-danger fw-semibold position-absolute"
+                        >
+                          Location is invalid
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="select-box">
+                      <label> Ducts Is Insulated </label>
+                      <ng-select
+                        [items]="booleanOptions"
+                        bindLabel="name"
+                        [clearable]="true"
+                        [closeOnSelect]="true"
+                        bindValue="value"
+                        placeholder="Ducts Is Insulated "
+                        id="ductsIsInsulated"
+                        formControlName="ductsIsInsulated"
+                      >
+                      </ng-select>
+                      <div
+                        class="errormsg"
+                        *ngIf="
+                          (systemItem.get('ductsIsInsulated')?.touched ||
+                            systemItem.get('ductsIsInsulated')?.dirty) &&
+                          systemItem.get('ductsIsInsulated')?.invalid
+                        "
+                      >
+                        <label
+                          class="text-danger fw-semibold position-absolute"
+                        >
+                          Ducts Is Insulated is invalid
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex justify-content-end gap-3 mt-4">
+      <button type="button" class="bg-primary btn-style" (click)="onSave()">
+        {{ this.heatingCoolingSystemForm.value?.id ? "Update" : "Save" }}
+      </button>
+      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+        Next
+      </button>
+    </div>
+  </form>
+</div>

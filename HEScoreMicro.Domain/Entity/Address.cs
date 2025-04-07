@@ -11,7 +11,7 @@ namespace HEScoreMicro.Domain.Entity
         public string? State { get; set; }
         public int? ZipCode { get; set; }
         public string? AssessmentType { get; set; }
-        public Guid? BuildingId { get; set; }
+        public Guid BuildingId { get; set; }
     }
     public class Address : AddressFields
     {
@@ -20,6 +20,6 @@ namespace HEScoreMicro.Domain.Entity
     }
     public class AddressDTO : AddressFields
     {
-        
+        public Guid? BuildingId { get; set; }
     }
 }

@@ -1,27 +1,27 @@
 <div class="col-md-6">
-  <div class="select-box">
-    <label> Dwelling Unit Type </label>
-    <ng-select
-      [items]="leakinessObservedVisualInspectionOptions"
-      bindLabel="name"
-      [clearable]="true"
-      [closeOnSelect]="true"
-      bindValue="value"
-      placeholder="Dwelling Unit Type"
-      id="dwellingUnitType"
-      formControlName="dwellingUnitType"
-    >
-    </ng-select>
+  <div class="input-box">
+    <label for="percentAreaServed">
+      Percentage Area Served
+    </label>
+    <input
+      formControlName="percentAreaServed"
+      type="number"
+      id="percentAreaServed"
+      placeholder="Percent Area Served"
+    />
     <div
       class="errormsg"
       *ngIf="
-        (addressControl['dwellingUnitType']?.touched ||
-          addressControl['dwellingUnitType']?.dirty) &&
-        addressControl['dwellingUnitType']?.invalid
+        (systemItem.get('percentAreaServed')?.touched ||
+          systemItem.get('percentAreaServed')?.dirty) &&
+        systemItem.get('percentAreaServed')?.invalid
       "
     >
-      <label class="text-danger fw-semibold position-absolute">
-        Dwelling Unit Type is invalid
+      <label
+        for="percentAreaServed"
+        class="text-danger fw-semibold position-absolute"
+      >
+        Percent Area Served is invalid
       </label>
     </div>
   </div>

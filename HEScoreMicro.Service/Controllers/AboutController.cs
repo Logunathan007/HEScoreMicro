@@ -31,7 +31,7 @@ namespace HEScoreMicro.Service.Controllers
             var res = await _aboutOperations.GetByBuidlgingId(Id);
             if (res.Failed)
             {
-                return NotFound(res);
+                return StatusCode(204);
             }
             return Ok(res);
         }

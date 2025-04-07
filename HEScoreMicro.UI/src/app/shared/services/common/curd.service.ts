@@ -24,7 +24,7 @@ export class CurdService<TReadModel> implements ICurdService<TReadModel> {
   }
 
   getByBuildingId(id: string): Observable<Result<TReadModel>> {
-    return this.httpClient.get<Result<TReadModel>>(this.url+ 'GetByBuildingId/' + id)
+    return this.httpClient.get<Result<TReadModel>>(this.url + 'GetByBuildingId/' + id)
   }
 
   getAll(): Observable<GridResult<TReadModel>> {
@@ -41,5 +41,15 @@ export class CurdService<TReadModel> implements ICurdService<TReadModel> {
 
   delete(id: string): Observable<Result<TReadModel>> {
     return this.httpClient.delete<Result<TReadModel>>(this.url + id)
+  }
+
+  bulkDelete(id: string[]): Observable<Result<TReadModel>> {
+    return this.httpClient.delete<Result<TReadModel>>(
+      this.url + "DeleteByIds",
+      {
+        body: id,
+        responseType: 'json'
+      }
+    );
   }
 }

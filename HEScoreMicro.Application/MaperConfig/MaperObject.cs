@@ -1,33 +1,32 @@
 ﻿using AutoMapper;
+using HEScoreMicro.Domain.Entity;
+using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttic;
+using HEScoreMicro.Domain.Entity.ZoneWall;
+using HEScoreMicro.Domain.Entity.ZoneWindow;
 
 namespace HEScoreMicro.Application.MaperConfig
 {
-    public class MaperObject<TSource, TDestination>
+    public class MaperObject : Profile
     {
-        private readonly IMapper mapper;
         public MaperObject()
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<TSource, TDestination>().ReverseMap();
-            });
-            this.mapper = config.CreateMapper();
-        }
-        protected virtual TDestination ResponseMap(TSource source)
-        {
-            return mapper.Map<TDestination>(source);
-        }
-        protected virtual ICollection<TDestination> ResponseMap(ICollection<TSource> source)
-        {
-            return mapper.Map<ICollection<TDestination>>(source);
-        }
-        protected virtual TSource RequestMap(TDestination destination)
-        {
-            return mapper.Map<TSource>(destination);
-        }
-        protected virtual ICollection<TSource> RequestMap(ICollection<TDestination> destination)
-        {
-            return mapper.Map<ICollection<TSource>>(destination);
+            CreateMap<Foundation, FoundationDTO>().ReverseMap();
+            CreateMap<ZoneFloor, ZoneFloorDTO>().ReverseMap();
+            CreateMap<Address, AddressDTO>().ReverseMap();
+            CreateMap<Building, BuildingDTO>().ReverseMap();
+            CreateMap<About, AboutDTO>().ReverseMap();
+            CreateMap<RoofAttic, RoofAtticDTO>().ReverseMap();
+            CreateMap<ZoneRoof, ZoneRoofDTO>().ReverseMap();
+            CreateMap<ZoneWall, ZoneWallDTO>().ReverseMap();
+            CreateMap<Wall, WallDTO>().ReverseMap();
+            CreateMap<WaterHeater,WaterHeaterDTO>().ReverseMap();
+            CreateMap<PVSystem, PVSystemDTO>().ReverseMap();
+            CreateMap<Window, WindowDTO>().ReverseMap();
+            CreateMap<ZoneWindow, ZoneWindowDTO>().ReverseMap();    
+            CreateMap<DuctLocation, DuctLocationDTO>().ReverseMap();
+            CreateMap<Systems, SystemsDTO>().ReverseMap();
+            CreateMap<HeatingCoolingSystem, HeatingCoolingSystemDTO>().ReverseMap();
         }
     }
 }

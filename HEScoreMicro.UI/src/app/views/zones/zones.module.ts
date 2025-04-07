@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ZonesRoutingModule } from './zones-routing.module';
-import { ZoneFloorComponent } from './zone-floor/zone-floor.component';
-import { ZoneWallComponent } from './zone-wall/zone-wall.component';
-import { ZoneRoofComponent } from './zone-roof/zone-roof.component';
-import { ZonesComponent } from './zones.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { ZonesComponent } from './zones.component';
+import { ZoneRoofComponent } from './zone-roof/zone-roof.component';
+import { ZoneWallComponent } from './zone-wall/zone-wall.component';
+import { ZoneFloorComponent } from './zone-floor/zone-floor.component';
+import { ZoneWindowComponent } from './zone-window/zone-window.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     ZoneFloorComponent,
     ZoneWallComponent,
     ZoneRoofComponent,
-    ZonesComponent
+    ZonesComponent,
+    ZoneWindowComponent,
   ],
   imports: [
     CommonModule,

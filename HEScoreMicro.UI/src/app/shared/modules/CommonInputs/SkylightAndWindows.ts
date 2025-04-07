@@ -1,4 +1,4 @@
-import { EmptyOptions } from './../../lookups/about-lookups';
+import { EmptyOptions } from '../../lookups/about.lookups';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 export function skyLightAndWindowInputs(buildingId: string): FormGroup {

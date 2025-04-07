@@ -1,18 +1,19 @@
-import { AssessmentType, DwellingUnitTypeOptions } from './../../shared/lookups/address-lookup';
+import { AssessmentType, DwellingUnitTypeOptions } from '../../shared/lookups/address.lookup';
 import { AddressReadModel } from './../../shared/models/address/address.read.model';
 import { AddressService } from './../../shared/services/address/address.service';
 import { CommonService } from '../../shared/services/common/common.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
 import { Result } from '../../shared/models/common/Result';
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
-  styleUrl: './address.component.scss'
+  styleUrl: './address.component.scss',
+  standalone: false
 })
 export class AddressComponent extends Unsubscriber implements OnInit {
   //variable initializations
@@ -58,18 +59,20 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   }
 
   getBuildingId() {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params.get('id')) {
         this.commonService.buildingId = params.get('id');
       }
       this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
     })
   }
+
   getData() {
     if (this.buildingId) {
-      this.addressService.getByBuildingId(this.buildingId).subscribe({
+      this.addressService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AddressReadModel>) => {
-          this.addressForm.patchValue(val.data)
+          if (val?.failed == false)
+            this.addressForm.patchValue(val.data)
           console.log(val);
         },
         error: (err: any) => {
@@ -78,6 +81,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
   onSave() {
     if (this.addressForm.invalid) {
       this.addressForm.markAllAsTouched();
@@ -100,7 +104,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
       delete this.addressReadModel.id;
       this.addressService.create(this.addressReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AddressReadModel>) => {
-          if (val.failed == false) {
+          if (val?.failed == false) {
             this.addressForm.patchValue(val.data)
             this.buildingId = this.commonService.buildingId = val.data?.buildingId;
           }

@@ -1,24 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 import { CommonService } from '../../shared/services/common/common.service';
 import { AboutService } from '../../shared/services/about/about.service';
 import { AboutReadModel } from '../../shared/models/about/about.read.model';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { Result } from '../../shared/models/common/Result';
 import { takeUntil } from 'rxjs';
+import { BooleanOptions, OrientationOptions } from '../../shared/lookups/common.lookup';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+  styleUrl: './about.component.scss',
+  standalone: false
 })
 export class AboutComponent extends Unsubscriber implements OnInit {
   //variable initializations
   aboutForm!: FormGroup | any;
   buildingId: string | null | undefined;
   aboutReadModel!: AboutReadModel;
+  booleanOptions = BooleanOptions
+  orientationOptions = OrientationOptions
+
 
   get aboutControl() {
     return this.aboutForm.controls;
@@ -44,23 +48,23 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   variableDeclaration() {
     this.aboutForm = this.fb.group({
       id: [null],
-      assessmentDate: [null, Validators.required],
-      comments: [null, Validators.required],
-      yearBuilt: [null, Validators.required],
-      numberOfBedrooms: [null, Validators.required],
-      storiesAboveGroundLevel: [null, Validators.required],
-      interiorFloorToCeilingHeight: [null, Validators.required],
-      totalConditionedFloorArea: [null, Validators.required],
-      directionFacedByFrontOfHome: [null, Validators.required],
-      blowerDoorTestConducted: [null, Validators.required],
-      airLeakageRate: [null, Validators.required],
-      airSealed: [null, Validators.required],
-      buildingId: [null],
+      assessmentDate: [null,],
+      yearBuilt: [null,],
+      numberOfBedrooms: [null,],
+      storiesAboveGroundLevel: [null,],
+      interiorFloorToCeilingHeight: [null,],
+      totalConditionedFloorArea: [null,],
+      directionFacedByFrontOfHome: [null,],
+      blowerDoorTestConducted: [null,],
+      airLeakageRate: [null,],
+      airSealed: [null,],
+      comments: [null,],
+      buildingId: [this.buildingId],
     })
   }
 
   getBuildingId() {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       if (params.get('id')) {
         this.commonService.buildingId = params.get('id');
       }
@@ -69,9 +73,11 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   }
   getData() {
     if (this.buildingId) {
-      this.aboutService.getByBuildingId(this.buildingId).subscribe({
+      this.aboutService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AboutReadModel>) => {
-          this.aboutForm.patchValue(val.data)
+          if(val?.failed == false){
+            this.aboutForm.patchValue(val.data)
+          }
           console.log(val);
         },
         error: (err: any) => {
@@ -102,7 +108,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       delete this.aboutReadModel.id;
       this.aboutService.create(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AboutReadModel>) => {
-          if (val.failed == false) {
+          if (val?.failed == false) {
             this.aboutForm.patchValue(val.data)
             this.buildingId = this.commonService.buildingId = val.data?.buildingId;
           }
@@ -115,8 +121,8 @@ export class AboutComponent extends Unsubscriber implements OnInit {
     }
   }
   goNext() {
-    this.router.navigate(['about'], {
+    this.router.navigate(['zones/floor'], {
       queryParams: { id: this.buildingId }
-    });
+    })
   }
 }

@@ -12,9 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 //DBConnection
 builder.Services.AddDbContext<DbConnect>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//AutoMapper Configuration
+builder.Services.AddAutoMapper(typeof(MaperObject));
+
+//Dependency Injection
+SupportFile.DependencyInjection(builder.Services);
 
 //CORS Policy
 builder.Services.AddCors(option =>
@@ -24,10 +29,6 @@ builder.Services.AddCors(option =>
         policy.WithOrigins(builder.Configuration.GetConnectionString("FrontEndURL")).AllowAnyMethod().AllowAnyHeader();
     });
 });
-
-builder.Services.AddAutoMapper(typeof(Program)); 
-
-SupportFile.DependencyInjection(builder.Services);
 
 var app = builder.Build();
 

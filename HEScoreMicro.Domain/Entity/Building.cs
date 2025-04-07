@@ -5,7 +5,7 @@ namespace HEScoreMicro.Domain.Entity
     {
         public Guid Id { get; set; }
         public int? Number { get; set; }
-        public Guid? BuildingId { get; set; }
+        public Guid BuildingId { get; set; } = Guid.Empty;
     }
     public class Building : BuildingFields
     {

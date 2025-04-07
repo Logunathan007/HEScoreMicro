@@ -1,9 +1,11 @@
-import { CommonService } from '../../shared/services/common/common.service';
-import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from "@angular/core";
+import { CommonService } from "../../shared/services/common/common.service";
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-header',
+  standalone:false,
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

@@ -8,14 +8,14 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private toastr: ToastrService) { }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      tap(
-        (res: any) => {
-          if (res?.body) {
+      tap({
+        next: (res: any) => {
+          if (res?.body && res?.status !== 204) {  // Ignore status 204
             const message = res?.body?.message || 'No message';
             const status = res?.status || 'No status';
-
             if (res?.body?.failed) {
               this.toastr.warning(`${status} ${message}`);
             } else {
@@ -23,11 +23,11 @@ export class AuthInterceptor implements HttpInterceptor {
             }
           }
         },
-        (error: any) => {
+        error: (error: any) => {
           this.toastr.error(`ERROR Occurred: ${error.message || error}`);
         }
-      )
+      })
     );
   }
-
 }
+

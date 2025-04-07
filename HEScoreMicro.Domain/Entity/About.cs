@@ -15,7 +15,7 @@ namespace HEScoreMicro.Domain.Entity
         public bool? BlowerDoorTestConducted { get; set; }
         public int? AirLeakageRate { get; set; }
         public bool? AirSealed { get; set; }
-        public Guid? BuildingId { get; set; }
+        public Guid BuildingId { get; set; }
     }
     public class About : AboutFields
     {

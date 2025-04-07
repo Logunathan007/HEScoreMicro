@@ -1,0 +1,28 @@
+<div class="col-md-6">
+  <div class="select-box">
+    <label> Ducts Is Insulated  </label>
+    <ng-select
+      [items]=""
+      bindLabel="name"
+      [clearable]="true"
+      [closeOnSelect]="true"
+      bindValue="value"
+      placeholder="Ducts Is Insulated "
+      id="ductsIsInsulated"
+      formControlName="ductsIsInsulated"
+    >
+    </ng-select>
+    <div
+      class="errormsg"
+      *ngIf="
+        (systemItem.get('ductsIsInsulated')?.touched ||
+          systemItem.get('ductsIsInsulated')?.dirty) &&
+        systemItem.get('ductsIsInsulated')?.invalid
+      "
+    >
+      <label class="text-danger fw-semibold position-absolute">
+        Ducts Is Insulated is invalid
+      </label>
+    </div>
+  </div>
+</div>

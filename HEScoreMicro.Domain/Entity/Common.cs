@@ -12,6 +12,6 @@ namespace HEScoreMicro.Domain.Entity
     }
     public interface IHasBuildingId
     {
-        public Guid? BuildingId { get; set; }
+        public Guid BuildingId { get; set; }
     }
 }

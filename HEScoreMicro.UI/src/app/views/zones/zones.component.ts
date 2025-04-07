@@ -5,7 +5,8 @@ import { CommonService } from '../../shared/services/common/common.service';
 @Component({
   selector: 'app-zones',
   templateUrl: './zones.component.html',
-  styleUrl: './zones.component.scss'
+  styleUrl: './zones.component.scss',
+  standalone: false
 })
 export class ZonesComponent {
   constructor(private commonService: CommonService, private router: Router) {

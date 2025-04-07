@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.CrudOperations;
 using HEScoreMicro.Domain.Entity;
@@ -10,8 +11,8 @@ namespace HEScoreMicro.Application.Operations
     {
     }
     public class AboutOperations (
-        DbConnect _context
-        ) : CrudOperations<About, AboutDTO>(_context, _context.About), IAboutOperations
+        DbConnect _context,IMapper _mapper
+        ) : CrudOperations<About, AboutDTO>(_context, _context.About, _mapper), IAboutOperations
     {
         
     }

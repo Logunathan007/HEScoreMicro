@@ -10,8 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ViewsComponent } from './views.component';
 import { SummaryComponent } from './summary/summary.component';
 import { UnsubscribeModule } from '../shared/modules/unsubscribe/unsubscribe.module';
-
-
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { UnsubscribeModule } from '../shared/modules/unsubscribe/unsubscribe.mod
     NgSelectModule,
     HttpClientModule,
     NgxJsonViewerModule,
+    BsDatepickerModule,
     UnsubscribeModule
   ],
 })

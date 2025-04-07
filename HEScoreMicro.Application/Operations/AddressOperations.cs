@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.CrudOperations;
 using HEScoreMicro.Domain.Entity;
@@ -11,8 +12,8 @@ namespace HEScoreMicro.Application.Operations
         public Task<ResponseDTO<AddressDTO>> AddAddress(AddressDTO entityDTO);
     }
     public class AddressOperations(
-        DbConnect _context, IBuildingOperations _buildingOperations
-        ) : CrudOperations<Address, AddressDTO>(_context, _context.Address), IAddressOperations
+        DbConnect _context, IBuildingOperations _buildingOperations, IMapper _mapper
+        ) : CrudOperations<Address, AddressDTO>(_context, _context.Address,_mapper), IAddressOperations
     {
         public async Task<ResponseDTO<AddressDTO>> AddAddress(AddressDTO entityDTO)
         {

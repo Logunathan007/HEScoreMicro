@@ -4,16 +4,17 @@ import { ZoneFloorComponent } from './zone-floor/zone-floor.component';
 import { ZoneRoofComponent } from './zone-roof/zone-roof.component';
 import { ZoneWallComponent } from './zone-wall/zone-wall.component';
 import { ZonesComponent } from './zones.component';
+import { ZoneWindowComponent } from './zone-window/zone-window.component';
 
 const routes: Routes = [
   {
     path: '',
-    component:ZonesComponent,
-    children:[
+    component: ZonesComponent,
+    children: [
       {
         path: '',
-        pathMatch:'full',
-        redirectTo:"floor"
+        pathMatch: 'full',
+        redirectTo: "floor"
       },
       {
         path: 'floor',
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'wall',
         component: ZoneWallComponent,
+      },
+      {
+        path: 'window',
+        component: ZoneWindowComponent,
       },
     ]
   }

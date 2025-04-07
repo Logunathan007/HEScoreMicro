@@ -1,0 +1,133 @@
+<div class="container">
+  <form [formGroup]="zoneWallForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="select-box">
+          <label> Exterior Wall Same </label>
+          <ng-select
+            [items]="booleanOptions"
+            bindLabel="name"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            bindValue="value"
+            placeholder="Exterior Wall Same"
+            id="exteriorWallSame"
+            formControlName="exteriorWallSame"
+          >
+          </ng-select>
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWallForm.get('exteriorWallSame')?.touched ||
+                zoneWallForm.get('exteriorWallSame')?.dirty) &&
+              zoneWallForm.get('exteriorWallSame')?.invalid
+            "
+          >
+            <label class="text-danger fw-semibold position-absolute">
+              Exterior Wall Same is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container formArrayName="walls">
+        <ng-container
+          *ngFor="let wallItem of wallsObj.controls; let wallIndex = index"
+        >
+          <ng-container [formGroupName]="wallIndex">
+            <h4 class="col-12 my-3">Wall {{ wallIndex + 1 }}</h4>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Construction</label>
+                <ng-select
+                  [items]="wallConstructionOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Construction"
+                  id="construction"
+                  formControlName="construction"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (wallItem.get('construction')?.touched ||
+                      wallItem.get('construction')?.dirty) &&
+                    wallItem.get('construction')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Construction is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Exterior Finish</label>
+                <ng-select
+                  [items]="wallExteriorFinishOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Exterior Finish"
+                  id="exteriorFinish"
+                  formControlName="exteriorFinish"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (wallItem.get('exteriorFinish')?.touched ||
+                      wallItem.get('exteriorFinish')?.dirty) &&
+                    wallItem.get('exteriorFinish')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Exterior Finish is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="wallInsulationLevel"> Wall Insulation Level </label>
+                <input
+                  formControlName="wallInsulationLevel"
+                  type="number"
+                  id="wallInsulationLevel"
+                  placeholder="Wall Insulation Level"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (wallItem.get('wallInsulationLevel')?.touched ||
+                      wallItem.get('wallInsulationLevel')?.dirty) &&
+                    wallItem.get('wallInsulationLevel')?.invalid
+                  "
+                >
+                  <label
+                    for="wallInsulationLevel"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Wall Insulation Level is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex justify-content-end gap-3 mt-4">
+      <button type="button" class="bg-primary btn-style" (click)="onSave()">
+        {{ this.zoneWallForm.value?.id ? "Update" : "Save" }}
+      </button>
+      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+        Next
+      </button>
+    </div>
+  </form>
+</div>

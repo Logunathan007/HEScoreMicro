@@ -22,6 +22,55 @@ namespace HEScoreMicro.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.About", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("AirLeakageRate")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("AirSealed")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("AssessmentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool?>("BlowerDoorTestConducted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DirectionFacedByFrontOfHome")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("InteriorFloorToCeilingHeight")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("NumberOfBedrooms")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("StoriesAboveGroundLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TotalConditionedFloorArea")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("YearBuilt")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("About");
+                });
+
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,7 +83,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<string>("AssessmentType")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("BuildingId")
+                    b.Property<Guid>("BuildingId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("City")
@@ -66,6 +115,9 @@ namespace HEScoreMicro.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("Number")
                         .HasColumnType("integer");
 
@@ -74,11 +126,658 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("Building");
                 });
 
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.Foundation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("FloorInsulationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FoundationArea")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FoundationType")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("FoundationwallsInsulationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("SlabInsulationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ZoneFloorId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ZoneFloorId");
+
+                    b.ToTable("Foundation");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.DuctLocation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("DuctsIsInsulated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SystemsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("SystemsId");
+
+                    b.ToTable("DuctLocation");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.HeatingCoolingSystem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SystemCount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("HeatingCoolingSystem");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.Systems", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CoolingSystemEfficiencyUnit")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("CoolingSystemEfficiencyValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("CoolingSystemType")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("CoolingSystemYearInstalled")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("DuctAreProfessionallySealed")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("DuctLeakageTestPerformed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("DuctLocationCount")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("HeatingCoolingSystemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("HeatingSystemEfficiencyValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("HeatingSystemType")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("HeatingSystemYearInstalled")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("KnowCoolingEfficiency")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("KnowHeatingEfficiency")
+                        .HasColumnType("boolean");
+
+                    b.Property<double>("PercentAreaServed")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("HeatingCoolingSystemId");
+
+                    b.ToTable("Systems");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.PVSystem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AnglePanelsAreTilted")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("DCCapacity")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("DirectionPanelsFace")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("HasPhotovoltaic")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("KnowSystemCapacity")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("NumberOfPanels")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("YearInstalled")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("PVSystem");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.WaterHeater", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("EnergyValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("KnowWaterHeaterEnergyFactor")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WaterHeaterType")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("YearOfManufacture")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("WaterHeater");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneFloor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("EnableSecondFoundation")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("ZoneFloor");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.RoofAttic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Absorptance")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("AtticFloorArea")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("AtticFloorInsulation")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("AtticOrCeilingType")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("CathedralCeilingArea")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("CathedralCeilingInsulation")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Construction")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExteriorFinish")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FrameMaterial")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GlazingType")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("KneeWallArea")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("KneeWallInsulation")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("KneeWallPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("KnowSkylightSpecification")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Panes")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoofColor")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("RoofInsulation")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("SHGC")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("SkylightArea")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("SkylightsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool?>("SolarScreen")
+                        .HasColumnType("boolean");
+
+                    b.Property<double?>("UFactor")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("ZoneRoofId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("ZoneRoofId");
+
+                    b.ToTable("RoofAttic");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("EnableSecondRoofAttic")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("ZoneRoof");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.Wall", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Construction")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ExteriorFinish")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("WallInsulationLevel")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("ZoneWallId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("ZoneWallId");
+
+                    b.ToTable("Wall");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("ExteriorWallSame")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("ZoneWall");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.Window", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FrameMaterial")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GlazingType")
+                        .HasColumnType("text");
+
+                    b.Property<bool?>("KnowWindowSpecification")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Panes")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("SHGC")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("SolarScreen")
+                        .HasColumnType("boolean");
+
+                    b.Property<double?>("UFactor")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("ZoneWindowId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.HasIndex("ZoneWindowId");
+
+                    b.ToTable("Window");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("WindowAreaBack")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("WindowAreaFront")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("WindowAreaLeft")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("WindowAreaRight")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool?>("WindowsSame")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
+
+                    b.ToTable("ZoneWindow");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.About", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithOne("Address")
-                        .HasForeignKey("HEScoreMicro.Domain.Entity.Address", "BuildingId");
+                        .HasForeignKey("HEScoreMicro.Domain.Entity.Address", "BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.Foundation", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneFloor", "ZoneFloor")
+                        .WithMany("Foundations")
+                        .HasForeignKey("ZoneFloorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ZoneFloor");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.DuctLocation", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.Systems", "Systems")
+                        .WithMany("DuctLocations")
+                        .HasForeignKey("SystemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+
+                    b.Navigation("Systems");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.HeatingCoolingSystem", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.Systems", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.HeatingCoolingSystem", null)
+                        .WithMany("Systems")
+                        .HasForeignKey("HeatingCoolingSystemId");
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.PVSystem", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.WaterHeater", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneFloor", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.RoofAttic", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", "ZoneRoof")
+                        .WithMany("RoofAttics")
+                        .HasForeignKey("ZoneRoofId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+
+                    b.Navigation("ZoneRoof");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.Wall", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", "ZoneWall")
+                        .WithMany("Walls")
+                        .HasForeignKey("ZoneWallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+
+                    b.Navigation("ZoneWall");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.Window", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", "ZoneWindow")
+                        .WithMany("Windows")
+                        .HasForeignKey("ZoneWindowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
+
+                    b.Navigation("ZoneWindow");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Building");
                 });
@@ -87,6 +786,36 @@ namespace HEScoreMicro.Persistence.Migrations
                 {
                     b.Navigation("Address")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.HeatingCoolingSystem", b =>
+                {
+                    b.Navigation("Systems");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.HeatingCoolingSystems.Systems", b =>
+                {
+                    b.Navigation("DuctLocations");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneFloor", b =>
+                {
+                    b.Navigation("Foundations");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+                {
+                    b.Navigation("RoofAttics");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+                {
+                    b.Navigation("Walls");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+                {
+                    b.Navigation("Windows");
                 });
 #pragma warning restore 612, 618
         }

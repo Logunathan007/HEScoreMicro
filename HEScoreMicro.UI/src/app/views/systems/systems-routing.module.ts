@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SystemsComponent } from './systems.component';
-import { PvSystemComponent } from './pv-system/pv-system.component';
-import { HvacHeatCoolComponent } from './hvac-heat-cool/hvac-heat-cool.component';
-import { WaterHeatingSystemComponent } from './water-heating-system/water-heating-system.component';
+import { PVSystemComponent } from './pv-system/pv-system.component';
+import { WaterHeaterComponent } from './water-heater/water-heater.component';
+import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-cooling-system.component';
 
 const routes: Routes = [
   {
@@ -13,19 +13,19 @@ const routes: Routes = [
       {
         path: '',
         pathMatch:'full',
-        redirectTo:"distribution-system"
+        redirectTo:"heat-cool-system"
       },
       {
-        path:'hvac-heat-cool',
-        component:HvacHeatCoolComponent
+        path:'heat-cool-system',
+        component:HeatingCoolingSystemComponent
       },
       {
         path:'pv-system',
-        component:PvSystemComponent
+        component:PVSystemComponent
       },
       {
-        path:'water-heating-system',
-        component:WaterHeatingSystemComponent
+        path:'water-heater',
+        component:WaterHeaterComponent
       }
     ]
   },

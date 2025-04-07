@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { CommonService } from '../../shared/services/common/common.service';
 import { Router } from '@angular/router';
+import { CommonService } from '../../shared/services/common/common.service';
 @Component({
   selector: 'app-systems',
   templateUrl: './systems.component.html',
-  styleUrl: './systems.component.scss'
+  styleUrl: './systems.component.scss',
+  standalone:false
 })
 export class SystemsComponent {
   constructor(private commonService: CommonService, private router: Router) {

@@ -1,0 +1,193 @@
+<div class="container">
+  <form [formGroup]="zoneFloorForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="select-box">
+          <label> Enable Second Foundation </label>
+          <ng-select
+            [items]="booleanOptions"
+            bindLabel="name"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            bindValue="value"
+            placeholder="Enable Second Foundation"
+            id="enableSecondFoundation"
+            formControlName="enableSecondFoundation"
+          >
+          </ng-select>
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneFloorForm.get('enableSecondFoundation')?.touched ||
+                zoneFloorForm.get('enableSecondFoundation')?.dirty) &&
+              zoneFloorForm.get('enableSecondFoundation')?.invalid
+            "
+          >
+            <label class="text-danger fw-semibold position-absolute">
+              Enable Second Foundation is invalid
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container formArrayName="foundations">
+        <ng-container
+          *ngFor="
+            let foundationItem of foundationsObj.controls;
+            let foundationIndex = index
+          "
+        >
+          <ng-container [formGroupName]="foundationIndex">
+            <h4 class="col-12 my-3">Foundation {{ foundationIndex + 1 }}</h4>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Foundation Type </label>
+                <ng-select
+                  [items]="foundationTypeOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Foundation Type"
+                  id="foundationType"
+                  formControlName="foundationType"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (foundationItem.get('foundationType')?.touched ||
+                      foundationItem.get('foundationType')?.dirty) &&
+                    foundationItem.get('foundationType')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Foundation Type is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="foundationArea"> Foundation Area </label>
+                <input
+                  formControlName="foundationArea"
+                  type="number"
+                  id="foundationArea"
+                  placeholder="Foundation Area"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (foundationItem.get('foundationArea')?.touched ||
+                      foundationItem.get('foundationArea')?.dirty) &&
+                    foundationItem.get('foundationArea')?.invalid
+                  "
+                >
+                  <label
+                    for="foundationArea"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Foundation Area is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="slabInsulationLevel"> Slab Insulation Level </label>
+                <input
+                  formControlName="slabInsulationLevel"
+                  type="number"
+                  id="slabInsulationLevel"
+                  placeholder="Slab Insulation Level"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (foundationItem.get('slabInsulationLevel')?.touched ||
+                      foundationItem.get('slabInsulationLevel')?.dirty) &&
+                    foundationItem.get('slabInsulationLevel')?.invalid
+                  "
+                >
+                  <label
+                    for="slabInsulationLevel"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Slab Insulation Level is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="floorInsulationLevel">
+                  Floor Insulation Level
+                </label>
+                <input
+                  formControlName="floorInsulationLevel"
+                  type="number"
+                  id="floorInsulationLevel"
+                  placeholder="Floor Insulation Level"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (foundationItem.get('floorInsulationLevel')?.touched ||
+                      foundationItem.get('floorInsulationLevel')?.dirty) &&
+                    foundationItem.get('floorInsulationLevel')?.invalid
+                  "
+                >
+                  <label
+                    for="floorInsulationLevel"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Floor Insulation Level is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="foundationwallsInsulationLevel">
+                  Foundationwalls Insulation Level
+                </label>
+                <input
+                  formControlName="foundationwallsInsulationLevel"
+                  type="number"
+                  id="foundationwallsInsulationLevel"
+                  placeholder="Foundationwalls Insulation Level"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (foundationItem.get('foundationwallsInsulationLevel')
+                      ?.touched ||
+                      foundationItem.get('foundationwallsInsulationLevel')
+                        ?.dirty) &&
+                    foundationItem.get('foundationwallsInsulationLevel')
+                      ?.invalid
+                  "
+                >
+                  <label
+                    for="foundationwallsInsulationLevel"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Foundationwalls Insulation Level is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex justify-content-end gap-3 mt-4">
+      <button type="button" class="bg-primary btn-style" (click)="onSave()">
+        {{ this.zoneFloorForm.value?.id ? "Update" : "Save" }}
+      </button>
+      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+        Next
+      </button>
+    </div>
+  </form>
+</div>
