@@ -1,8 +1,8 @@
 ﻿
-using EnergyScore.Application.Templates.HPXMLs.ZoneWalls;
+using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using System.Xml.Serialization;
 
-namespace EnergyScore.Application.Templates.HPXMLs.ZoneRoofs
+namespace HEScoreMicro.Application.HPXMLClasses.ZoneRoofs
 {
     public class Skylights
     {

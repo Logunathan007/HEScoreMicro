@@ -15,7 +15,7 @@ namespace HEScoreMicro.Service.Controllers
             _aboutOperations = aboutOperations;
         }
 
-        [HttpGet("{Id}")]
+/*        [HttpGet("{Id}")]
         public async Task<ActionResult<ResponseDTO<AboutDTO>>> GetById(Guid Id)
         {
             var res = await _aboutOperations.GetById(Id);
@@ -24,7 +24,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<AboutDTO>>> GetByBuildingId(Guid Id)
         {
@@ -36,7 +36,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpGet("[action]")]
+/*        [HttpGet("[action]")]
         public async Task<ActionResult<ResponseDTO<ICollection<AboutDTO>>>> GetAll()
         {
             var res = await _aboutOperations.GetAll();
@@ -45,7 +45,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<AboutDTO>>> Post([FromBody] AboutDTO aboutDTO)
@@ -69,7 +69,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpDelete("{Id}")]
+/*        [HttpDelete("{Id}")]
         public async Task<ActionResult<ResponseDTO<AboutDTO>>> Delete(Guid Id)
         {
             var res = await _aboutOperations.Delete(Id);
@@ -78,6 +78,6 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
     }
 }

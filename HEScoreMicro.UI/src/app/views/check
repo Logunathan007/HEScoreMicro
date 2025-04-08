@@ -1,27 +1,27 @@
 <div class="col-md-6">
   <div class="input-box">
-    <label for="percentAreaServed">
-      Percentage Area Served
+    <label for="numberofUnitsInBuilding">
+      Number of Units In Building
     </label>
     <input
-      formControlName="percentAreaServed"
+      formControlName="numberofUnitsInBuilding"
       type="number"
-      id="percentAreaServed"
-      placeholder="Percent Area Served"
+      id="numberofUnitsInBuilding"
+      placeholder="Number of Units In Building"
     />
     <div
       class="errormsg"
       *ngIf="
-        (systemItem.get('percentAreaServed')?.touched ||
-          systemItem.get('percentAreaServed')?.dirty) &&
-        systemItem.get('percentAreaServed')?.invalid
+        (systemItem.get('numberofUnitsInBuilding')?.touched ||
+          systemItem.get('numberofUnitsInBuilding')?.dirty) &&
+        systemItem.get('numberofUnitsInBuilding')?.invalid
       "
     >
       <label
-        for="percentAreaServed"
+        for="numberofUnitsInBuilding"
         class="text-danger fw-semibold position-absolute"
       >
-        Percent Area Served is invalid
+        Number of Units In Building is invalid
       </label>
     </div>
   </div>

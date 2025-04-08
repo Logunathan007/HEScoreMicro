@@ -1,7 +1,7 @@
 ﻿
 using System.Xml.Serialization;
 
-namespace EnergyScore.Application.Templates.HPXMLs.Systems
+namespace HEScoreMicro.Application.HPXMLClasses.Systems
 {
     public class HpxmlSystems
     {

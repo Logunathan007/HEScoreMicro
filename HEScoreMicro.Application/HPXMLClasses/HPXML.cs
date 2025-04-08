@@ -1,11 +1,11 @@
 ﻿
-using EnergyScore.Application.Templates.HPXMLs.ZoneFloors;
-using EnergyScore.Application.Templates.HPXMLs.ZoneRoofs;
+using HEScoreMicro.Application.HPXMLClasses.Systems;
+using HEScoreMicro.Application.HPXMLClasses.ZoneFloors;
+using HEScoreMicro.Application.HPXMLClasses.ZoneRoofs;
+using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using System.Xml.Serialization;
-using EnergyScore.Application.Templates.HPXMLs.Systems;
-using EnergyScore.Application.Templates.HPXMLs.ZoneWalls;
 
-namespace EnergyScore.Application.Templates.HPXMLs
+namespace HEScoreMicro.Application.HPXMLClasses
 {
     [XmlRoot("HPXML", Namespace = "http://hpxmlonline.com/2019/10")]
     public class HPXML
@@ -95,6 +95,7 @@ namespace EnergyScore.Application.Templates.HPXMLs
     {
         public int YearBuilt { get; set; }
         public string ResidentialFacilityType { get; set; }
+        public int? NumberofUnitsInBuilding { get; set; }   
         public double NumberofConditionedFloorsAboveGrade { get; set; }
         public double? AverageCeilingHeight { get; set; }
         public int NumberofBedrooms { get; set; }
@@ -127,7 +128,8 @@ namespace EnergyScore.Application.Templates.HPXMLs
     public class AirInfiltration
     {
         [XmlElement("AirInfiltrationMeasurement")]
-        public List<AirInfiltrationMeasurement> AirInfiltrationMeasurement { get; set; }
+        //public List<AirInfiltrationMeasurement> AirInfiltrationMeasurement { get; set; }
+        public AirInfiltrationMeasurement AirInfiltrationMeasurement { get; set; }
         public AirSealing? AirSealing { get; set; }
     }
     public class AirSealing

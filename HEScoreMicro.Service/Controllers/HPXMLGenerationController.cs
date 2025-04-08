@@ -1,4 +1,5 @@
-﻿using HEScoreMicro.Application.Operations.HPXMLGeneration;
+﻿using GenericController.Application.Mapper.Reply;
+using HEScoreMicro.Application.Operations.HPXMLGeneration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,23 +15,23 @@ namespace HEScoreMicro.Service.Controllers
             _hPXMLGenerationOperations = hPXMLGenerationOperations;
         }
         [HttpGet("HPXMLString/{Id}")]
-        public IActionResult Get(Guid Id) {
-            var result = _hPXMLGenerationOperations.GetHPXMLString(Id);
-            if (result.Result.Failed)
+        public async Task<ActionResult<ResponseDTO<string>>> Get(Guid Id) {
+            var result = await _hPXMLGenerationOperations.GetHPXMLString(Id);
+            if (result.Failed)
             {
-                return BadRequest(result.Result.Message);
+                return BadRequest(result.Message);
             }
-            return Ok(result.Result.Data);
+            return Ok(result);
         }
         [HttpGet("HPXMLBase64String/{Id}")]
-        public IActionResult GetBase64(Guid Id)
+        public async Task<ActionResult<ResponseDTO<string>>> GetBase64(Guid Id)
         {
-            var result = _hPXMLGenerationOperations.GetBase64HPXMLString(Id);
-            if (result.Result.Failed)
+            var result = await _hPXMLGenerationOperations.GetBase64HPXMLString(Id);
+            if (result.Failed)
             {
-                return BadRequest(result.Result.Message);
+                return BadRequest(result.Message);
             }
-            return Ok(result.Result.Data);
+            return Ok(result);
         }
     }
 }

@@ -60,6 +60,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       blowerDoorTestConducted: [null,],
       airLeakageRate: [null,],
       airSealed: [null,],
+      numberofUnitsInBuilding:[null],
       manufacturedHomeType:[null,],
       comments: [null,],
       buildingId: [this.buildingId],

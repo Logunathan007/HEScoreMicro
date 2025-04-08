@@ -13,6 +13,7 @@ namespace HEScoreMicro.Domain.Entity
         public int TotalConditionedFloorArea { get; set; }
         public string DirectionFacedByFrontOfHome { get; set; }
         public bool BlowerDoorTestConducted { get; set; }
+        public int? NumberofUnitsInBuilding { get; set; }
         public string? ManufacturedHomeType { get; set; }
         public int? AirLeakageRate { get; set; }
         public bool? AirSealed { get; set; }

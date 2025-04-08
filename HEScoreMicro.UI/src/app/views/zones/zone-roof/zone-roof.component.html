@@ -180,6 +180,32 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
+                <label for="roofArea"> Roof Area </label>
+                <input
+                  formControlName="roofArea"
+                  type="number"
+                  id="roofArea"
+                  placeholder="Roof Area"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (roofAtticItem.get('roofArea')?.touched ||
+                      roofAtticItem.get('roofArea')?.dirty) &&
+                    roofAtticItem.get('roofArea')?.invalid
+                  "
+                >
+                  <label
+                    for="roofArea"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Roof Area is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
                 <label for="roofInsulation"> Roof Insulation </label>
                 <input
                   formControlName="roofInsulation"

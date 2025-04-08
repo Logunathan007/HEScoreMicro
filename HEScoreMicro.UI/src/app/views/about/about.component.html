@@ -276,6 +276,34 @@
           </div>
         </div>
         <div class="col-md-6">
+          <div class="input-box">
+            <label for="numberofUnitsInBuilding">
+              Number of Units In Building
+            </label>
+            <input
+              formControlName="numberofUnitsInBuilding"
+              type="number"
+              id="numberofUnitsInBuilding"
+              placeholder="Number of Units In Building"
+            />
+            <div
+              class="errormsg"
+              *ngIf="
+                (aboutControl['numberofUnitsInBuilding']?.touched ||
+                  aboutControl['numberofUnitsInBuilding']?.dirty) &&
+                aboutControl['numberofUnitsInBuilding']?.invalid
+              "
+            >
+              <label
+                for="numberofUnitsInBuilding"
+                class="text-danger fw-semibold position-absolute"
+              >
+                Number of Units In Building is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
           <div class="select-box">
             <label> Manufactured Home Type </label>
             <ng-select

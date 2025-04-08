@@ -1,7 +1,7 @@
 ﻿
 using System.Xml.Serialization;
 
-namespace EnergyScore.Application.Templates.HPXMLs.ZoneWalls
+namespace HEScoreMicro.Application.HPXMLClasses.ZoneWalls
 {
     public class Windows
     {

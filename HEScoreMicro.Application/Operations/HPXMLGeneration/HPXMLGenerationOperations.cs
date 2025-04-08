@@ -9,7 +9,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         Task<ResponseDTO<string>> GetBase64HPXMLString(Guid Id);
     }
     public class HPXMLGenerationOperations(
-        IHPXMLObjectCreation _hPXMLObjectCreation) : IHPXMLGenerationOperations
+        IHPXMLObjectCreation _hPXMLObjectCreation
+        ) : IHPXMLGenerationOperations
     {
         public async Task<ResponseDTO<string>> GetHPXMLString(Guid Id)
         {

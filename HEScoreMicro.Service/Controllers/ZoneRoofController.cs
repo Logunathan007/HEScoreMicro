@@ -19,7 +19,7 @@ namespace HEScoreMicro.Service.Controllers
             _zoneRoofOperations = zoneRoofOperations;
         }
 
-        [HttpGet("{Id}")]
+/*        [HttpGet("{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneRoofDTO>>> GetById(Guid Id)
         {
             var res = await _zoneRoofOperations.GetById(Id);
@@ -28,7 +28,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneRoofDTO>>> GetByBuildingId(Guid Id)
         {
@@ -40,7 +40,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpGet("[action]")]
+/*        [HttpGet("[action]")]
         public async Task<ActionResult<ResponseDTO<ICollection<ZoneRoofDTO>>>> GetAll()
         {
             var res = await _zoneRoofOperations.GetAll();
@@ -49,7 +49,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<ZoneRoofDTO>>> Post([FromBody] ZoneRoofDTO zoneRoofDTO)
@@ -73,7 +73,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpDelete("{Id}")]
+/*        [HttpDelete("{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneRoofDTO>>> Delete(Guid Id)
         {
             var res = await _zoneRoofOperations.Delete(Id);
@@ -82,7 +82,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpDelete("RoofAttic/{id}")]
         public async Task<ActionResult<ResponseDTO<ZoneWallDTO>>> DeleteRoofAtticByIds(Guid Id, [FromKeyedServices("RoofAttic")] IRoofAtticOperations roofAtticOperations)
         {

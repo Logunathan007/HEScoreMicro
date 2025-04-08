@@ -17,7 +17,7 @@ namespace HEScoreMicro.Service.Controllers
             _zoneWindowOperations = zoneWindowOperations;
         }
 
-        [HttpGet("{Id}")]
+ /*       [HttpGet("{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneWindowDTO>>> GetById(Guid Id)
         {
             var res = await _zoneWindowOperations.GetById(Id);
@@ -26,7 +26,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneWindowDTO>>> GetByBuildingId(Guid Id)
         {
@@ -38,7 +38,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpGet("[action]")]
+/*        [HttpGet("[action]")]
         public async Task<ActionResult<ResponseDTO<ICollection<ZoneWindowDTO>>>> GetAll()
         {
             var res = await _zoneWindowOperations.GetAll();
@@ -47,7 +47,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<ZoneWindowDTO>>> Post([FromBody] ZoneWindowDTO zoneWindowDTO)
@@ -70,7 +70,7 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(res);
         }
-
+/*
         [HttpDelete("{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneWindowDTO>>> Delete(Guid Id)
         {
@@ -80,7 +80,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpDelete("[Action]")]
         public async Task<ActionResult<ResponseDTO<ZoneWindowDTO>>> DeleteByIds([FromBody] IEnumerable<Guid> Id, [FromKeyedServices("Window")] IWindowOperations windowOperations)

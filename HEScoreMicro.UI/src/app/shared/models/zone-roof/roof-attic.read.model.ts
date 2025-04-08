@@ -5,6 +5,7 @@ export interface RoofAtticReadModel {
   exteriorFinish: string | null;
   cathedralCeilingArea: number | null;
   cathedralCeilingInsulation: number | null;
+  roofArea: number | null;
   roofInsulation: number | null;
   roofColor: string | null;
   absorptance: number | null;

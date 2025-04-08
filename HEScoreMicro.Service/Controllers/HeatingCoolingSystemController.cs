@@ -16,7 +16,7 @@ namespace HEScoreMicro.Service.Controllers
             _heatingCoolingSystemOperations = heatingCoolingSystemOperations;
         }
 
-        [HttpGet("{Id}")]
+/*        [HttpGet("{Id}")]
         public async Task<ActionResult<ResponseDTO<HeatingCoolingSystemDTO>>> GetById(Guid Id)
         {
             var res = await _heatingCoolingSystemOperations.GetById(Id);
@@ -25,7 +25,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<HeatingCoolingSystemDTO>>> GetByBuildingId(Guid Id)
         {
@@ -37,7 +37,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpGet("[action]")]
+/*        [HttpGet("[action]")]
         public async Task<ActionResult<ResponseDTO<ICollection<HeatingCoolingSystemDTO>>>> GetAll()
         {
             var res = await _heatingCoolingSystemOperations.GetAll();
@@ -46,7 +46,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<HeatingCoolingSystemDTO>>> Post([FromBody] HeatingCoolingSystemDTO heatingCoolingSystemDTO)
@@ -69,7 +69,7 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(res);
         }
-        [HttpDelete("{Id}")]
+/*        [HttpDelete("{Id}")]
         public async Task<ActionResult<ResponseDTO<HeatingCoolingSystemDTO>>> Delete(Guid Id)
         {
             var res = await _heatingCoolingSystemOperations.Delete(Id);
@@ -78,7 +78,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpDelete("Systems/{Id}")]
         public async Task<ActionResult<ResponseDTO<ZoneWallDTO>>> DeleteBySystemsId(Guid Id, [FromKeyedServices("Systems")] ISystemsOperations systemsOperations)
         {

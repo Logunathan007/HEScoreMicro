@@ -11,6 +11,7 @@ export interface AboutReadModel {
   blowerDoorTestConducted: boolean | null;
   airLeakageRate: number | null;
   manufacturedHomeType: string | null;
+  numberofUnitsInBuilding: number | null;
   airSealed: boolean | null;
   buildingId: string | null;
 }

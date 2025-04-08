@@ -15,7 +15,7 @@ namespace HEScoreMicro.Service.Controllers
             _pVSystemOperations = pVSystemOperations;
         }
 
-        [HttpGet("{Id}")]
+/*        [HttpGet("{Id}")]
         public async Task<ActionResult<ResponseDTO<PVSystemDTO>>> GetById(Guid Id)
         {
             var res = await _pVSystemOperations.GetById(Id);
@@ -24,7 +24,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<PVSystemDTO>>> GetByBuildingId(Guid Id)
         {
@@ -36,7 +36,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpGet("[action]")]
+/*        [HttpGet("[action]")]
         public async Task<ActionResult<ResponseDTO<ICollection<PVSystemDTO>>>> GetAll()
         {
             var res = await _pVSystemOperations.GetAll();
@@ -45,7 +45,7 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<PVSystemDTO>>> Post([FromBody] PVSystemDTO pVSystemDTO)
@@ -69,7 +69,7 @@ namespace HEScoreMicro.Service.Controllers
             return Ok(res);
         }
 
-        [HttpDelete("{Id}")]
+/*        [HttpDelete("{Id}")]
         public async Task<ActionResult<ResponseDTO<PVSystemDTO>>> Delete(Guid Id)
         {
             var res = await _pVSystemOperations.Delete(Id);
@@ -78,6 +78,6 @@ namespace HEScoreMicro.Service.Controllers
                 return NotFound(res);
             }
             return Ok(res);
-        }
+        }*/
     }
 }

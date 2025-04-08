@@ -1,7 +1,7 @@
 ﻿
 using System.Xml.Serialization;
 
-namespace EnergyScore.Application.Templates.HPXMLs.ZoneRoofs
+namespace HEScoreMicro.Application.HPXMLClasses.ZoneRoofs
 {
     public class Attics
     {
@@ -15,11 +15,11 @@ namespace EnergyScore.Application.Templates.HPXMLs.ZoneRoofs
         [XmlElement("AtticType")]
         public AtticType AtticType { get; set; }
         [XmlElement]
-        public List<AttachedToRoof> AttachedToRoof { get; set; }
+        public AttachedToRoof? AttachedToRoof { get; set; }
         [XmlElement]
-        public List<AttachedToWall>  AttachedToWall { get; set; }
+        public AttachedToWall? AttachedToWall { get; set; }
         [XmlElement]
-        public List<AttachedToFloor> AttachedToFloor { get; set; }
+        public AttachedToFloor? AttachedToFloor { get; set; }
     }
 
     public class AtticType
@@ -27,11 +27,20 @@ namespace EnergyScore.Application.Templates.HPXMLs.ZoneRoofs
         [XmlElement("Attic")]
         public AtticTypes? Attic { get; set; }
         [XmlElement]
-        public string? CathedralCeiling { get; set; }
+        public CathedralCeiling? CathedralCeiling { get; set; }
         [XmlElement]
-        public string? FlatRoof { get; set; }
+        public FlatRoof? FlatRoof { get; set; }
         [XmlElement]
-        public string? BelowApartment { get; set; }
+        public BelowApartment? BelowApartment { get; set; }
+    }
+    public class CathedralCeiling
+    {
+    }
+    public class FlatRoof
+    {
+    }
+    public class BelowApartment
+    {
     }
     public class AtticTypes
     {
