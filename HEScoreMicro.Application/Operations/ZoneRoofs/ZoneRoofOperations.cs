@@ -2,7 +2,7 @@
 using AutoMapper;
 using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.CrudOperations;
-using HEScoreMicro.Domain.Entity.ZoneRoofAttic;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;
 

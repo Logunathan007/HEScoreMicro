@@ -5,6 +5,8 @@ using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.CrudOperations;
 using HEScoreMicro.Domain.Entity;
 using HEScoreMicro.Persistence.MakeConnection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HEScoreMicro.Application.Operations
 {
@@ -25,6 +27,32 @@ namespace HEScoreMicro.Application.Operations
                 return res;
             }
             return res;
+        }
+        public async override Task<ResponseDTO<BuildingDTO>> GetById(Guid Id)
+        {
+            var entities = await _context.Building
+                .Include(obj=>obj.Address)
+                .Include(obj=>obj.About)
+                .Include(obj=>obj.ZoneFloor)
+                    .ThenInclude(obj=>obj.Foundations)
+                .Include(obj=>obj.ZoneRoof)
+                    .ThenInclude(obj=>obj.RoofAttics)
+                .Include(obj=>obj.ZoneWall)
+                    .ThenInclude(obj=>obj.Walls)
+                .Include(obj=>obj.ZoneWindow)
+                    .ThenInclude(obj=>obj.Windows)
+                .Include(obj=>obj.HeatingCoolingSystem)
+                    .ThenInclude(obj=>obj.Systems)
+                    .ThenInclude(obj=>obj.DuctLocations)
+                .Include(obj=>obj.WaterHeater)
+                .Include(obj=>obj.PVSystem)
+                .FirstOrDefaultAsync(obj => obj.Id == Id);
+            if (entities == null)
+            {
+                return new ResponseDTO<BuildingDTO> { Failed = true, Message = "Building not found" };
+            }
+            var entityDTO = _mapper.Map<BuildingDTO>(entities);
+            return new ResponseDTO<BuildingDTO> { Failed = false, Message = "Building Fetched", Data = entityDTO };
         }
     }
 }

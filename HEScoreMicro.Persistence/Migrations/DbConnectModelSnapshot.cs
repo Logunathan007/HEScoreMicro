@@ -353,7 +353,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("ZoneFloor");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.RoofAttic", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttics.RoofAttic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -440,7 +440,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("RoofAttic");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttics.ZoneRoof", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -459,7 +459,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("ZoneRoof");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.Wall", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWalls.Wall", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -489,7 +489,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("Wall");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWalls.ZoneWall", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -508,7 +508,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("ZoneWall");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.Window", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindows.Window", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -550,7 +550,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("Window");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindows.ZoneWindow", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -692,7 +692,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.RoofAttic", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttics.RoofAttic", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -700,7 +700,7 @@ namespace HEScoreMicro.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", "ZoneRoof")
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneRoofAttics.ZoneRoof", "ZoneRoof")
                         .WithMany("RoofAttics")
                         .HasForeignKey("ZoneRoofId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -711,7 +711,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("ZoneRoof");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttics.ZoneRoof", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -722,7 +722,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.Wall", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWalls.Wall", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -730,7 +730,7 @@ namespace HEScoreMicro.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", "ZoneWall")
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWalls.ZoneWall", "ZoneWall")
                         .WithMany("Walls")
                         .HasForeignKey("ZoneWallId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -741,7 +741,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("ZoneWall");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWalls.ZoneWall", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -752,7 +752,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.Window", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindows.Window", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -760,7 +760,7 @@ namespace HEScoreMicro.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", "ZoneWindow")
+                    b.HasOne("HEScoreMicro.Domain.Entity.ZoneWindows.ZoneWindow", "ZoneWindow")
                         .WithMany("Windows")
                         .HasForeignKey("ZoneWindowId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -771,7 +771,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("ZoneWindow");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindows.ZoneWindow", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Building", "Building")
                         .WithMany()
@@ -803,17 +803,17 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Navigation("Foundations");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttic.ZoneRoof", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneRoofAttics.ZoneRoof", b =>
                 {
                     b.Navigation("RoofAttics");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWall.ZoneWall", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWalls.ZoneWall", b =>
                 {
                     b.Navigation("Walls");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindow.ZoneWindow", b =>
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.ZoneWindows.ZoneWindow", b =>
                 {
                     b.Navigation("Windows");
                 });

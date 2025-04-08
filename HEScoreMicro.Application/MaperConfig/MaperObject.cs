@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HEScoreMicro.Domain.Entity;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
-using HEScoreMicro.Domain.Entity.ZoneRoofAttic;
-using HEScoreMicro.Domain.Entity.ZoneWall;
-using HEScoreMicro.Domain.Entity.ZoneWindow;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
+using HEScoreMicro.Domain.Entity.ZoneWalls;
+using HEScoreMicro.Domain.Entity.ZoneWindows;
 
 namespace HEScoreMicro.Application.MaperConfig
 {

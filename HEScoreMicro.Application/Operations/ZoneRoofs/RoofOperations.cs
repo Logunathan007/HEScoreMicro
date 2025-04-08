@@ -2,7 +2,7 @@
 
 using AutoMapper;
 using HEScoreMicro.Application.CrudOperations;
-using HEScoreMicro.Domain.Entity.ZoneRoofAttic;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
 using HEScoreMicro.Persistence.MakeConnection;
 
 namespace HEScoreMicro.Application.Operations.ZoneRoofs

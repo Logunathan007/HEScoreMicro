@@ -1,7 +1,7 @@
 ﻿using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.Operations.ZoneWindows;
-using HEScoreMicro.Domain.Entity.ZoneWindow;
-using HEScoreMicro.Domain.Entity.ZoneWindow;
+using HEScoreMicro.Domain.Entity.ZoneWindows;
+using HEScoreMicro.Domain.Entity.ZoneWindows;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

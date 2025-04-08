@@ -8,6 +8,7 @@ import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.compo
 import { Result } from '../../shared/models/common/Result';
 import { takeUntil } from 'rxjs';
 import { BooleanOptions, OrientationOptions } from '../../shared/lookups/common.lookup';
+import { ManufacturedHomeTypeOptions } from '../../shared/lookups/about.lookup';
 
 @Component({
   selector: 'app-about',
@@ -22,6 +23,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   aboutReadModel!: AboutReadModel;
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
+  manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
 
 
   get aboutControl() {
@@ -58,6 +60,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       blowerDoorTestConducted: [null,],
       airLeakageRate: [null,],
       airSealed: [null,],
+      manufacturedHomeType:[null,],
       comments: [null,],
       buildingId: [this.buildingId],
     })

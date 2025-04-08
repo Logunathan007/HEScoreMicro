@@ -2,8 +2,8 @@
 using HEScoreMicro.Application.Operations.ZoneRoofs;
 using HEScoreMicro.Application.Operations.ZoneWalls;
 using HEScoreMicro.Domain.Entity;
-using HEScoreMicro.Domain.Entity.ZoneRoofAttic;
-using HEScoreMicro.Domain.Entity.ZoneWall;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
+using HEScoreMicro.Domain.Entity.ZoneWalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -11,7 +11,6 @@
               id="assessmentDate"
               placeholder="Assessment Date"
               bsDatepicker
-
             />
             <div
               class="errormsg"
@@ -272,6 +271,34 @@
             >
               <label class="text-danger fw-semibold position-absolute">
                 Air Sealed is invalid
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="select-box">
+            <label> Manufactured Home Type </label>
+            <ng-select
+              [items]="manufacturedHomeTypeOptions"
+              bindLabel="name"
+              [clearable]="true"
+              [closeOnSelect]="true"
+              bindValue="value"
+              placeholder="Manufactured Home Type "
+              id="manufacturedHomeType"
+              formControlName="manufacturedHomeType"
+            >
+            </ng-select>
+            <div
+              class="errormsg"
+              *ngIf="
+                (aboutControl['manufacturedHomeType']?.touched ||
+                  aboutControl['manufacturedHomeType']?.dirty) &&
+                aboutControl['manufacturedHomeType']?.invalid
+              "
+            >
+              <label class="text-danger fw-semibold position-absolute">
+                Manufactured Home Type is invalid
               </label>
             </div>
           </div>

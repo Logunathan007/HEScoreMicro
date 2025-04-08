@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HEScoreMicro.Application.CrudOperations;
-using HEScoreMicro.Domain.Entity.ZoneWindow;
+using HEScoreMicro.Domain.Entity.ZoneWindows;
 using HEScoreMicro.Persistence.MakeConnection;
 
 namespace HEScoreMicro.Application.Operations.ZoneWindows

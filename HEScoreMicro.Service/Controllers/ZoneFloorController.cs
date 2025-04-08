@@ -1,8 +1,7 @@
 ﻿using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.Operations.ZoneFloors;
-using HEScoreMicro.Application.Operations.ZoneWalls;
 using HEScoreMicro.Domain.Entity;
-using HEScoreMicro.Domain.Entity.ZoneWall;
+using HEScoreMicro.Domain.Entity.ZoneWalls;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HEScoreMicro.Service.Controllers

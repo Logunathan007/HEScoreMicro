@@ -1,5 +1,5 @@
 ﻿
-namespace HEScoreMicro.Domain.Entity.ZoneRoofAttic
+namespace HEScoreMicro.Domain.Entity.ZoneRoofAttics
 {
     public class ZoneRoofFields : IHasBuildingId,IHasId
     {

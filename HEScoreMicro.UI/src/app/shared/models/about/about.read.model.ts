@@ -10,6 +10,7 @@ export interface AboutReadModel {
   directionFacedByFrontOfHome: string | null;
   blowerDoorTestConducted: boolean | null;
   airLeakageRate: number | null;
+  manufacturedHomeType: string | null;
   airSealed: boolean | null;
   buildingId: string | null;
 }

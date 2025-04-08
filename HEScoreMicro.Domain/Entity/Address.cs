@@ -9,7 +9,7 @@ namespace HEScoreMicro.Domain.Entity
         public string? AddressLine { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
-        public int? ZipCode { get; set; }
+        public int ZipCode { get; set; }
         public string? AssessmentType { get; set; }
         public Guid BuildingId { get; set; }
     }

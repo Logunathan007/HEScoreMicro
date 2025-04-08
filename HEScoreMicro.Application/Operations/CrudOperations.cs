@@ -33,7 +33,7 @@ namespace HEScoreMicro.Application.CrudOperations
             TableName = typeof(TEntity).Name;
             _mapper = mapper;
         }
-        public async Task<ResponseDTO<TEntityDTO>> GetById(Guid Id)
+        public async virtual Task<ResponseDTO<TEntityDTO>> GetById(Guid Id)
         {
             var entities = await _table.AsNoTracking().FirstOrDefaultAsync(obj => obj.Id == Id);
             if (entities == null)
