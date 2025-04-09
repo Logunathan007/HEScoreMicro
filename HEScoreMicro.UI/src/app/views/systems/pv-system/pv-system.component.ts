@@ -119,7 +119,7 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
     }
   }
   goNext() {
-    this.router.navigate(['zones/floor'], {
+    this.router.navigate(['summary'], {
       queryParams: { id: this.buildingId }
     })
   }

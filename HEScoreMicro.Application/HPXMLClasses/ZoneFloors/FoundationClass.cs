@@ -14,11 +14,11 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneFloors
         public SystemIdentifier SystemIdentifier { get; set; }
         public FoundationType FoundationType { get; set; }
         [XmlElement("AttachedToFoundationWall")]
-        public List<AttachedToFoundationWall> AttachedToFoundationWall { get; set; }
+        public AttachedToFoundationWall AttachedToFoundationWall { get; set; }
         [XmlElement("AttachedToFloor")]
-        public List<AttachedToFloor> AttachedToFloor { get; set; }
+        public AttachedToFloor AttachedToFloor { get; set; }
         [XmlElement("AttachedToSlab")]
-        public List<AttachedToSlab> AttachedToSlab { get; set; }
+        public AttachedToSlab AttachedToSlab { get; set; }
     }
     public class FoundationType
     {
@@ -28,6 +28,10 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneFloors
         public Garage? Garage { get; set; } = null;
         public AboveApartment? AboveApartment { get; set; } = null;
         public Ambient? Ambient { get; set; } = null;
+        public BellyAndWing BellyAndWing { get; set; } = null;  
+    }
+    public class BellyAndWing
+    {
     }
     public class Basement
     {

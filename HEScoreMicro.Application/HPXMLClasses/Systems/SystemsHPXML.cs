@@ -12,7 +12,7 @@ namespace HEScoreMicro.Application.HPXMLClasses.Systems
     public class WaterHeating
     {
         [XmlElement]
-        public List<WaterHeatingSystem>? WaterHeatingSystem { get; set; }
+        public WaterHeatingSystem? WaterHeatingSystem { get; set; }
     }
     public class WaterHeatingSystem
     {
@@ -28,7 +28,7 @@ namespace HEScoreMicro.Application.HPXMLClasses.Systems
     public class Photovoltaics
     {
         [XmlElement]
-        public List<PVSystem>? PVSystem { get; set; }
+        public PVSystem? PVSystem { get; set; }
     }
     public class PVSystem
     {
@@ -39,7 +39,7 @@ namespace HEScoreMicro.Application.HPXMLClasses.Systems
         public double? MaxPowerOutput { get; set; }
         public double? CollectorArea { get; set; }
         public int? NumberOfPanels { get; set; }
-        public int? YearInverterManufactured { get; set; }
         public int? YearModulesManufactured { get; set; }
+        public int? YearInstalled { get; set; }
     }
 }

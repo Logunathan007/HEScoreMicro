@@ -117,7 +117,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
     }
   }
   goNext() {
-    this.router.navigate(['zones/floor'], {
+    this.router.navigate(['systems/pv-system'], {
       queryParams: { id: this.buildingId }
     })
   }

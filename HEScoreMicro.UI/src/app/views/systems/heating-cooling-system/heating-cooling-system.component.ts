@@ -13,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { Result } from '../../../shared/models/common/Result';
 import { DuctLocationReadModel } from '../../../shared/models/heating-cooling-system/duct-location-model';
-import { ICurdService } from '../../../shared/services/common/curd.service';
 import { SystemsModule } from '../systems.module';
 
 @Component({
@@ -264,7 +263,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   goNext() {
-    this.router.navigate(['systems/hvac-heat-cool'], {
+    this.router.navigate(['systems/water-heater'], {
       queryParams: { id: this.buildingId }
     })
   }

@@ -12,6 +12,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { UnsubscribeModule } from '../shared/modules/unsubscribe/unsubscribe.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PrintHpxmlComponent } from './print-hpxml/print-hpxml.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddressComponent,
     ViewsComponent,
     SummaryComponent,
+    // PrintHpxmlComponent,
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     NgxJsonViewerModule,
     BsDatepickerModule,
-    UnsubscribeModule
+    UnsubscribeModule,
+    PrintHpxmlComponent
   ],
 })
 export class ViewsModule { }

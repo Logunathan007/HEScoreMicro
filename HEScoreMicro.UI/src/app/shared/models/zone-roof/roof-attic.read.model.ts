@@ -3,8 +3,8 @@ export interface RoofAtticReadModel {
   atticOrCeilingType: string | null;
   construction: string | null;
   exteriorFinish: string | null;
-  cathedralCeilingArea: number | null;
-  cathedralCeilingInsulation: number | null;
+  // cathedralCeilingArea: number | null;
+  // cathedralCeilingInsulation: number | null;
   roofArea: number | null;
   roofInsulation: number | null;
   roofColor: string | null;

@@ -35,7 +35,6 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     return this.zoneFloorControl['foundations'] as FormArray
   }
 
-
   constructor(
     protected commonService: CommonService,
     private zoneFloorService: ZoneFloorService,
@@ -111,13 +110,14 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     if (this.buildingId) {
       this.zoneFloorService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneFloorReadModel>) => {
-          if (val?.failed == false)
+          if (val?.failed == false) {
             if (val?.data?.enableSecondFoundation) {
               if (this.foundationsObj.length == 1) {
                 this.foundationsObj.push(this.foundationInputs())
               }
             }
-          this.zoneFloorForm.patchValue(val.data)
+            this.zoneFloorForm.patchValue(val.data)
+          }
         },
         error: (err: any) => {
           console.log(err);

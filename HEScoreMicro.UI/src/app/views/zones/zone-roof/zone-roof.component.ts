@@ -99,8 +99,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       atticOrCeilingType: [null], //ng-select
       construction: [null], //ng-select
       exteriorFinish: [null],//ng-select
-      cathedralCeilingArea: [null],
-      cathedralCeilingInsulation: [null],
+      // cathedralCeilingArea: [null],
+      // cathedralCeilingInsulation: [null],
       roofArea:[null,],
       roofInsulation: [null],
       roofColor: [null],//ng-select

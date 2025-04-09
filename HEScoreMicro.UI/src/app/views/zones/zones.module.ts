@@ -9,6 +9,7 @@ import { ZoneRoofComponent } from './zone-roof/zone-roof.component';
 import { ZoneWallComponent } from './zone-wall/zone-wall.component';
 import { ZoneFloorComponent } from './zone-floor/zone-floor.component';
 import { ZoneWindowComponent } from './zone-window/zone-window.component';
+import { PrintHpxmlComponent } from '../print-hpxml/print-hpxml.component';
 
 
 @NgModule({
@@ -17,14 +18,15 @@ import { ZoneWindowComponent } from './zone-window/zone-window.component';
     ZoneWallComponent,
     ZoneRoofComponent,
     ZonesComponent,
-    ZoneWindowComponent,
+    ZoneWindowComponent
   ],
   imports: [
     CommonModule,
     ZonesRoutingModule,
     ReactiveFormsModule,
     NgSelectModule,
-    NgxJsonViewerModule
+    NgxJsonViewerModule,
+    PrintHpxmlComponent
   ]
 })
 export class ZonesModule { }

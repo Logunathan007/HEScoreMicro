@@ -186,7 +186,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     }
   }
   goNext() {
-    this.router.navigate(['systems/hvac-heat-cool'], {
+    this.router.navigate(['systems/heat-cool-system'], {
       queryParams: { id: this.buildingId }
     })
   }
