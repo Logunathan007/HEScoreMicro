@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }
         public string? Location { get; set; }
+        public double? PercentageOfDucts { get; set; }
         public bool? DuctsIsInsulated { get; set; }
     }
     public class DuctLocation : DuctLocationFields

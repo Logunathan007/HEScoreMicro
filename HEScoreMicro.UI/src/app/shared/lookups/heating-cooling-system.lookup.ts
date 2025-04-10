@@ -18,18 +18,29 @@ export const HeatingSystemTypeOptions = [
   { name: "Pellet stove", value: "Pellet stove" },
 ]
 
+export const HeatingEfficiencyUnitOptions = [
+  { name: "Heating Seasonal Performance Factor - Pre 2023 (HSPF)", value: "HSPF" },
+  { name: "Heating Seasonal Performance Factor (HSPF2)", value: "HSPF2" },
+]
+
 export const CoolingSystemTypeOptions = [
   { name: "None", value: "None" },
   { name: "Central air conditioner", value: "Central air conditioner" },
   { name: "Room air conditioner", value: "Room air conditioner" },
   { name: "Electric heat pump", value: "Electric heat pump" },
-  { name: "Minisplit (ductless) heat pump Ground coupled heat pump", value: "Minisplit (ductless) heat pump Ground coupled heat pump" },
+  { name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
   { name: "Direct evaporative cooling", value: "Direct evaporative cooling" },
+  { name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
 ]
 
 export const CoolingEfficiencyUnitOptions = [
-  { name: "Seasonal Energy Efficiency Ratio - Pre 2023 (SEER)", value: "Seasonal Energy Efficiency Ratio - Pre 2023 (SEER)" },
-  { name: "Seasonal Energy Efficiency Ratio (SEER2)", value: "Seasonal Energy Efficiency Ratio (SEER2)" },
+  { name: "Seasonal Energy Efficiency Ratio - Pre 2023 (SEER)", value: "SEER" },
+  { name: "Seasonal Energy Efficiency Ratio (SEER2)", value: "SEER2" },
+]
+
+export const CoolingEfficiencyUnitOptions2 = [
+  { name: "Energy Efficiency Ratio (EER)", value: "EER" },
+  { name: "Combined Energy Efficiency Ratio (CEER)", value: "CEER" }
 ]
 
 export const DuctLocationOptions = [
@@ -40,12 +51,12 @@ export const DuctLocationOptions = [
 ]
 
 export const SystemCountOptions = [
-  {name:"One", value:1},
-  {name:"Two", value:2},
+  { name: "One", value: 1 },
+  { name: "Two", value: 2 },
 ]
 
 export const DuctLocationCountOptions = [
-  {name:"One", value:1},
-  {name:"Two", value:2},
-  {name:"Three", value:3},
+  { name: "One", value: 1 },
+  { name: "Two", value: 2 },
+  { name: "Three", value: 3 },
 ]

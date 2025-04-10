@@ -8,7 +8,7 @@ using HEScoreMicro.Application.HPXMLClasses.ZoneRoofs;
 using HEScoreMicro.Application.HPXMLClasses.ZoneFloors;
 using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using HEScoreMicro.Application.HPXMLClasses.Systems;
-using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
+using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 
 namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 {
@@ -70,6 +70,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             if (building.Data.ZoneWindow != null)
                 this.GenerateZoneWindowObject(building.Data.ZoneWindow, windows, building.Data.ZoneWall.ExteriorWallSame);
+
+            HVAC hvac = null;
+            if (building.Data.HeatingCoolingSystem != null)
+            {
+                hvac = this.GenerateSystems(building.Data.HeatingCoolingSystem);
+            }
 
             var hpxml = new HPXML()
             {
@@ -168,6 +174,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             WaterHeating = this.GenerateWaterHeater(building.Data.WaterHeater),
                             Photovoltaics = this.GeneratePhotovoltaics(building.Data.PVSystem),
+                            HVAC = hvac
                         }
                     }
                 }
@@ -856,7 +863,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 i++;
             }
         }
-        public void GenerateZoneWindowObject(Domain.Entity.ZoneWindows.ZoneWindowDTO zoneWindowDTO,List<Window> windows, bool? singleWall)
+        public void GenerateZoneWindowObject(Domain.Entity.ZoneWindows.ZoneWindowDTO zoneWindowDTO, List<Window> windows, bool? singleWall)
         {
             int i = 1;
             var listWindowArea = new List<double?>()
@@ -864,7 +871,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaBack,
                 zoneWindowDTO.WindowAreaRight,zoneWindowDTO.WindowAreaLeft
             };
-            foreach(var zoneWindow in zoneWindowDTO.Windows)
+            foreach (var zoneWindow in zoneWindowDTO.Windows)
             {
                 var id = "window-" + i;
                 Window window = new Window()
@@ -1022,7 +1029,348 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 i++;
             }
         }
+        public HVAC GenerateSystems(HeatingCoolingSystemDTO? hcs)
+        {
+            HVAC hVAC = new HVAC();
+            List<HeatingSystem> heatingSystems = new List<HeatingSystem>();
+            List<CoolingSystem> coolingSystems = new List<CoolingSystem>();
+            List<HeatPump> heatPumps = new List<HeatPump>();
+            List<HVACDistribution> distributionSystems = new List<HVACDistribution>();
+            int i = 1;
+            foreach (var system in hcs.Systems)
+            {
+                var id = "system-" + i;
+                if (system.HeatingSystemType.EndsWith("heat pump") || system.CoolingSystemType.EndsWith("heat pump"))
+                {
+                    this.GenerateHeatPumpObject(system, heatPumps, distributionSystems, id);
+                }
+                else
+                {
+                    this.GenerateHeatingSystemObject(system, heatingSystems, distributionSystems, id);
+                    this.GenerateCoolingSystemObject(system, coolingSystems, distributionSystems, id);
+                }
+                i++;
+            }
+            hVAC.HVACPlant = new HVACPlant()
+            {
+                HeatingSystem = heatingSystems.Count == 0 ? null : heatingSystems,
+                CoolingSystem = coolingSystems.Count == 0 ? null : coolingSystems,
+                HeatPump = heatPumps.Count == 0 ? null : heatPumps,
+            };
+            hVAC.HVACDistribution = distributionSystems.Count == 0 ? null : distributionSystems;
+            return hVAC;
+        }
 
+        public void GenerateHeatingSystemObject(SystemsDTO system, List<HeatingSystem> heatingSystems, List<HVACDistribution> distributionSystems, string id)
+        {
+            if (system == null || system.HeatingSystemType == "None")
+            {
+                return;
+            }
+            id += "heater-1";
+            HeatingSystem hs = new HeatingSystem
+            {
+                SystemIdentifier = new SystemIdentifier
+                {
+                    Id = id
+                }
+            };
+            hs.HeatingSystemType = new HeatingSystemType();
+
+            hs.YearInstalled = system.HeatingSystemYearInstalled;
+
+            bool dultFlag = false;
+            bool efficiencyUnitFlag = true;
+            switch (system.HeatingSystemType)
+            {
+                case "Central gas furnace": //central_furnace
+                    hs.HeatingSystemType.Furnace = new Furnace();
+                    hs.HeatingSystemFuel = "natural gas";
+                    dultFlag = true;
+                    break;
+                case "Room(through - the - wall) gas furnace": //wall_furnace
+                    hs.HeatingSystemType.WallFurnace = new WallFurnace();
+                    hs.HeatingSystemFuel = "natural gas";
+                    break;
+                case "Gas boiler": //boiler
+                    hs.HeatingSystemType.Boiler = new Boiler();
+                    hs.HeatingSystemFuel = "natural gas";
+                    break;
+                case "Propane(LPG) central furnace": //central_furnace
+                    hs.HeatingSystemType.Furnace = new Furnace();
+                    hs.HeatingSystemFuel = "propane";
+                    dultFlag = true;
+                    break;
+                case "Propane(LPG) wall furnace": //wall_furnace
+                    hs.HeatingSystemType.WallFurnace = new WallFurnace();
+                    hs.HeatingSystemFuel = "propane";
+                    break;
+                case "Propane(LPG) boiler": //boiler
+                    hs.HeatingSystemType.Boiler = new Boiler();
+                    hs.HeatingSystemFuel = "propane";
+                    break;
+                case "Oil furnace": //central_furnace
+                    hs.HeatingSystemType.Furnace = new Furnace();
+                    hs.HeatingSystemFuel = "fuel oil";
+                    dultFlag = true;
+                    break;
+                case "Oil boiler": //boiler
+                    hs.HeatingSystemType.Boiler = new Boiler();
+                    hs.HeatingSystemFuel = "fuel oil";
+                    break;
+                case "Electric furnace": //central_furnace
+                    hs.HeatingSystemType.Furnace = new Furnace();
+                    hs.HeatingSystemFuel = "electricity";
+                    dultFlag = true;
+                    break;
+                case "Electric baseboard heater": //baseboard
+                    hs.HeatingSystemType.ElectricResistance = new ElectricResistance();
+                    hs.HeatingSystemFuel = "electricity";
+                    efficiencyUnitFlag = false;
+                    break;
+                case "Electric boiler": //boiler
+                    hs.HeatingSystemType.Boiler = new Boiler();
+                    hs.HeatingSystemFuel = "electricity";
+                    break;
+                case "Wood stove": //stove
+                    hs.HeatingSystemType.Stove = new Stove();
+                    hs.HeatingSystemFuel = "wood";
+                    efficiencyUnitFlag = false;
+                    break;
+                case "Pellet stove": //stove
+                    hs.HeatingSystemType.Stove = new Stove();
+                    hs.HeatingSystemFuel = "wood pellets";
+                    efficiencyUnitFlag = false;
+                    break;
+            }
+
+            if (system.KnowHeatingEfficiency == true && efficiencyUnitFlag)
+            {
+                hs.AnnualHeatingEfficiency = new AnnualHeatingEfficiency()
+                {
+                    Value = system.HeatingSystemEfficiencyValue,
+                    Units = "AFUE",
+                };
+            }
+            else
+            {
+                hs.YearInstalled = system.HeatingSystemYearInstalled;
+            }
+
+            if (dultFlag)
+            {
+                hs.DistributionSystem = new DistributionSystem
+                {
+                    IdRef = id + "distribution-1"
+                };
+                this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
+            }
+            heatingSystems.Add(hs);
+        }
+        public void GenerateCoolingSystemObject(SystemsDTO system, List<CoolingSystem> coolingSystems, List<HVACDistribution> distributionSystems, string id)
+        {
+            id += "cooler-1";
+            if (system == null || system.CoolingSystemType == "None")
+            {
+                return;
+            }
+            CoolingSystem cs = new CoolingSystem
+            {
+                SystemIdentifier = new SystemIdentifier
+                {
+                    Id = id
+                }
+            };
+            switch (system.CoolingSystemType)
+            {
+                case "Central air conditioner": //split_dx
+                    cs.CoolingSystemType = "central air conditioner";
+                    break;
+                case "Room air conditioner": //packaged_dx
+                    cs.CoolingSystemType = "room air conditioner";
+                    break;
+                case "Direct evaporative cooling": //dec
+                    cs.CoolingSystemType = "evaporative cooler";
+                    break;
+            }
+
+            if (system.KnowCoolingEfficiency == true)
+            {
+                cs.AnnualCoolingEfficiency = new AnnualCoolingEfficiency()
+                {
+                    Value = system.CoolingSystemEfficiencyValue,
+                    Units = system.CoolingSystemEfficiencyUnit,
+                };
+            }
+            else
+            {
+                cs.YearInstalled = system.CoolingSystemYearInstalled;
+
+                if (cs.CoolingSystemType == "central air conditioner")
+                {
+                    cs.DistributionSystem = new DistributionSystem
+                    {
+                        IdRef = id + "distribution-1"
+                    };
+                    this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
+                }
+                coolingSystems.Add(cs);
+            }
+        }
+        public void GenerateHeatPumpObject(SystemsDTO system, List<HeatPump> heatPumps, List<HVACDistribution> distributionSystems, string id)
+        {
+            if (system == null)
+            {
+                return;
+            }
+            id += "heatpump-1";
+            HeatPump hp = new HeatPump
+            {
+                SystemIdentifier = new SystemIdentifier
+                {
+                    Id = id
+                },
+            };
+
+            if (system.CoolingSystemType == "None")
+            {
+                hp.FractionCoolLoadServed = 0;
+            }
+            else
+            {
+                hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null ? new AnnualHeatingEfficiency()
+                {
+                    Value = system.HeatingSystemEfficiencyValue,
+                } : null;
+                hp.YearInstalled = system.HeatingSystemYearInstalled;
+            }
+
+            if (system.HeatingSystemType == "None")
+            {
+                hp.FractionHeatLoadServed = 0;
+            }
+            else
+            {
+                hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null ? new AnnualCoolingEfficiency()
+                {
+                    Value = system.CoolingSystemEfficiencyValue,
+                } : null;
+                hp.YearInstalled = system.CoolingSystemYearInstalled;
+            }
+
+            if (system.HeatingSystemType == "Electric heat pump" || system.CoolingSystemType == "Electric heat pump") //heat_pump
+            {
+                hp.HeatPumpType = "air-to-air";
+                if (hp.AnnualHeatingEfficiency != null)
+                {
+                    hp.AnnualHeatingEfficiency.Units = system.HeatingSystemEfficiencyUnit;
+                }
+                if (hp.AnnualCoolingEfficiency != null)
+                {
+                    hp.AnnualCoolingEfficiency.Units = system.CoolingSystemEfficiencyUnit;
+                }
+            }
+            else if (system.HeatingSystemType == "Minisplit(ductless) heat pump" || system.CoolingSystemType == "Minisplit(ductless) heat pump") //mini-split
+            {
+                hp.HeatPumpType = "mini-split";
+                if (hp.AnnualHeatingEfficiency != null)
+                {
+                    hp.AnnualHeatingEfficiency.Units = system.HeatingSystemEfficiencyUnit;
+                }
+                if (hp.AnnualCoolingEfficiency != null)
+                {
+                    hp.AnnualCoolingEfficiency.Units = system.CoolingSystemEfficiencyUnit;
+                }
+            }
+            else if (system.HeatingSystemType == "Ground coupled heat pump" || system.CoolingSystemType == "Ground coupled heat pump") // gchp
+            {
+                hp.HeatPumpType = "water-to-air";
+                if (hp.AnnualHeatingEfficiency != null)
+                {
+                    hp.AnnualHeatingEfficiency.Units = "COP";
+                }
+                if (hp.AnnualCoolingEfficiency != null)
+                {
+                    hp.AnnualCoolingEfficiency.Units = "EER";
+                }
+            }
+
+            if (hp.HeatPumpType != "mini-split")
+            {
+                hp.DistributionSystem = new DistributionSystem
+                {
+                    IdRef = id + "distribution-1"
+                };
+                this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
+            }
+
+            heatPumps.Add(hp);
+        }
+        public void GenerateDistributionSystemObject(SystemsDTO system, List<HVACDistribution> distributionSystems, string id)
+        {
+            if (id.StartsWith("system-1"))
+            {
+                if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-1")))
+                    return;
+            }
+            if (id.StartsWith("system-2"))
+            {
+                if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-2")))
+                    return;
+            }
+            HVACDistribution hVACDistribution = new HVACDistribution
+            {
+                SystemIdentifier = new SystemIdentifier
+                {
+                    Id = id
+                },
+                DistributionSystemType = new DistributionSystemType
+                {
+                    AirDistribution = new AirDistribution()
+                    {
+                        DuctLeakageMeasurement = (system.DuctLeakageTestPerformed == true) ? new DuctLeakageMeasurement()
+                        {
+                            DuctLeakage = new DuctLeakage
+                            {
+                                TotalOrToOutside = "to outside",
+                                Units = "CFM25",
+                                Value = system.DuctLeakageTestValue
+                            },
+                            LeakinessObservedVisualInspection = (system.DuctAreProfessionallySealed == true) ? "connections sealed w mastic" : null
+                        } : null,
+                        Ducts = this.GetDuctsObjects(system.DuctLocations, id)
+                    },
+                },
+                HVACDistributionImprovement = (system.DuctLeakageTestPerformed == true) ? new HVACDistributionImprovement
+                {
+                    DuctSystemSealed = system.DuctAreProfessionallySealed == true ? true : false,
+                } : null,
+            };
+            distributionSystems.Add(hVACDistribution);
+        }
+        public List<Ducts> GetDuctsObjects(ICollection<DuctLocationDTO> ductLocationDTOs, string id)
+        {
+            List<Ducts> ducts = new List<Ducts>();
+            int i = 1;
+            var count = ductLocationDTOs.Count;
+            foreach (var ductLocationDTO in ductLocationDTOs)
+            {
+                var area = (count > 1) ? (ductLocationDTO.PercentageOfDucts == null ? 0 / 100 : ductLocationDTO.PercentageOfDucts / 100) : null;
+                Ducts ductsObj = new Ducts
+                {
+                    SystemIdentifier = new SystemIdentifier
+                    {
+                        Id = id + "-duct-" + i,
+                    },
+                    DuctLocation = this.GetDuctLocation(ductLocationDTO.Location),
+                    DuctInsulationThickness = (ductLocationDTO.DuctsIsInsulated == true) ? 1 : null,
+                    FractionDuctArea = area
+                };
+                ducts.Add(ductsObj);
+                i++;
+            }
+            return ducts;
+        }
         public WaterHeating GenerateWaterHeater(Domain.Entity.WaterHeaterDTO waterHeater)
         {
             /*Electric Storage*/
@@ -1146,9 +1494,24 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 default:
                     return "outside";
             }
-
         }
-
+        public string GetDuctLocation(string ductLocation)
+        {
+            // TODO need to be add
+            switch (ductLocation)
+            {
+                case "Conditioned space Under slab":
+                    return "under slab";
+                case "Exterior wall":
+                    return "exterior wall";
+                case "Outside":
+                    return "outside";
+                case "Unconditioned Basement":
+                    return "basement - unconditioned";
+                default:
+                    return null;
+            }
+        }
         public int GetArrayTilt(string angle)
         {
             switch (angle)

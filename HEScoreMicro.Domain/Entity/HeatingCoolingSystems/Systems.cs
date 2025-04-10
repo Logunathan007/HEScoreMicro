@@ -10,6 +10,7 @@ namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
         //Heating
         public string? HeatingSystemType { get; set; }
         public bool? KnowHeatingEfficiency { get; set; }
+        public string? HeatingSystemEfficiencyUnit { get; set; }
         public double? HeatingSystemEfficiencyValue { get; set; }
         public int? HeatingSystemYearInstalled { get; set; }
         //Cooling
@@ -20,6 +21,7 @@ namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
         public int? CoolingSystemYearInstalled { get; set; }
         //Ducts
         public bool? DuctLeakageTestPerformed { get; set; }
+        public double? DuctLeakageTestValue { get; set; }
         public bool? DuctAreProfessionallySealed { get; set; }
         public int? DuctLocationCount { get; set; }
     }

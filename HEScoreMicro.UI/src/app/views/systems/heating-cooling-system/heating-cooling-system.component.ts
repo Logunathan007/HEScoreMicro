@@ -6,7 +6,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
 import { BooleanOptions } from '../../../shared/lookups/common.lookup';
-import { CoolingEfficiencyUnitOptions, CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, HeatingSystemTypeOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
+import { CoolingEfficiencyUnitOptions, CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,6 +34,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   ductLocationOptions = DuctLocationOptions
   systemCountOptions = SystemCountOptions
   ductLocationCountOptions = DuctLocationCountOptions
+  heatingEfficiencyUnitOptions = HeatingEfficiencyUnitOptions
 
   get heatingCoolingSystemControl() {
     return this.heatingCoolingSystemForm.controls;
@@ -105,6 +106,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       percentAreaServed: [null],
       heatingSystemType: [null],
       knowHeatingEfficiency: [null],
+      heatingSystemEfficiencyUnit: [null],
       heatingSystemEfficiencyValue: [null],
       heatingSystemYearInstalled: [null],
       coolingSystemType: [null],
@@ -113,6 +115,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       coolingSystemEfficiencyValue: [null],
       coolingSystemYearInstalled: [null],
       ductLeakageTestPerformed: [null],
+      ductLeakageTestValue:[null],
       ductAreProfessionallySealed: [null],
       ductLocationCount: [null],
       ductLocations: this.fb.array([this.ductLocationInputs()]),
@@ -139,6 +142,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       id: [null],
       buildingId: [this.buildingId],
       location: [null],
+      percentageOfDucts:[null],
       ductsIsInsulated: [null],
     })
     return ducts;

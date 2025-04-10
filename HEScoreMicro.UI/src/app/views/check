@@ -1,27 +1,25 @@
 <div class="col-md-6">
   <div class="input-box">
-    <label for="numberofUnitsInBuilding">
-      Number of Units In Building
-    </label>
+    <label for="ductLeakageTestValue"> DuctLeakage Test Value </label>
     <input
-      formControlName="numberofUnitsInBuilding"
+      formControlName="ductLeakageTestValue"
       type="number"
-      id="numberofUnitsInBuilding"
-      placeholder="Number of Units In Building"
+      id="ductLeakageTestValue"
+      placeholder="DuctLeakage Test Value"
     />
     <div
       class="errormsg"
       *ngIf="
-        (systemItem.get('numberofUnitsInBuilding')?.touched ||
-          systemItem.get('numberofUnitsInBuilding')?.dirty) &&
-        systemItem.get('numberofUnitsInBuilding')?.invalid
+        (systemItem.get('ductLeakageTestValue')?.touched ||
+          systemItem.get('ductLeakageTestValue')?.dirty) &&
+        systemItem.get('ductLeakageTestValue')?.invalid
       "
     >
       <label
-        for="numberofUnitsInBuilding"
+        for="ductLeakageTestValue"
         class="text-danger fw-semibold position-absolute"
       >
-        Number of Units In Building is invalid
+        DuctLeakage Test Value is invalid
       </label>
     </div>
   </div>

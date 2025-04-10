@@ -66,6 +66,7 @@
                 </div>
               </div>
             </div>
+            <h5 class="col-12 mt-3">Heating System</h5>
             <div class="col-md-6">
               <div class="select-box">
                 <label> Heating System Type </label>
@@ -118,6 +119,34 @@
                 >
                   <label class="text-danger fw-semibold position-absolute">
                     Know Heating Efficiency is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="select-box">
+                <label> Heating System Efficiency Unit </label>
+                <ng-select
+                  [items]="heatingEfficiencyUnitOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Heating System Efficiency Unit"
+                  id="heatingSystemEfficiencyUnit"
+                  formControlName="heatingSystemEfficiencyUnit"
+                >
+                </ng-select>
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('heatingSystemEfficiencyUnit')?.touched ||
+                      systemItem.get('heatingSystemEfficiencyUnit')?.dirty) &&
+                    systemItem.get('heatingSystemEfficiencyUnit')?.invalid
+                  "
+                >
+                  <label class="text-danger fw-semibold position-absolute">
+                    Heating System Efficiency Unit is invalid
                   </label>
                 </div>
               </div>
@@ -178,6 +207,7 @@
                 </div>
               </div>
             </div>
+            <h5 class="col-12 mt-3">Cooling System</h5>
             <div class="col-md-6">
               <div class="select-box">
                 <label> Cooling System Type </label>
@@ -318,6 +348,7 @@
                 </div>
               </div>
             </div>
+            <h5 class="col-12 mt-3">Ducts</h5>
             <div class="col-md-6">
               <div class="select-box">
                 <label> Duct Leakage Test Performed </label>
@@ -342,6 +373,32 @@
                 >
                   <label class="text-danger fw-semibold position-absolute">
                     Duct Leakage Test Performed is invalid
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-box">
+                <label for="ductLeakageTestValue"> DuctLeakage Test Value </label>
+                <input
+                  formControlName="ductLeakageTestValue"
+                  type="number"
+                  id="ductLeakageTestValue"
+                  placeholder="DuctLeakage Test Value"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
+                    (systemItem.get('ductLeakageTestValue')?.touched ||
+                      systemItem.get('ductLeakageTestValue')?.dirty) &&
+                    systemItem.get('ductLeakageTestValue')?.invalid
+                  "
+                >
+                  <label
+                    for="ductLeakageTestValue"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    DuctLeakage Test Value is invalid
                   </label>
                 </div>
               </div>
@@ -431,15 +488,43 @@
                       <div
                         class="errormsg"
                         *ngIf="
-                          (systemItem.get('location')?.touched ||
-                            systemItem.get('location')?.dirty) &&
-                          systemItem.get('location')?.invalid
+                          (ductLocationItem.get('location')?.touched ||
+                            ductLocationItem.get('location')?.dirty) &&
+                          ductLocationItem.get('location')?.invalid
                         "
                       >
                         <label
                           class="text-danger fw-semibold position-absolute"
                         >
                           Location is invalid
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-box">
+                      <label for="percentageOfDucts">
+                        Percentage of ducts
+                      </label>
+                      <input
+                        formControlName="percentageOfDucts"
+                        type="number"
+                        id="percentageOfDucts"
+                        placeholder="Percentage of ducts"
+                      />
+                      <div
+                        class="errormsg"
+                        *ngIf="
+                          (ductLocationItem.get('percentageOfDucts')?.touched ||
+                            ductLocationItem.get('percentageOfDucts')?.dirty) &&
+                          ductLocationItem.get('percentageOfDucts')?.invalid
+                        "
+                      >
+                        <label
+                          for="percentageOfDucts"
+                          class="text-danger fw-semibold position-absolute"
+                        >
+                          Percentage of ducts is invalid
                         </label>
                       </div>
                     </div>
@@ -461,9 +546,9 @@
                       <div
                         class="errormsg"
                         *ngIf="
-                          (systemItem.get('ductsIsInsulated')?.touched ||
-                            systemItem.get('ductsIsInsulated')?.dirty) &&
-                          systemItem.get('ductsIsInsulated')?.invalid
+                          (ductLocationItem.get('ductsIsInsulated')?.touched ||
+                            ductLocationItem.get('ductsIsInsulated')?.dirty) &&
+                          ductLocationItem.get('ductsIsInsulated')?.invalid
                         "
                       >
                         <label
