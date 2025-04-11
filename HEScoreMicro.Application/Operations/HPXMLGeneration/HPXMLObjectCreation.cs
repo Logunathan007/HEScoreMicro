@@ -447,7 +447,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
-                        Id = idref + "-wall-1"
+                        Id = idref
                     },
                     ExteriorAdjacentTo = "attic",
                     Area = roofAtticDTO.KneeWallArea,
@@ -1040,7 +1040,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             foreach (var system in hcs.Systems)
             {
                 var id = "system-" + i;
-                if (system.HeatingSystemType.EndsWith("heat pump") || system.CoolingSystemType.EndsWith("heat pump"))
+                if (system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump"))
                 {
                     this.GenerateHeatPumpObject(system, heatPumps, distributionSystems, id);
                 }
@@ -1214,8 +1214,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     };
                     this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
                 }
-                coolingSystems.Add(cs);
             }
+            coolingSystems.Add(cs);
         }
         public void GenerateHeatPumpObject(SystemsDTO system, List<HeatPump> heatPumps, List<HVACDistribution> distributionSystems, string id)
         {
@@ -1231,13 +1231,15 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     Id = id
                 },
             };
-
+            bool heatpumpForHeating = false;
+            bool heatpumpForCooling = false;
             if (system.CoolingSystemType == "None")
             {
                 hp.FractionCoolLoadServed = 0;
             }
             else
             {
+                heatpumpForHeating = true;
                 hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null ? new AnnualHeatingEfficiency()
                 {
                     Value = system.HeatingSystemEfficiencyValue,
@@ -1251,11 +1253,17 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             else
             {
+                heatpumpForCooling = true;
                 hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null ? new AnnualCoolingEfficiency()
                 {
                     Value = system.CoolingSystemEfficiencyValue,
                 } : null;
                 hp.YearInstalled = system.CoolingSystemYearInstalled;
+            }
+            if(heatpumpForHeating && heatpumpForCooling)
+            {
+                hp = null;
+                return;
             }
 
             if (system.HeatingSystemType == "Electric heat pump" || system.CoolingSystemType == "Electric heat pump") //heat_pump
@@ -1304,7 +1312,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
             }
 
-            heatPumps.Add(hp);
+            if(hp!=null)
+                heatPumps.Add(hp);
         }
         public void GenerateDistributionSystemObject(SystemsDTO system, List<HVACDistribution> distributionSystems, string id)
         {
@@ -1382,7 +1391,11 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             /*Propane Instantaneous*/
             /*Oil Instantaneous*/
             /*Electric Heat Pump*/
-            return new WaterHeating
+            if (waterHeater == null)
+            {
+                return null;
+            }
+            WaterHeating wh = new WaterHeating
             {
                 WaterHeatingSystem = new WaterHeatingSystem
                 {
@@ -1390,8 +1403,60 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = "water-heater-1"
                     },
-                }
+                },
             };
+            switch (waterHeater.WaterHeaterType)
+            {
+                case "Electric Storage":
+                    wh.WaterHeatingSystem.WaterHeaterType = "storage water heater";
+                    wh.WaterHeatingSystem.FuelType = "electricity";
+                    break;
+                case "Natural Gas Storage":
+                    wh.WaterHeatingSystem.WaterHeaterType = "dedicated boiler with storage tank";
+                    wh.WaterHeatingSystem.FuelType = "natural gas";
+                    break;
+                case "Propane(LPG) Storage":
+                    wh.WaterHeatingSystem.WaterHeaterType = "dedicated boiler with storage tank";
+                    wh.WaterHeatingSystem.FuelType = "propane";
+                    break;
+                case "Oil Storage":
+                    wh.WaterHeatingSystem.WaterHeaterType = "dedicated boiler with storage tank";
+                    wh.WaterHeatingSystem.FuelType = "fuel oil";
+                    break;
+                case "Electric Instantaneous":
+                    wh.WaterHeatingSystem.WaterHeaterType = "instantaneous water heater";
+                    wh.WaterHeatingSystem.FuelType = "electricity";
+                    break;
+                case "Gas Instantaneous":
+                    wh.WaterHeatingSystem.WaterHeaterType = "instantaneous water heater";
+                    wh.WaterHeatingSystem.FuelType = "natural gas";
+                    break;
+                case "Propane Instantaneous":
+                    wh.WaterHeatingSystem.WaterHeaterType = "instantaneous water heater";
+                    wh.WaterHeatingSystem.FuelType = "propane";
+                    break;
+                case "Oil Instantaneous":
+                    wh.WaterHeatingSystem.WaterHeaterType = "instantaneous water heater";
+                    wh.WaterHeatingSystem.FuelType = "fuel oil";
+                    break;
+                case "Electric Heat Pump":
+                    wh.WaterHeatingSystem.WaterHeaterType = "dedicated boiler with storage tank";
+                    wh.WaterHeatingSystem.FuelType = "electricity";
+                    break;
+            }
+            wh.WaterHeatingSystem.ModelYear = waterHeater.YearOfManufacture;
+            if (waterHeater.KnowWaterHeaterEnergyFactor == true)
+            {
+                if (waterHeater.Unit == "EF")
+                {
+                    wh.WaterHeatingSystem.EnergyFactor = waterHeater.EnergyValue;
+                }
+                else if (waterHeater.Unit == "UEF")
+                {
+                    wh.WaterHeatingSystem.UniformEnergyFactor = waterHeater.EnergyValue;
+                }
+            }
+            return wh;
         }
         public Photovoltaics GeneratePhotovoltaics(Domain.Entity.PVSystemDTO pvSystem)
         {

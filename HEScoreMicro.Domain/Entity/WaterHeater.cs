@@ -8,7 +8,7 @@
         public bool? KnowWaterHeaterEnergyFactor { get; set; }
         public string? Unit { get; set; }
         public double? EnergyValue { get; set; }
-        public double? YearOfManufacture { get; set; }
+        public int? YearOfManufacture { get; set; }
     }
     public class WaterHeater : WaterHeaterFields
     {

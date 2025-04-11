@@ -3,6 +3,7 @@ using System;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HEScoreMicro.Persistence.Migrations
 {
     [DbContext(typeof(DbConnect))]
-    partial class DbConnectModelSnapshot : ModelSnapshot
+    [Migration("20250411053326_mig-14")]
+    partial class mig14
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

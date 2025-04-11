@@ -6,13 +6,13 @@ using HEScoreMicro.Application.CrudOperations;
 using HEScoreMicro.Domain.Entity;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HEScoreMicro.Application.Operations
 {
     public interface IBuildingOperations : ICrudOperations<Building, BuildingDTO>
     {
         public Task<ResponseDTO<BuildingDTO>> CreateNewBuilding();
+        public Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id,int Number);
     }
     public class BuildingOperations(
         DbConnect _context, IMapper _mapper
@@ -53,6 +53,21 @@ namespace HEScoreMicro.Application.Operations
             }
             var entityDTO = _mapper.Map<BuildingDTO>(entities);
             return new ResponseDTO<BuildingDTO> { Failed = false, Message = "Building Fetched", Data = entityDTO };
+        }
+        public async Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id, int Number)
+        {
+            var building = await _context.Building.FirstOrDefaultAsync(obj => obj.Id == Id);
+            if (building == null)
+            {
+                return new ResponseDTO<BuildingDTO> { Failed = true, Message = "Building not found" };
+            }
+            building.Number = Number;
+            var res = await base.Update(building);
+            if (res.Failed)
+            {
+                return res;
+            }
+            return res;
         }
     }
 }

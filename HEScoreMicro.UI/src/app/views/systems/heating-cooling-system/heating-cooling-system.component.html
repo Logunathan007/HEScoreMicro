@@ -379,7 +379,9 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
-                <label for="ductLeakageTestValue"> DuctLeakage Test Value </label>
+                <label for="ductLeakageTestValue">
+                  DuctLeakage Test Value
+                </label>
                 <input
                   formControlName="ductLeakageTestValue"
                   type="number"
@@ -575,4 +577,5 @@
       </button>
     </div>
   </form>
+  <app-print-hpxml [buildingId]="this.buildingId"></app-print-hpxml>
 </div>

@@ -15,6 +15,6 @@ export const BooleanOptions = [
 ]
 
 export const UnitOptions = [
-  { name: 'Energy Factor (EF)', value: 'Energy Factor (EF)' },
-  { name: 'Uniform Energy Factor (UEF)', value: 'Uniform Energy Factor (UEF)' },
+  { name: 'Energy Factor (EF)', value: 'EF' },
+  { name: 'Uniform Energy Factor (UEF)', value: 'UEF' },
 ]

@@ -5,6 +5,7 @@ using HEScoreMicro.Application.Operations.ZoneFloors;
 using HEScoreMicro.Application.Operations.ZoneRoofs;
 using HEScoreMicro.Application.Operations.ZoneWalls;
 using HEScoreMicro.Application.Operations.ZoneWindows;
+using ServiceReference1;
 
 namespace HEScoreMicro.Service
 {
@@ -24,6 +25,7 @@ namespace HEScoreMicro.Service
             service.AddScoped(typeof(IHeatingCoolingSystemOperations), typeof(HeatingCoolingSystemOperations));
             service.AddScoped(typeof(IHPXMLGenerationOperations), typeof(HPXMLGenerationOperations));
             service.AddScoped(typeof(IHPXMLObjectCreation), typeof(HPXMLObjectCreation));
+            service.AddScoped(typeof(st_api_handlerPortClient), typeof(st_api_handlerPortClient));
 
             //Keyed Services
             service.AddKeyedScoped<IWindowOperations, WindowOperations>("Window");

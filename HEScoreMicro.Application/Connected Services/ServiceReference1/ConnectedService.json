@@ -1,0 +1,36 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "https://sandbox.hesapi.labworks.org/st_api/wsdl"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, ServiceReference1"
+    ],
+    "references": [
+      "AutoMapper, {AutoMapper, 14.0.0}",
+      "D:\\Logu\\microservices\\HEScoreMicro\\HEScoreMicro.Application\\bin\\Debug\\net8.0\\HEScoreMicro.Domain.dll",
+      "D:\\Logu\\microservices\\HEScoreMicro\\HEScoreMicro.Application\\bin\\Debug\\net8.0\\HEScoreMicro.Persistence.dll",
+      "Microsoft.EntityFrameworkCore, {Microsoft.EntityFrameworkCore, 9.0.3}",
+      "Microsoft.EntityFrameworkCore.Abstractions, {Microsoft.EntityFrameworkCore.Abstractions, 9.0.3}",
+      "Microsoft.EntityFrameworkCore.Relational, {Microsoft.EntityFrameworkCore.Relational, 9.0.1}",
+      "Microsoft.Extensions.Caching.Abstractions, {Microsoft.Extensions.Caching.Abstractions, 9.0.3}",
+      "Microsoft.Extensions.Caching.Memory, {Microsoft.Extensions.Caching.Memory, 9.0.3}",
+      "Microsoft.Extensions.Configuration.Abstractions, {Microsoft.Extensions.Configuration.Abstractions, 9.0.1}",
+      "Microsoft.Extensions.DependencyInjection, {Microsoft.Extensions.DependencyInjection, 9.0.3}",
+      "Microsoft.Extensions.DependencyInjection.Abstractions, {Microsoft.Extensions.DependencyInjection.Abstractions, 9.0.3}",
+      "Microsoft.Extensions.Logging, {Microsoft.Extensions.Logging, 9.0.3}",
+      "Microsoft.Extensions.Logging.Abstractions, {Microsoft.Extensions.Logging.Abstractions, 9.0.3}",
+      "Microsoft.Extensions.Options, {Microsoft.Extensions.Options, 9.0.3}",
+      "Microsoft.Extensions.Primitives, {Microsoft.Extensions.Primitives, 9.0.3}",
+      "Npgsql, {Npgsql, 9.0.3}",
+      "Npgsql.EntityFrameworkCore.PostgreSQL, {Npgsql.EntityFrameworkCore.PostgreSQL, 9.0.4}",
+      "System.Diagnostics.DiagnosticSource, {System.Diagnostics.DiagnosticSource, 9.0.3}"
+    ],
+    "targetFramework": "net8.0",
+    "typeReuseMode": "All"
+  }
+}

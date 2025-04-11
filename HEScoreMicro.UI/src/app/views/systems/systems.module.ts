@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { WaterHeaterComponent } from './water-heater/water-heater.component';
 import { PVSystemComponent } from './pv-system/pv-system.component';
 import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-cooling-system.component';
+import { PrintHpxmlComponent } from '../print-hpxml/print-hpxml.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-
     NgxJsonViewerModule,
     NgSelectModule,
     ReactiveFormsModule,
+    PrintHpxmlComponent
   ]
 })
 export class SystemsModule { }

@@ -1,0 +1,57 @@
+
+<div class="containter">
+  <div
+    class="overflow-x-auto border rounded-xl-4 rounded-md-3 rounded-2 p-xl-5 p-lg-4 p-md-3 p-2 mb-4 position-relative"
+    *ngIf="buildingData"
+    style="background-color: rgba(0, 0, 0, 0.089)"
+  >
+    <h4>Summary Info:</h4>
+    <button
+      class="fw-bolder fs-2 ms-auto d-block position-absolute border-0 bg-transparent"
+      style="width: 30px; top: 0px; right: 10px"
+      (click)="buildingToggle = !buildingToggle"
+    >
+      {{ buildingToggle ? "-" : "+" }}
+    </button>
+    <ngx-json-viewer
+      [expanded]="buildingToggle"
+      [json]="buildingData"
+    ></ngx-json-viewer>
+
+    <button class="bg-success btn-style mx-auto mt-4 mb-0" >
+      Validate
+    </button>
+  </div>
+</div>
+<!-- <div
+  class="overflow-x-auto border rounded-xl-4 rounded-md-3 rounded-2 p-xl-5 p-lg-4 p-md-3 p-2 mb-4 position-relative"
+  *ngIf="validationData"
+  style="background-color: rgba(0, 0, 0, 0.089)"
+>
+  <h4>Validation Message:</h4>
+  <button
+    class="fw-bolder fs-2 ms-auto d-block position-absolute border-0 bg-transparent"
+    style="width: 30px; top: 0px; right: 10px"
+    (click)="jsonExpandForValidation = !jsonExpandForValidation"
+  >
+    {{ jsonExpandForValidation ? "-" : "+" }}
+  </button>
+  <ngx-json-viewer
+    [expanded]="jsonExpandForValidation"
+    [json]="validationData"
+  ></ngx-json-viewer>
+  <div class="d-flex justify-content-center gap-3" *ngIf="validationStatus">
+    <button
+      class="bg-secondary btn-style  mt-4 mb-0 bg-success"
+      (click)="clearOldPDF()"
+    >
+      Clear Old PDF
+    </button>
+    <button
+      class="bg-primary btn-style  mt-4 mb-0 bg-success"
+      (click)="generatePDF()"
+    >
+      Generate PDF
+    </button>
+  </div>
+</div> -->

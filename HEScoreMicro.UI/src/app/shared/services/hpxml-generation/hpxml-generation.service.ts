@@ -11,6 +11,7 @@ export class HpxmlGenerationService {
 
   private url!: string;
   private serviceName: string = "HPXMLGeneration";
+
   constructor(public httpClient: HttpClient) {
     this.url = envVariable.API_URL + this.serviceName + '/';
   }
@@ -22,4 +23,5 @@ export class HpxmlGenerationService {
   getHpxmlBase64String(id: string): Observable<Result<string>> {
     return this.httpClient.get<Result<string>>(this.url + "HPXMLBase64String/" + id);
   }
+
 }
