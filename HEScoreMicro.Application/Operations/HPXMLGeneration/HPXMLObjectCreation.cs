@@ -9,6 +9,7 @@ using HEScoreMicro.Application.HPXMLClasses.ZoneFloors;
 using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using HEScoreMicro.Application.HPXMLClasses.Systems;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+using System.Text.RegularExpressions;
 
 namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 {
@@ -203,7 +204,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     serializer.Serialize(xmlWriter, hpxml);
                 }
                 xmlString = stringWriter.ToString();
-                //xmlString = Regex.Replace(xmlString, @"<\w+\s+xsi:nil=""true""\s*/>", "");
+                xmlString = Regex.Replace(xmlString, @"<\w+\s+xsi:nil=""true""\s*/>", "");
             }
             return new ResponseDTO<string> { Data = xmlString, Failed = false, Message = "String Gernerated Successfully" };
         }
@@ -425,14 +426,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 SystemIdentifier = new SystemIdentifier
                 {
-                    Id = idref + "-floor-1",
+                    Id = idref,
                 },
                 Area = roofAtticDTO.AtticFloorArea,
                 Insulation = new Insulation()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
-                        Id = idref + "-floor-1-insulation-1"
+                        Id = idref + "-insulation-1"
                     },
                     AssemblyEffectiveRValue = roofAtticDTO.AtticFloorInsulation
                 }
@@ -450,6 +451,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         Id = idref
                     },
                     ExteriorAdjacentTo = "attic",
+                    InteriorAdjacentTo = "living space",
                     Area = roofAtticDTO.KneeWallArea,
                     AtticWallType = "knee wall",
                     WallType = new WallType
@@ -460,7 +462,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         SystemIdentifier = new SystemIdentifier
                         {
-                            Id = idref + "-wall-1-insulation-1"
+                            Id = idref + "-insulation-1"
                         },
                         AssemblyEffectiveRValue = roofAtticDTO.KneeWallInsulation,
                     }
@@ -688,7 +690,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = idref + "-perimeter-insulation-1"
                     },
-                    AssemblyEffectiveRValue = zoneFloor.SlabInsulationLevel,
+                    //AssemblyEffectiveRValue = zoneFloor.SlabInsulationLevel,
+                    Layer = new List<Layer>{  new Layer(){
+                        NominalRValue = zoneFloor.SlabInsulationLevel
+                    }}
                 }
             };
             slabs.Add(slab);
@@ -1040,7 +1045,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             foreach (var system in hcs.Systems)
             {
                 var id = "system-" + i;
-                if (system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump"))
+                if (system.HeatingSystemType.EndsWith("heat pump") || system.CoolingSystemType.EndsWith("heat pump"))
                 {
                     this.GenerateHeatPumpObject(system, heatPumps, distributionSystems, id);
                 }
@@ -1260,11 +1265,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 } : null;
                 hp.YearInstalled = system.CoolingSystemYearInstalled;
             }
-            if(heatpumpForHeating && heatpumpForCooling)
-            {
-                hp = null;
-                return;
-            }
 
             if (system.HeatingSystemType == "Electric heat pump" || system.CoolingSystemType == "Electric heat pump") //heat_pump
             {
@@ -1278,7 +1278,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     hp.AnnualCoolingEfficiency.Units = system.CoolingSystemEfficiencyUnit;
                 }
             }
-            else if (system.HeatingSystemType == "Minisplit(ductless) heat pump" || system.CoolingSystemType == "Minisplit(ductless) heat pump") //mini-split
+            else if (system.HeatingSystemType == "Minisplit (ductless) heat pump" || system.CoolingSystemType == "Minisplit (ductless) heat pump") //mini-split
             {
                 hp.HeatPumpType = "mini-split";
                 if (hp.AnnualHeatingEfficiency != null)
@@ -1312,7 +1312,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
             }
 
-            if(hp!=null)
+            if (hp != null)
                 heatPumps.Add(hp);
         }
         public void GenerateDistributionSystemObject(SystemsDTO system, List<HVACDistribution> distributionSystems, string id)
@@ -1469,9 +1469,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 PVSystem = new PVSystem()
                 {
+                    SystemIdentifier = new SystemIdentifier
+                    {
+                        Id = "pv-system-1"
+                    },
                     ArrayOrientation = pvSystem.DirectionPanelsFace,
                     ArrayTilt = this.GetArrayTilt(pvSystem.AnglePanelsAreTilted),
-                    YearInstalled = pvSystem.YearInstalled,
+                    YearModulesManufactured = pvSystem.YearInstalled,
                 }
             };
             if (pvSystem.KnowSystemCapacity == true)

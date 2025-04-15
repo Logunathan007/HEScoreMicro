@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { envVariable } from "../../../environents/environment.development";
 import { Observable } from "rxjs";
-import { Result } from "../../models/common/Result";
-import { GridResult } from '../../models/common/GridResult';
+import { Result } from "../../models/common/result.model";
+import { GridResult } from "../../models/common/grid-result.model";
 
 export interface ICurdService<TReadModel> {
   getById(id: string): Observable<Result<TReadModel>>
@@ -13,7 +13,7 @@ export interface ICurdService<TReadModel> {
 }
 
 export class CurdService<TReadModel> implements ICurdService<TReadModel> {
-  private url!: string;
+  protected url!: string;
 
   constructor(public httpClient: HttpClient, public serviceName: string) {
     this.url = envVariable.API_URL + serviceName + '/';

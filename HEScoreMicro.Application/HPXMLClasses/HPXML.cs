@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace HEScoreMicro.Application.HPXMLClasses
 {
-    [XmlRoot("HPXML", Namespace = "http://hpxmlonline.com/2019/10")]
+    [XmlRoot("HPXML", Namespace = "http://hpxmlonline.com/2023/09")]
     public class HPXML
     {
         [XmlAttribute("schemaVersion")]

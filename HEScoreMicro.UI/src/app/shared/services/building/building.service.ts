@@ -7,10 +7,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class BuildingService extends CurdService<BuildingReadModel> {
+
   constructor(httpClient: HttpClient) {
     super(httpClient, "Building")
   }
-  clearOldBuilding(id:string){
-    this.httpClient.get("")
-  }
+
 }

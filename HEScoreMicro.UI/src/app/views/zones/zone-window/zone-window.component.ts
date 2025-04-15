@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { ZoneWindowService } from '../../../shared/services/zone-window/zone-window.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Result } from '../../../shared/models/common/Result';
+import { Result } from '../../../shared/models/common/result.model';
 import { FrameMaterialOptions, GlazingTypeOptions, PaneOptions } from '../../../shared/lookups/zone-roof.looup';
 import { WindowReadModel } from '../../../shared/models/zone-window/window.model';
 

@@ -11,7 +11,7 @@ import { CommonService } from '../../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../../shared/models/common/Result';
+import { Result } from '../../../shared/models/common/result.model';
 import { DuctLocationReadModel } from '../../../shared/models/heating-cooling-system/duct-location-model';
 import { SystemsModule } from '../systems.module';
 

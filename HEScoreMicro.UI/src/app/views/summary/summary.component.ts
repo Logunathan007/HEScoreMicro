@@ -6,7 +6,7 @@ import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.compo
 import { BuildingService } from '../../shared/services/building/building.service';
 import { takeUntil } from 'rxjs';
 import { BuildingReadModel } from '../../shared/models/building/building.model';
-import { Result } from '../../shared/models/common/Result';
+import { Result } from '../../shared/models/common/result.model';
 import { removeAllIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 
 @Component({
@@ -17,15 +17,16 @@ import { removeAllIdProperties } from '../../shared/modules/Transformers/Transor
 })
 export class SummaryComponent extends Unsubscriber implements OnInit {
 
-  buildingId: string | null | undefined;
+  buildingId: string = "";
   buildingData: BuildingReadModel | null | undefined;
   buildingToggle: boolean = false
   removeAllIdProperties = removeAllIdProperties
   validationData: any;
   validationStatus: any;
+  validationToggle: boolean = true;
   PDFResponse: any;
-  PDFGenerationStatus: any;
   PDFLoader:boolean = false;
+  pdfToggle:boolean = true;
 
   constructor(private buildingService: BuildingService,
     private route: ActivatedRoute, private commonService: CommonService,
@@ -64,54 +65,53 @@ export class SummaryComponent extends Unsubscriber implements OnInit {
     }
   }
 
-  // validate() {
-  //   this.hpxmlGenerationService.validateInputs(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-  //     next: (val: any) => {
-  //       if (val?.failed == false) {
-  //         this.validationData = JSON.parse(val?.homeJson);
-  //         this.validationStatus = true;
-  //       } else {
-  //         this.validationData = val?.errors;
-  //         this.validationStatus = false;
-  //       }
-  //       console.log(val);
-  //     },
-  //     error: (err: any) => {
-  //       this.validationStatus = false;
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  validate() {
+    if(!this.buildingId) return
+    this.hpxmlGenerationService.validateInputs(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (val: any) => {
+        if (val?.failed == false) {
+          this.validationData = JSON.parse(val?.homeJson);
+          this.validationStatus = true;
+        } else {
+          this.validationData = val?.errors;
+          this.validationStatus = false;
+        }
+        console.log(val);
+      },
+      error: (err: any) => {
+        this.validationStatus = false;
+        console.log(err);
+      }
+    })
+  }
 
-  // generatePDF() {
-  //   this.PDFLoader = true;
-  //   this.hpxmlGenerationService.generatePDF(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-  //     next: (val: any) => {
-  //       if (val?.failed == false) {
-  //         this.PDFResponse = val.pdfLinks;
-  //       } else {
-  //         this.PDFResponse = val?.errors;
-  //       }
-  //       this.PDFLoader = false;
-  //       console.log(val);
-  //     },
-  //     error: (err: any) => {
-  //       this.PDFLoader = false;
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  generatePDF() {
+    this.PDFLoader = true;
+    this.hpxmlGenerationService.generatePDF(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (val: any) => {
+        if (val?.failed == false) {
+          this.PDFResponse = val?.data;
+        }
+        this.PDFLoader = false;
+        console.log(val);
+      },
+      error: (err: any) => {
+        this.PDFLoader = false;
+        console.log(err);
+      }
+    })
+  }
 
-  // clearOldPDF() {
-  //   this.buildingService.clearOldBuilding(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-  //     next: (val: any) => {
-  //       console.log(val);
-  //     },
-  //     error: (err: any) => {
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  clearOldPDF() {
+    this.hpxmlGenerationService.clearOldBuilding(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (val: any) => {
+        console.log(val);
+      },
+      error: (err: any) => {
+        console.log(err);
+      }
+    })
+  }
 
 
 }

@@ -12,7 +12,7 @@ namespace HEScoreMicro.Application.Operations
     public interface IBuildingOperations : ICrudOperations<Building, BuildingDTO>
     {
         public Task<ResponseDTO<BuildingDTO>> CreateNewBuilding();
-        public Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id,int Number);
+        public Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id,int? Number = null);
     }
     public class BuildingOperations(
         DbConnect _context, IMapper _mapper
@@ -54,7 +54,7 @@ namespace HEScoreMicro.Application.Operations
             var entityDTO = _mapper.Map<BuildingDTO>(entities);
             return new ResponseDTO<BuildingDTO> { Failed = false, Message = "Building Fetched", Data = entityDTO };
         }
-        public async Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id, int Number)
+        public async Task<ResponseDTO<BuildingDTO>> UpdateBuildingNumber(Guid Id, int? Number = null)
         {
             var building = await _context.Building.FirstOrDefaultAsync(obj => obj.Id == Id);
             if (building == null)

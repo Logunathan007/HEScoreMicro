@@ -1,7 +1,6 @@
 ﻿
 using AutoMapper;
 using GenericController.Application.Mapper.Reply;
-using HEScoreMicro.Application.MaperConfig;
 using HEScoreMicro.Domain.Entity;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;

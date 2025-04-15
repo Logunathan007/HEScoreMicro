@@ -2,7 +2,7 @@
 using HEScoreMicro.Application.Operations;
 using HEScoreMicro.Application.Operations.HPXMLGeneration;
 using HEScoreMicro.Application.Reply;
-using Microsoft.AspNetCore.Http;
+using HEScoreMicro.Domain.Entity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HEScoreMicro.Service.Controllers
@@ -18,7 +18,8 @@ namespace HEScoreMicro.Service.Controllers
             _hPXMLGenerationOperations = hPXMLGenerationOperations;
         }
         [HttpGet("HPXMLString/{Id}")]
-        public async Task<ActionResult<ResponseDTO<string>>> Get(Guid Id) {
+        public async Task<ActionResult<ResponseDTO<string>>> Get(Guid Id)
+        {
             var result = await _hPXMLGenerationOperations.GetHPXMLString(Id);
             if (result.Failed)
             {
@@ -40,7 +41,27 @@ namespace HEScoreMicro.Service.Controllers
         public async Task<ActionResult<ValidationDTO>> ValidateInputs(Guid Id)
         {
             var result = await _hPXMLGenerationOperations.ValidateInputs(Id);
-            if(result.Failed)
+            /*if(result.Failed)
+            {
+                return BadRequest(result);
+            }*/
+            return Ok(result);
+        }
+        [HttpGet("[action]/{Id}")]
+        public async Task<ActionResult<ResponseDTO<BuildingDTO>>> ClearOldPDF(Guid Id)
+        {
+            var result = await _hPXMLGenerationOperations.ClearOldPdfNumber(Id);
+            if (result.Failed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<ResponseDTO<string>>> GeneratePdf(Guid Id)
+        {
+            var result = await _hPXMLGenerationOperations.GeneratePDF(Id);
+            if (result.Failed)
             {
                 return BadRequest(result);
             }
@@ -56,15 +77,6 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(result);
         }
-        [HttpPost("[action]/{id}")]
-        public async Task<ActionResult<ResponseDTO<string>>> GeneratePdf(Guid Id)
-        {
-            var result = await _hPXMLGenerationOperations.GeneratePDF(Id);
-            if (result.Failed)
-            {
-                return BadRequest(result.Message);
-            }
-            return Ok(result);
-        }
+
     }
 }

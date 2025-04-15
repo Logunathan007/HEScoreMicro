@@ -10,7 +10,7 @@ import { WallConstructionOptions, WallExteriorFinishOptions } from '../../../sha
 import { ZoneWallReadModel } from '../../../shared/models/zone-wall/zone-wall.read.model';
 import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../../shared/models/common/Result';
+import { Result } from '../../../shared/models/common/result.model';
 import { WallService } from '../../../shared/services/zooe-wall/wall.service';
 
 @Component({

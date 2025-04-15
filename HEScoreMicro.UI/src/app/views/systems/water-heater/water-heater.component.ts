@@ -9,7 +9,7 @@ import { CommonService } from "../../../shared/services/common/common.service";
 import { WaterHeaterService } from "../../../shared/services/water-heater/water-heater.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { Result } from "../../../shared/models/common/Result";
+import { Result } from "../../../shared/models/common/result.model";
 
 @Component({
   selector: 'app-water-heating-system',

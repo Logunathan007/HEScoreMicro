@@ -2,7 +2,7 @@ import { HpxmlGenerationService } from './../../shared/services/hpxml-generation
 import { Component, Input, OnInit } from '@angular/core';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../shared/models/common/Result';
+import { Result } from '../../shared/models/common/result.model';
 
 @Component({
   selector: 'app-print-hpxml',

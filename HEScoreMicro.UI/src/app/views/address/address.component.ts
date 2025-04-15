@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../shared/models/common/Result';
+import { Result } from '../../shared/models/common/result.model';
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',

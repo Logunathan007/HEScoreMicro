@@ -7,7 +7,7 @@ import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.co
 import { ZoneFloorReadModel } from '../../../shared/models/zone-floor/zone-floor.read.model';
 import { BooleanOptions } from '../../../shared/lookups/common.lookup';
 import { ZoneFloorService } from '../../../shared/services/zone-floor/zone-floor.service';
-import { Result } from '../../../shared/models/common/Result';
+import { Result } from '../../../shared/models/common/result.model';
 import { takeUntil } from 'rxjs';
 import { FoundationTypeOptions } from '../../../shared/lookups/zone-floor.lookups';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';

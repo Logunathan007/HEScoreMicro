@@ -5,7 +5,7 @@ import { CommonService } from '../../shared/services/common/common.service';
 import { AboutService } from '../../shared/services/about/about.service';
 import { AboutReadModel } from '../../shared/models/about/about.read.model';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
-import { Result } from '../../shared/models/common/Result';
+import { Result } from '../../shared/models/common/result.model';
 import { takeUntil } from 'rxjs';
 import { BooleanOptions, OrientationOptions } from '../../shared/lookups/common.lookup';
 import { ManufacturedHomeTypeOptions } from '../../shared/lookups/about.lookup';

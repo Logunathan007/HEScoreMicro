@@ -8,7 +8,7 @@ import { CommonService } from "../../../shared/services/common/common.service";
 import { PVSystemService } from "../../../shared/services/pv-system/pv-system.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { Result } from "../../../shared/models/common/Result";
+import { Result } from "../../../shared/models/common/result.model";
 import { AnglePanelsAreTiltedOptions } from "../../../shared/lookups/pv-system.lookup";
 
 @Component({

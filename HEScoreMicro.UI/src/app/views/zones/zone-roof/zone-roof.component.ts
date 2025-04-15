@@ -1,6 +1,6 @@
 import { RoofAtticService } from './../../../shared/services/zone-roof/roof-attic.service';
 import { Component, OnInit } from '@angular/core';
-import { Result } from '../../../shared/models/common/Result';
+import { Result } from '../../../shared/models/common/result.model';
 import { ZoneRoofReadModel } from '../../../shared/models/zone-roof/zone-roof.read.model';
 import { takeUntil } from 'rxjs';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';

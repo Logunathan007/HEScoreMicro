@@ -12,14 +12,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
     {
         Task<ResponseDTO<string>> GetHPXMLString(Guid Id);
         Task<ResponseDTO<string>> GetBase64HPXMLString(Guid Id);
-        Task<ResponseDTO<string>> GetSessionToken();
-        Task<Response> DestorySessionToken(string sessionToken);
-        Task<ResponseDTO<int>> SubmitInputs(string sessionToken, string base64HPXML);
         Task<ResponseDTO<int>> SubmitInputs(Guid Id);
-        Task<ValidationDTO> ValidateInputs(string hpxmlBase64String);
         Task<ValidationDTO> ValidateInputs(Guid Id);
-        Task<ResponseDTO<List<Object>>> GeneratePDF(int buildingId, string sessionToken);
         Task<ResponseDTO<List<Object>>> GeneratePDF(Guid Id);
+        Task<ResponseDTO<BuildingDTO>> ClearOldPdfNumber(Guid Id);
     }
     public class HPXMLGenerationOperations : IHPXMLGenerationOperations
     {
@@ -28,7 +24,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         private readonly st_api_handlerPortClient _st_Api_HandlerPort;
         private readonly IBuildingOperations _buildingOperations;
         public HPXMLGenerationOperations(IHPXMLObjectCreation hPXMLObjectCreation, st_api_handlerPortClient st_Api_HandlerPort,
-            IConfiguration configuration,IBuildingOperations buildingOperations)
+            IConfiguration configuration, IBuildingOperations buildingOperations)
         {
             _st_Api_HandlerPort = st_Api_HandlerPort;
             _hPXMLObjectCreation = hPXMLObjectCreation;
@@ -131,7 +127,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 Message = res.submit_hpxml_inputs_result.message,
             };
         }
-        public async Task<ResponseDTO<int>> SubmitInputs(Guid Id) 
+        public async Task<ResponseDTO<int>> SubmitInputs(Guid Id)
         {
             var res = await ValidateInputs(Id);
             if (res.Failed)
@@ -255,7 +251,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 };
             }
             var buildingNumber = building.Data.Number;
-            if(buildingNumber == null)
+            if (buildingNumber == null)
             {
                 var submitRes = await SubmitInputs(Id);
                 if (submitRes.Failed)
@@ -271,6 +267,16 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             var res = await GeneratePDF((int)buildingNumber, sessionToken.Data);
             await DestorySessionToken(sessionToken.Data);
+            return res;
+        }
+        public async Task<ResponseDTO<BuildingDTO>> ClearOldPdfNumber(Guid Id)
+        {
+            Building building = new Building()
+            {
+                Id = Id,
+                Number = null,
+            };
+            var res = await _buildingOperations.Update(building);
             return res;
         }
     }
