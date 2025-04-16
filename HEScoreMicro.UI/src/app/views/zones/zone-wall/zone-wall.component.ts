@@ -1,6 +1,6 @@
 import { WallReadModel } from './../../../shared/models/zone-wall/wall.read.model';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZoneWallService } from '../../../shared/services/zooe-wall/zooe-wall.service';
 import { CommonService } from '../../../shared/services/common/common.service';
@@ -63,7 +63,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     var zoneWall = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      exteriorWallSame: [null],
+      exteriorWallSame: [null, [Validators.required]],
       walls: this.fb.array([this.wallInputs()]),
     })
     zoneWall.get('exteriorWallSame')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -86,9 +86,9 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     var wall = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      construction: [null],
-      exteriorFinish: [null],
-      wallInsulationLevel: [null],
+      construction: [null, [Validators.required]],
+      exteriorFinish: [null, [Validators.required]],
+      wallInsulationLevel: [null, [Validators.required]],
     })
     return wall;
   }
@@ -160,11 +160,11 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     }
   }
   deleteSameWalls() {
-    const wallIds:string[] = this.wallsObj?.value?.reduce((acc: string[], obj: WallReadModel,index: number) => {
-      if (obj.id && index!=0) acc.push(obj.id);
+    const wallIds: string[] = this.wallsObj?.value?.reduce((acc: string[], obj: WallReadModel, index: number) => {
+      if (obj.id && index != 0) acc.push(obj.id);
       return acc;
     }, []);
-    if(wallIds.length){
+    if (wallIds.length) {
       this.wallService.bulkDelete(wallIds).subscribe({
         next: (val: Result<WallReadModel>) => {
           if (val.failed == false) {
@@ -177,7 +177,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
           console.log(err);
         }
       })
-    }else{
+    } else {
       while (this.wallsObj.length > 1) {
         this.wallsObj.removeAt(this.wallsObj.length - 1);
       }

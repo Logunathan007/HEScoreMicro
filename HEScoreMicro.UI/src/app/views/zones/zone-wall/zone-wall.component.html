@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="select-box">
-          <label> Exterior Wall Same </label>
+          <label class="required"> Exterior Wall Same </label>
           <ng-select
             [items]="booleanOptions"
             bindLabel="name"
@@ -37,7 +37,7 @@
             <h4 class="col-12 my-3">Wall {{ wallIndex + 1 }}</h4>
             <div class="col-md-6">
               <div class="select-box">
-                <label> Construction</label>
+                <label class="required"> Construction</label>
                 <ng-select
                   [items]="wallConstructionOptions"
                   bindLabel="name"
@@ -65,7 +65,7 @@
             </div>
             <div class="col-md-6">
               <div class="select-box">
-                <label> Exterior Finish</label>
+                <label class="required"> Exterior Finish</label>
                 <ng-select
                   [items]="wallExteriorFinishOptions"
                   bindLabel="name"
@@ -93,7 +93,7 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
-                <label for="wallInsulationLevel"> Wall Insulation Level </label>
+                <label class="required" for="wallInsulationLevel"> Wall Insulation Level </label>
                 <input
                   formControlName="wallInsulationLevel"
                   type="number"

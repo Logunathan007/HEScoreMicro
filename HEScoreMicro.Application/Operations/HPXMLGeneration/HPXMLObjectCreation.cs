@@ -683,7 +683,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 {
                     Id = idref
                 },
-                //Area = zoneFloor.FoundationArea,
+                Area = zoneFloor.FoundationArea,
                 PerimeterInsulation = new PerimeterInsulation()
                 {
                     SystemIdentifier = new SystemIdentifier
@@ -760,7 +760,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         AssemblyEffectiveRValue = zoneWall.WallInsulationLevel,
                     },
                     InteriorAdjacentTo = "living space",
-                    ExteriorAdjacentTo = this.GetExteriorAdjacentTo(buildingType)
+                    ExteriorAdjacentTo = this.GetExteriorAdjacentTo(buildingType),
+
+                    // TODO Need to clarify
+                    Area = zoneWallDTO.Walls.Count > 1 ? 20 : null
                 };
 
                 // For Wall Type
@@ -840,29 +843,26 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 }
 
                 //Wall Siding
-                if (zoneWall.ExteriorFinish == "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding")
+                switch (zoneWall.ExteriorFinish)
                 {
-                    wall.Siding = "wood siding";
-                }
-                else if (zoneWall.ExteriorFinish == "Stucco")
-                {
-                    wall.Siding = "stucco";
-                }
-                else if (zoneWall.ExteriorFinish == "Vinyl Siding")
-                {
-                    wall.Siding = "vinyl siding";
-                }
-                else if (zoneWall.ExteriorFinish == "Aluminum Siding")
-                {
-                    wall.Siding = "aluminum siding";
-                }
-                else if (zoneWall.ExteriorFinish == "Brick Veneer")
-                {
-                    wall.Siding = "brick veneer";
-                }
-                else
-                {
-                    wall.Siding = "none";
+                    case "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding":
+                        wall.Siding = "wood siding";
+                        break;
+                    case "Stucco":
+                        wall.Siding = "stucco";
+                        break;
+                    case "Vinyl Siding":
+                        wall.Siding = "vinyl siding";
+                        break;
+                    case "Aluminum Siding":
+                        wall.Siding = "aluminum siding";
+                        break;
+                    case "Brick Veneer":
+                        wall.Siding = "brick veneer";
+                        break;
+                    default:
+                        wall.Siding = "none";
+                        break;
                 }
                 walls.Add(wall);
                 i++;
