@@ -36,7 +36,6 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     return this.zoneWallControl['walls'] as FormArray
   }
 
-
   constructor(
     protected commonService: CommonService,
     private zoneWallService: ZoneWallService,

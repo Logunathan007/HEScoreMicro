@@ -1,6 +1,6 @@
 import { FoundationService } from './../../../shared/services/zone-floor/foundation.service';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs';
 import { FoundationTypeOptions } from '../../../shared/lookups/zone-floor.lookups';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
 import { FoundationReadModel } from '../../../shared/models/zone-floor/foundation.read.model';
+import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-floor',
@@ -27,6 +28,8 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   foundationTypeOptions = FoundationTypeOptions
   removeNullIdProperties = removeNullIdProperties
+  setValidations = setValidations
+  resetValuesAndValidations = resetValuesAndValidations
 
   get zoneFloorControl() {
     return this.zoneFloorForm.controls;
@@ -87,12 +90,57 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   foundationInputs(): FormGroup {
     var found = this.fb.group({
       id: [null,],
-      foundationType: [null,],
-      foundationArea: [null,],
+      foundationType: [null, [Validators.required]],
+      foundationArea: [null, [Validators.required]],
+      typeStatus: [{ wall: false, floor: false, slab: false }],
       slabInsulationLevel: [null,],
       floorInsulationLevel: [null,],
       foundationwallsInsulationLevel: [null,],
       buildingId: [this.buildingId],
+    })
+
+    const foundationType = found.get('foundationType') as AbstractControl
+    const typeStatus = found.get('typeStatus') as AbstractControl
+    const slabInsulationLevel = found.get('slabInsulationLevel') as AbstractControl
+    const floorInsulationLevel = found.get('floorInsulationLevel') as AbstractControl
+    const foundationwallsInsulationLevel = found.get('foundationwallsInsulationLevel') as AbstractControl
+
+    const enableWallFloor = () => {
+      typeStatus.setValue({ wall: true, floor: true, slab: false })
+      this.setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
+      this.resetValuesAndValidations(slabInsulationLevel)
+    }
+
+    foundationType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (foundationType.value) {
+        case "Slab-on-grade foundation":
+          typeStatus.setValue({ wall: false, floor: false, slab: true })
+          this.setValidations(slabInsulationLevel)
+          this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel])
+          break;
+        case "Unconditioned Basement":
+          enableWallFloor();
+          break;
+        case "Conditioned Basement":
+          typeStatus.setValue({ wall: true, floor: false, slab: false })
+          this.setValidations(foundationwallsInsulationLevel)
+          this.resetValuesAndValidations([floorInsulationLevel, slabInsulationLevel])
+          break;
+        case "Unvented Crawlspace / Unconditioned Garage":
+          enableWallFloor();
+          break;
+        case "Vented Crawlspace":
+          enableWallFloor();
+          break;
+        case "Belly and Wing":
+          typeStatus.setValue({ wall: false, floor: true, slab: false })
+          this.setValidations(floorInsulationLevel)
+          this.resetValuesAndValidations([slabInsulationLevel, foundationwallsInsulationLevel])
+          break;
+        default:
+          this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel, slabInsulationLevel])
+          typeStatus.setValue({ wall: false, floor: false, slab: false })
+      }
     })
     return found;
   }

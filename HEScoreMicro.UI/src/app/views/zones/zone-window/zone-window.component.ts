@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Result } from '../../../shared/models/common/result.model';
 import { FrameMaterialOptions, GlazingTypeOptions, PaneOptions } from '../../../shared/lookups/zone-roof.looup';
 import { WindowReadModel } from '../../../shared/models/zone-window/window.model';
-import { resetControls, resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-window',
@@ -31,7 +31,6 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   frameMaterialOptions = FrameMaterialOptions
   glazingTypeOptions = GlazingTypeOptions
   setValidations = setValidations
-  resetControls = resetControls
   resetValuesAndValidations = resetValuesAndValidations
 
   get zoneWindowControl() {

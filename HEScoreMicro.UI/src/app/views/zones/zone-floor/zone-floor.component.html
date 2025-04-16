@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="select-box">
-          <label> Enable Second Foundation </label>
+          <label class="required"> Enable Second Foundation </label>
           <ng-select
             [items]="booleanOptions"
             bindLabel="name"
@@ -40,7 +40,7 @@
             <h4 class="col-12 my-3">Foundation {{ foundationIndex + 1 }}</h4>
             <div class="col-md-6">
               <div class="select-box">
-                <label> Foundation Type </label>
+                <label class="required"> Foundation Type </label>
                 <ng-select
                   [items]="foundationTypeOptions"
                   bindLabel="name"
@@ -68,7 +68,7 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
-                <label for="foundationArea"> Foundation Area </label>
+                <label class="required" for="foundationArea"> Foundation Area </label>
                 <input
                   formControlName="foundationArea"
                   type="number"
@@ -92,9 +92,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="foundationItem.get('typeStatus')?.value?.slab">
               <div class="input-box">
-                <label for="slabInsulationLevel"> Slab Insulation Level </label>
+                <label class="required" for="slabInsulationLevel"> Slab Insulation Level </label>
                 <input
                   formControlName="slabInsulationLevel"
                   type="number"
@@ -118,9 +118,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="foundationItem.get('typeStatus')?.value?.floor">
               <div class="input-box">
-                <label for="floorInsulationLevel">
+                <label class="required" for="floorInsulationLevel">
                   Floor Insulation Level
                 </label>
                 <input
@@ -146,9 +146,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="foundationItem.get('typeStatus')?.value?.wall">
               <div class="input-box">
-                <label for="foundationwallsInsulationLevel">
+                <label class="required" for="foundationwallsInsulationLevel">
                   Foundationwalls Insulation Level
                 </label>
                 <input
