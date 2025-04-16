@@ -30,168 +30,177 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="input-box">
-            <label for="yearInstalled"> Year Of Installed </label>
-            <input
-              formControlName="yearInstalled"
-              type="number"
-              id="yearInstalled"
-              placeholder="Year Of Installed"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['yearInstalled']?.touched ||
-                  pVSystemControl['yearInstalled']?.dirty) &&
-                pVSystemControl['yearInstalled']?.invalid
-              "
-            >
-              <label
-                for="yearInstalled"
-                class="text-danger fw-semibold position-absolute"
+        <ng-container *ngIf="pVSystemControl['hasPhotovoltaic'].value">
+          <div class="col-md-6">
+            <div class="select-box">
+              <label> Year Installed </label>
+              <ng-select
+                [items]="year2000Options"
+                bindLabel="name"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                bindValue="value"
+                placeholder="Year Installed"
+                id="yearInstalled"
+                formControlName="yearInstalled"
               >
-                Year Of Installed is invalid
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="select-box">
-            <label> Direction Panels Face</label>
-            <ng-select
-              [items]="orientationOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Direction Panels Face"
-              id="directionPanelsFace"
-              formControlName="directionPanelsFace"
-            >
-            </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['directionPanelsFace']?.touched ||
-                  pVSystemControl['directionPanelsFace']?.dirty) &&
-                pVSystemControl['directionPanelsFace']?.invalid
-              "
-            >
-              <label class="text-danger fw-semibold position-absolute">
-                Direction Panels Face is invalid
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="select-box">
-            <label> Angle Panels Are Tilted</label>
-            <ng-select
-              [items]="anglePanelsAreTiltedOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Angle Panels Are Tilted"
-              id="anglePanelsAreTilted"
-              formControlName="anglePanelsAreTilted"
-            >
-            </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['anglePanelsAreTilted']?.touched ||
-                  pVSystemControl['anglePanelsAreTilted']?.dirty) &&
-                pVSystemControl['anglePanelsAreTilted']?.invalid
-              "
-            >
-              <label class="text-danger fw-semibold position-absolute">
-                Angle Panels Are Tilted is invalid
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="select-box">
-            <label>Do you known System Capacity</label>
-            <ng-select
-              [items]="booleanOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="System Capacity"
-              id="knowSystemCapacity"
-              formControlName="knowSystemCapacity"
-            >
-            </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['knowSystemCapacity']?.touched ||
-                  pVSystemControl['knowSystemCapacity']?.dirty) &&
-                pVSystemControl['knowSystemCapacity']?.invalid
-              "
-            >
-              <label class="text-danger fw-semibold position-absolute">
-                Know System Capacity is invalid
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-box">
-            <label for="numberOfPanels"> Number Of Panels </label>
-            <input
-              formControlName="numberOfPanels"
-              type="number"
-              id="numberOfPanels"
-              placeholder="Number Of Panels"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['numberOfPanels']?.touched ||
-                  pVSystemControl['numberOfPanels']?.dirty) &&
-                pVSystemControl['numberOfPanels']?.invalid
-              "
-            >
-              <label
-                for="numberOfPanels"
-                class="text-danger fw-semibold position-absolute"
+              </ng-select>
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['yearInstalled']?.touched ||
+                    pVSystemControl['yearInstalled']?.dirty) &&
+                  pVSystemControl['yearInstalled']?.invalid
+                "
               >
-                Number Of Panels is invalid
-              </label>
+                <label class="text-danger fw-semibold position-absolute">
+                  Year Installed is invalid
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="input-box">
-            <label for="dcCapacity"> DC Capacity </label>
-            <input
-              formControlName="dcCapacity"
-              type="number"
-              id="dcCapacity"
-              placeholder="DC Capacity"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
-                (pVSystemControl['dcCapacity']?.touched ||
-                  pVSystemControl['dcCapacity']?.dirty) &&
-                pVSystemControl['dcCapacity']?.invalid
-              "
-            >
-              <label
-                for="dcCapacity"
-                class="text-danger fw-semibold position-absolute"
+          <div class="col-md-6">
+            <div class="select-box">
+              <label> Direction Panels Face</label>
+              <ng-select
+                [items]="orientationOptions"
+                bindLabel="name"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                bindValue="value"
+                placeholder="Direction Panels Face"
+                id="directionPanelsFace"
+                formControlName="directionPanelsFace"
               >
-                DC Capacity is invalid
-              </label>
+              </ng-select>
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['directionPanelsFace']?.touched ||
+                    pVSystemControl['directionPanelsFace']?.dirty) &&
+                  pVSystemControl['directionPanelsFace']?.invalid
+                "
+              >
+                <label class="text-danger fw-semibold position-absolute">
+                  Direction Panels Face is invalid
+                </label>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="col-md-6">
+            <div class="select-box">
+              <label> Angle Panels Are Tilted</label>
+              <ng-select
+                [items]="anglePanelsAreTiltedOptions"
+                bindLabel="name"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                bindValue="value"
+                placeholder="Angle Panels Are Tilted"
+                id="anglePanelsAreTilted"
+                formControlName="anglePanelsAreTilted"
+              >
+              </ng-select>
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['anglePanelsAreTilted']?.touched ||
+                    pVSystemControl['anglePanelsAreTilted']?.dirty)
+                "
+              >
+                <label class="text-danger fw-semibold position-absolute">
+                  Angle Panels Are Tilted is invalid
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="select-box">
+              <label>Do you known System Capacity</label>
+              <ng-select
+                [items]="booleanOptions"
+                bindLabel="name"
+                [clearable]="true"
+                [closeOnSelect]="true"
+                bindValue="value"
+                placeholder="System Capacity"
+                id="knowSystemCapacity"
+                formControlName="knowSystemCapacity"
+              >
+              </ng-select>
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['knowSystemCapacity']?.touched ||
+                    pVSystemControl['knowSystemCapacity']?.dirty) &&
+                  pVSystemControl['knowSystemCapacity']?.invalid
+                "
+              >
+                <label class="text-danger fw-semibold position-absolute">
+                  Know System Capacity is invalid
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6"
+            *ngIf="pVSystemControl['knowSystemCapacity'].value == false"
+          >
+            <div class="input-box">
+              <label for="numberOfPanels"> Number Of Panels </label>
+              <input
+                formControlName="numberOfPanels"
+                type="number"
+                id="numberOfPanels"
+                placeholder="Number Of Panels"
+              />
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['numberOfPanels']?.touched ||
+                    pVSystemControl['numberOfPanels']?.dirty) &&
+                  pVSystemControl['numberOfPanels']?.invalid
+                "
+              >
+                <label
+                  for="numberOfPanels"
+                  class="text-danger fw-semibold position-absolute"
+                >
+                  Number Of Panels is invalid
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6"
+            *ngIf="pVSystemControl['knowSystemCapacity'].value == true"
+          >
+            <div class="input-box">
+              <label for="dcCapacity"> DC Capacity </label>
+              <input
+                formControlName="dcCapacity"
+                type="number"
+                id="dcCapacity"
+                placeholder="DC Capacity"
+              />
+              <div
+                class="errormsg"
+                *ngIf="
+                  (pVSystemControl['dcCapacity']?.touched ||
+                    pVSystemControl['dcCapacity']?.dirty) &&
+                  pVSystemControl['dcCapacity']?.invalid
+                "
+              >
+                <label
+                  for="dcCapacity"
+                  class="text-danger fw-semibold position-absolute"
+                >
+                  DC Capacity is invalid
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
       <div class="d-flex justify-content-end gap-3 mt-4">
         <button type="button" class="bg-primary btn-style" (click)="onSave()">

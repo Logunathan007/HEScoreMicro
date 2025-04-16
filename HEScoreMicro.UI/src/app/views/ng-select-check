@@ -1,27 +1,27 @@
 <div class="col-md-6">
   <div class="select-box">
-    <label> Manufactured Home Type </label>
+    <label> Year Installed </label>
     <ng-select
-      [items]=""
+      [items]="year2000Options"
       bindLabel="name"
       [clearable]="true"
       [closeOnSelect]="true"
       bindValue="value"
-      placeholder="Manufactured Home Type "
-      id="manufacturedHomeType"
-      formControlName="manufacturedHomeType"
+      placeholder="Year Installed"
+      id="yearInstalled"
+      formControlName="yearInstalled"
     >
     </ng-select>
     <div
       class="errormsg"
       *ngIf="
-        (systemItem.get('manufacturedHomeType')?.touched ||
-          systemItem.get('manufacturedHomeType')?.dirty) &&
-        systemItem.get('manufacturedHomeType')?.invalid
+        (pVSystemControl['yearInstalled']?.touched ||
+          pVSystemControl['yearInstalled']?.dirty) &&
+        pVSystemControl['yearInstalled']?.invalid
       "
     >
       <label class="text-danger fw-semibold position-absolute">
-        Manufactured Home Type is invalid
+        Year Installed is invalid
       </label>
     </div>
   </div>

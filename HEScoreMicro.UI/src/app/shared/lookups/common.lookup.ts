@@ -1,3 +1,5 @@
+import { map } from "rxjs"
+
 export const OrientationOptions = [
   { name: 'north', value: 'north' },
   { name: 'northeast', value: 'northeast' },
@@ -18,3 +20,8 @@ export const UnitOptions = [
   { name: 'Energy Factor (EF)', value: 'EF' },
   { name: 'Uniform Energy Factor (UEF)', value: 'UEF' },
 ]
+
+export const Year2000Options = Array.from(
+  { length: new Date().getFullYear() - 1999 },
+  (_, i) => ({ name: (2000 + i).toString(), value: 2000 + i })
+);

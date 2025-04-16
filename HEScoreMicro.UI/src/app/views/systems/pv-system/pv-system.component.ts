@@ -1,9 +1,9 @@
-import { OrientationOptions } from './../../../shared/lookups/common.lookup';
+import { OrientationOptions, Year2000Options } from './../../../shared/lookups/common.lookup';
 import { Component, OnInit } from "@angular/core";
 import { PVSystemReadModel } from "../../../shared/models/pv-system/pv-system.model";
 import { BooleanOptions } from "../../../shared/lookups/common.lookup";
 import { Unsubscriber } from "../../../shared/modules/unsubscribe/unsubscribe.component.";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { CommonService } from "../../../shared/services/common/common.service";
 import { PVSystemService } from "../../../shared/services/pv-system/pv-system.service";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -25,6 +25,7 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   anglePanelsAreTiltedOptions = AnglePanelsAreTiltedOptions
   orientationOptions = OrientationOptions
+  year2000Options = Year2000Options
 
   get pVSystemControl() {
     return this.pVSystemForm.controls;
@@ -48,9 +49,13 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
 
   //variable declarations
   variableDeclaration() {
-    this.pVSystemForm = this.fb.group({
+    this.pVSystemForm = this.pvSystemInput();
+  }
+
+  pvSystemInput(): FormGroup {
+    const pvSystem = this.fb.group({
       id: [null],
-      hasPhotovoltaic: [null],
+      hasPhotovoltaic: [null,[Validators.required]],
       yearInstalled: [null],
       directionPanelsFace: [null],
       anglePanelsAreTilted: [null],
@@ -59,6 +64,43 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       dcCapacity: [null],
       buildingId: [this.buildingId],
     })
+    const hasPhotovoltaic = pvSystem.get("hasPhotovoltaic") as AbstractControl
+    const yearInstalled = pvSystem.get("yearInstalled") as AbstractControl
+    const directionPanelsFace = pvSystem.get("directionPanelsFace") as AbstractControl
+    const anglePanelsAreTilted = pvSystem.get("anglePanelsAreTilted") as AbstractControl
+    const knowSystemCapacity = pvSystem.get("knowSystemCapacity") as AbstractControl
+    const numberOfPanels = pvSystem.get("numberOfPanels") as AbstractControl // 1 - 100
+    const dcCapacity = pvSystem.get("dcCapacity") as AbstractControl // 50 - 20000
+    hasPhotovoltaic?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        this.setValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity],)
+      }else{
+        this.setValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity],[])
+      }
+    })
+    knowSystemCapacity?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val:any)=>{
+      if (val) {
+        this.setValidations(dcCapacity,[Validators.required,Validators.min(50),Validators.max(20000)])
+        this.setValidations(numberOfPanels,[])
+      }else{
+        this.setValidations(numberOfPanels,[Validators.required,Validators.min(1),Validators.max(100)])
+        this.setValidations(dcCapacity,[])
+      }
+    })
+    return pvSystem;
+  }
+
+  setValidations(controls: AbstractControl | AbstractControl[], validations: ValidatorFn[] = [Validators.required]): void {
+    const updateControl = (ctrl: AbstractControl) => {
+      ctrl.setValidators(validations);
+      ctrl.updateValueAndValidity();
+    };
+
+    if (Array.isArray(controls)) {
+      controls.forEach(updateControl);
+    } else {
+      updateControl(controls);
+    }
   }
 
   getBuildingId() {
