@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="select-box">
-            <label> Photovoltaic is there your home</label>
+            <label class="required"> Photovoltaic is there your home</label>
             <ng-select
               [items]="booleanOptions"
               bindLabel="name"
@@ -33,7 +33,7 @@
         <ng-container *ngIf="pVSystemControl['hasPhotovoltaic'].value">
           <div class="col-md-6">
             <div class="select-box">
-              <label> Year Installed </label>
+              <label class="required"> Year Installed </label>
               <ng-select
                 [items]="year2000Options"
                 bindLabel="name"
@@ -61,7 +61,7 @@
           </div>
           <div class="col-md-6">
             <div class="select-box">
-              <label> Direction Panels Face</label>
+              <label class="required"> Direction Panels Face</label>
               <ng-select
                 [items]="orientationOptions"
                 bindLabel="name"
@@ -89,7 +89,7 @@
           </div>
           <div class="col-md-6">
             <div class="select-box">
-              <label> Angle Panels Are Tilted</label>
+              <label class="required"> Angle Panels Are Tilted</label>
               <ng-select
                 [items]="anglePanelsAreTiltedOptions"
                 bindLabel="name"
@@ -105,7 +105,8 @@
                 class="errormsg"
                 *ngIf="
                   (pVSystemControl['anglePanelsAreTilted']?.touched ||
-                    pVSystemControl['anglePanelsAreTilted']?.dirty)
+                    pVSystemControl['anglePanelsAreTilted']?.dirty) &&
+                  pVSystemControl['anglePanelsAreTilted']?.invalid
                 "
               >
                 <label class="text-danger fw-semibold position-absolute">
@@ -116,7 +117,7 @@
           </div>
           <div class="col-md-6">
             <div class="select-box">
-              <label>Do you known System Capacity</label>
+              <label class="required">Do you known System Capacity</label>
               <ng-select
                 [items]="booleanOptions"
                 bindLabel="name"
@@ -147,7 +148,7 @@
             *ngIf="pVSystemControl['knowSystemCapacity'].value == false"
           >
             <div class="input-box">
-              <label for="numberOfPanels"> Number Of Panels </label>
+              <label  class="required" for="numberOfPanels"> Number Of Panels </label>
               <input
                 formControlName="numberOfPanels"
                 type="number"
@@ -166,7 +167,7 @@
                   for="numberOfPanels"
                   class="text-danger fw-semibold position-absolute"
                 >
-                  Number Of Panels is invalid
+                  Number Of Panels is invalid {{ pVSystemControl['numberOfPanels'].errors | json }}
                 </label>
               </div>
             </div>
@@ -176,7 +177,7 @@
             *ngIf="pVSystemControl['knowSystemCapacity'].value == true"
           >
             <div class="input-box">
-              <label for="dcCapacity"> DC Capacity </label>
+              <label  class="required" for="dcCapacity"> DC Capacity </label>
               <input
                 formControlName="dcCapacity"
                 type="number"
@@ -195,7 +196,7 @@
                   for="dcCapacity"
                   class="text-danger fw-semibold position-absolute"
                 >
-                  DC Capacity is invalid
+                  DC Capacity is invalid {{ pVSystemControl['dcCapacity'].errors | json }}
                 </label>
               </div>
             </div>
