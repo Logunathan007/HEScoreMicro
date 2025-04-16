@@ -3,12 +3,13 @@ import { AddressReadModel } from './../../shared/models/address/address.read.mod
 import { AddressService } from './../../shared/services/address/address.service';
 import { CommonService } from '../../shared/services/common/common.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
 import { Result } from '../../shared/models/common/result.model';
+import { setValidations } from '../../shared/modules/Validators/validators.module';
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
@@ -22,6 +23,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   addressReadModel!: AddressReadModel;
   dwellingUnitTypeOptions = DwellingUnitTypeOptions
   assessmentType = AssessmentType
+  setValidations = setValidations
 
   get addressControl() {
     return this.addressForm.controls;
@@ -45,7 +47,11 @@ export class AddressComponent extends Unsubscriber implements OnInit {
 
   //variable declarations
   variableDeclaration() {
-    this.addressForm = this.fb.group({
+    this.addressForm = this.addressInput();
+  }
+
+  addressInput(){
+    var address = this.fb.group({
       id: [null,],
       dwellingUnitType: [null, Validators.required],
       streetAddress: [null, Validators.required],
@@ -56,6 +62,18 @@ export class AddressComponent extends Unsubscriber implements OnInit {
       assessmentType: [null, Validators.required],
       buildingId: [null],
     })
+    const dwellingUnitType = address.get('dwellingUnitType') as AbstractControl
+    const addressLine = address.get('addressLine') as AbstractControl
+
+    dwellingUnitType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val:any)=>{
+      if(val == "Multifamily Building Unit"){
+        this.setValidations(addressLine)
+      }else{
+        this.setValidations(addressLine,[])
+      }
+    })
+
+    return address
   }
 
   getBuildingId() {

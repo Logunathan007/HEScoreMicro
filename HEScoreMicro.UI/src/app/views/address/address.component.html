@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="input-box">
-            <label for="streetAddress"> Street Address </label>
+            <label class="required" for="streetAddress"> Street Address </label>
             <input
               formControlName="streetAddress"
               type="text"
@@ -30,7 +30,16 @@
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="addressLine"> Address Line (Apartment / Unit Number)</label>
+            <label
+              [class]="{
+                required:
+                  addressControl['dwellingUnitType']?.value ==
+                  'Multifamily Building Unit'
+              }"
+              for="addressLine"
+            >
+              Address Line (Apartment / Unit Number)</label
+            >
             <input
               formControlName="addressLine"
               type="text"
@@ -56,7 +65,7 @@
         </div>
         <div class="col-md-4">
           <div class="input-box">
-            <label for="city"> City </label>
+            <label for="city" class="required"> City </label>
             <input
               formControlName="city"
               type="text"
@@ -82,7 +91,7 @@
         </div>
         <div class="col-md-4 col-sm-6">
           <div class="input-box">
-            <label for="State"> State </label>
+            <label for="State" class="required"> State </label>
             <input
               formControlName="state"
               type="text"
@@ -108,7 +117,7 @@
         </div>
         <div class="col-md-4 col-sm-6">
           <div class="input-box">
-            <label for="zipCode"> Zipcode </label>
+            <label for="zipCode" class="required"> Zipcode </label>
             <input
               formControlName="zipCode"
               id="zipCode"
@@ -134,7 +143,7 @@
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Dwelling Unit Type </label>
+            <label class="required"> Dwelling Unit Type </label>
             <ng-select
               [items]="dwellingUnitTypeOptions"
               bindLabel="name"
@@ -162,7 +171,7 @@
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Assessment Type </label>
+            <label class="required"> Assessment Type </label>
             <ng-select
               [items]="assessmentType"
               bindLabel="name"

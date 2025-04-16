@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="input-box">
-            <label for="assessmentDate"> Assessment Date </label>
+            <label for="assessmentDate" class="required"> Assessment Date </label>
             <input
               formControlName="assessmentDate"
               type="text"
@@ -31,7 +31,7 @@
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="yearBuilt"> Year Built </label>
+            <label for="yearBuilt" class="required"> Year Built </label>
             <input
               formControlName="yearBuilt"
               type="number"
@@ -50,14 +50,14 @@
                 for="yearBuilt"
                 class="text-danger fw-semibold position-absolute"
               >
-                Year Built is invalid
+                Year Built is invalid {{ aboutControl['yearBuilt']?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="numberOfBedrooms"> Number Of Bedrooms </label>
+            <label for="numberOfBedrooms" class="required"> Number Of Bedrooms </label>
             <input
               formControlName="numberOfBedrooms"
               type="text"
@@ -76,14 +76,14 @@
                 for="numberOfBedrooms"
                 class="text-danger fw-semibold position-absolute"
               >
-                Number Of Bedrooms is invalid
+                Number Of Bedrooms is invalid {{ aboutControl['numberOfBedrooms']?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="storiesAboveGroundLevel">
+            <label for="storiesAboveGroundLevel" class="required">
               Stories Above Ground Level
             </label>
             <input
@@ -104,14 +104,14 @@
                 for="storiesAboveGroundLevel"
                 class="text-danger fw-semibold position-absolute"
               >
-                Stories Above Ground Level is invalid
+                Stories Above Ground Level is invalid {{ aboutControl['storiesAboveGroundLevel']?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="interiorFloorToCeilingHeight">
+            <label for="interiorFloorToCeilingHeight" class="required">
               Interior Floor To Ceiling Height
             </label>
             <input
@@ -132,14 +132,14 @@
                 for="interiorFloorToCeilingHeight"
                 class="text-danger fw-semibold position-absolute"
               >
-                Interior Floor To Ceiling Height is invalid
+                Interior Floor To Ceiling Height is invalid {{ aboutControl['interiorFloorToCeilingHeight']?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="totalConditionedFloorArea">
+            <label for="totalConditionedFloorArea" class="required">
               Total Conditioned Floor Area
             </label>
             <input
@@ -167,7 +167,7 @@
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Direction Faced By Front Of Home </label>
+            <label class="required"> Direction Faced By Front Of Home </label>
             <ng-select
               [items]="orientationOptions"
               bindLabel="name"
@@ -195,7 +195,7 @@
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Blower Door Test Conducted </label>
+            <label class="required"> Blower Door Test Conducted </label>
             <ng-select
               [items]="booleanOptions"
               bindLabel="name"
@@ -221,9 +221,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="input-box">
-            <label for="airLeakageRate"> Air Leakage Rate </label>
+        <div class="col-md-6" *ngIf="aboutControl['blowerDoorTestConducted'].value">
+          <div class="input-box" >
+            <label for="airLeakageRate" class="required"> Air Leakage Rate </label>
             <input
               formControlName="airLeakageRate"
               type="number"
@@ -242,14 +242,14 @@
                 for="airLeakageRate"
                 class="text-danger fw-semibold position-absolute"
               >
-                Air Leakage Rate is invalid
+                Air Leakage Rate is invalid {{ aboutControl['airLeakageRate']?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Air Sealed </label>
+            <label class="required"> Air Sealed </label>
             <ng-select
               [items]="booleanOptions"
               bindLabel="name"
@@ -277,7 +277,7 @@
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="numberofUnitsInBuilding">
+            <label for="numberofUnitsInBuilding" class="required">
               Number of Units In Building
             </label>
             <input
@@ -305,7 +305,7 @@
         </div>
         <div class="col-md-6">
           <div class="select-box">
-            <label> Manufactured Home Type </label>
+            <label class="required"> Manufactured Home Type </label>
             <ng-select
               [items]="manufacturedHomeTypeOptions"
               bindLabel="name"

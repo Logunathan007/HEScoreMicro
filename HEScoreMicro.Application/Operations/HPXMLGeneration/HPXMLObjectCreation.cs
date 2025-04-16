@@ -225,7 +225,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 CityMunicipality = addressDTO.City,
                 AddressType = "street",
                 StateCode = addressDTO.State,
-                ZipCode = addressDTO.ZipCode
+                ZipCode = addressDTO.ZipCode.ToString("D5")
             };
         }
 
@@ -245,15 +245,15 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         UnitofMeasure = "CFM",
                         AirLeakage = aboutDTO.AirLeakageRate,
                     } : null,
-                    LeakinessDescription = (!aboutDTO.BlowerDoorTestConducted) ? ((aboutDTO.AirSealed == true) ? "tight" : "average") : null,
+                    LeakinessDescription = (aboutDTO.AirSealed == true) ? "tight" : "average"
                 },
-                AirSealing = (aboutDTO.BlowerDoorTestConducted) ? null : new AirSealing()
+                AirSealing = (aboutDTO.AirSealed == true) ? new AirSealing()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
                         Id = "AirSealing-1"
                     },
-                },
+                } : null,
             };
         }
         public void GenerateAtticsObject(Domain.Entity.ZoneRoofAttics.ZoneRoofDTO zoneRoofDTOs, List<Attic> attics, List<Floor> floors, List<Wall> walls, List<Roof> roofs, List<Skylight> skylights)
@@ -1382,15 +1382,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         }
         public WaterHeating GenerateWaterHeater(Domain.Entity.WaterHeaterDTO waterHeater)
         {
-            /*Electric Storage*/
-            /*Natural Gas Storage*/
-            /*Propane(LPG) Storage*/
-            /*Oil Storage*/
-            /*Electric Instantaneous*/
-            /*Gas Instantaneous*/
-            /*Propane Instantaneous*/
-            /*Oil Instantaneous*/
-            /*Electric Heat Pump*/
             if (waterHeater == null)
             {
                 return null;

@@ -1,6 +1,6 @@
 export interface AboutReadModel {
   id?: string | null;
-  assessmentDate: string | null;
+  assessmentDate: Date | null;
   comments: string | null;
   yearBuilt: number | null;
   numberOfBedrooms: number | null;

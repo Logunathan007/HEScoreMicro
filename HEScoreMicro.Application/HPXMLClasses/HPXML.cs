@@ -67,7 +67,7 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public string Address2 { get; set; }
         public string CityMunicipality { get; set; }
         public string StateCode { get; set; }
-        public int ZipCode { get; set; }
+        public string ZipCode { get; set; }
     }
 
     public class ProjectStatus
