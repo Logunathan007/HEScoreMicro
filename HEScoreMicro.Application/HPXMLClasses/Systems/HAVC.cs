@@ -53,7 +53,7 @@ public class Fireplace { }
 public class Stove { }
 public class SpaceHeater { }
 public class SolarThermal { }
-public class DistrictSteam { }
+public class DistrictSteam { }  
 public class AnnualHeatingEfficiency
 {
     public string? Units { get; set; }

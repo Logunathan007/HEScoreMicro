@@ -1,8 +1,8 @@
 import { WaterHeaterTypeOptions } from './../../../shared/lookups/water-heater.lookup';
-import { UnitOptions } from './../../../shared/lookups/common.lookup';
+import { UnitOptions, Year1972Options } from './../../../shared/lookups/common.lookup';
 import { Component, OnInit } from "@angular/core";
 import { Unsubscriber } from "../../../shared/modules/unsubscribe/unsubscribe.component.";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { WaterHeaterReadModel } from "../../../shared/models/water-heater/water-heater.model";
 import { BooleanOptions } from "../../../shared/lookups/common.lookup";
 import { CommonService } from "../../../shared/services/common/common.service";
@@ -10,6 +10,7 @@ import { WaterHeaterService } from "../../../shared/services/water-heater/water-
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { Result } from "../../../shared/models/common/result.model";
+import { resetControls, resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-water-heating-system',
@@ -25,6 +26,10 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   unitOptions = UnitOptions
   waterHeaterTypeOptions = WaterHeaterTypeOptions
+  year1972Options = Year1972Options
+  setValidations = setValidations
+  resetControls = resetControls
+  resetValuesAndValidations = resetValuesAndValidations
 
   get waterHeaterControl() {
     return this.waterHeaterForm.controls;
@@ -48,15 +53,64 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
 
   //variable declarations
   variableDeclaration() {
-    this.waterHeaterForm = this.fb.group({
+    this.waterHeaterForm = this.waterHeaterInput();
+  }
+
+  waterHeaterInput(): FormGroup {
+    var waterHeater = this.fb.group({
       id: [null],
-      waterHeaterType: [null],
+      waterHeaterType: [null, Validators.required],
       knowWaterHeaterEnergyFactor: [null],
       unit: [null],
       energyValue: [null],
       yearOfManufacture: [null],
       buildingId: [this.buildingId],
     })
+    const waterHeaterType = waterHeater.get('waterHeaterType') as AbstractControl
+    const knowWaterHeaterEnergyFactor = waterHeater.get('knowWaterHeaterEnergyFactor') as AbstractControl
+    const unit = waterHeater.get('unit') as AbstractControl
+    const energyValue = waterHeater.get('energyValue') as AbstractControl
+    const yearOfManufacture = waterHeater.get('yearOfManufacture') as AbstractControl
+    waterHeaterType.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      if (val.endsWith("Storage")) {
+        this.setValidations(knowWaterHeaterEnergyFactor)
+        this.resetValuesAndValidations([unit, energyValue])
+      } else if (val) {
+        this.setValidations(unit)
+        this.setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
+        this.resetValuesAndValidations([knowWaterHeaterEnergyFactor, yearOfManufacture])
+      } else {
+        this.resetValuesAndValidations([unit, energyValue, knowWaterHeaterEnergyFactor, yearOfManufacture])
+      }
+    })
+    knowWaterHeaterEnergyFactor.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: boolean) => {
+      if (val == true) {
+        this.setValidations(unit)
+        this.setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
+        this.resetValuesAndValidations(yearOfManufacture)
+      }
+      else if (val == false) {
+        this.setValidations(yearOfManufacture)
+        this.resetValuesAndValidations([unit, energyValue])
+      } else {
+        this.resetValuesAndValidations([yearOfManufacture])
+      }
+    })
+    return waterHeater;
+  }
+
+  energyValueValidation(waterHeaterType: string | null): ValidatorFn[] {
+    if (waterHeaterType?.endsWith("Storage")) {
+      return [Validators.required, Validators.min(0.45), Validators.max(0.95)]
+    } else if (waterHeaterType == "Electric Instantaneous") {
+      return [Validators.required, Validators.min(0.86), Validators.max(0.99)]
+    } else if (waterHeaterType?.endsWith("Instantaneous")) {
+      return [Validators.required, Validators.min(0.7), Validators.max(0.99)]
+    } else if (waterHeaterType == "Electric Heat Pump") {
+      return [Validators.required, Validators.min(1), Validators.max(5)]
+    } else {
+      return [Validators.required]
+    }
   }
 
   getBuildingId() {

@@ -1440,12 +1440,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     wh.WaterHeatingSystem.FuelType = "fuel oil";
                     break;
                 case "Electric Heat Pump":
-                    wh.WaterHeatingSystem.WaterHeaterType = "dedicated boiler with storage tank";
+                    wh.WaterHeatingSystem.WaterHeaterType = "heat pump water heater";
                     wh.WaterHeatingSystem.FuelType = "electricity";
                     break;
             }
             wh.WaterHeatingSystem.ModelYear = waterHeater.YearOfManufacture;
-            if (waterHeater.KnowWaterHeaterEnergyFactor == true)
+            if (waterHeater.KnowWaterHeaterEnergyFactor == true || wh.WaterHeatingSystem.ModelYear == null)
             {
                 if (waterHeater.Unit == "EF")
                 {
