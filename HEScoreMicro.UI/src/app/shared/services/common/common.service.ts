@@ -6,9 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class CommonService {
   public buildingId: string | undefined | null = "";
-  /**
-   *
-   */
+
   constructor() {
     console.log("Common Service Called");
   }

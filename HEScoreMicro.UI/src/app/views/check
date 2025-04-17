@@ -24,3 +24,12 @@
     </div>
   </div>
 </div>
+export const CoolingSystemTypeOptions = [
+  { name: "None", value: "None" },
+  { name: "Central air conditioner", value: "Central air conditioner" },
+  { name: "Room air conditioner", value: "Room air conditioner" },
+  { name: "Electric heat pump", value: "Electric heat pump" },
+  { name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
+  { name: "Direct evaporative cooling", value: "Direct evaporative cooling" },
+  { name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
+]

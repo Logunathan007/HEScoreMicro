@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="select-box">
-          <label> System Count </label>
+          <label class="required"> System Count </label>
           <ng-select
             [items]="systemCountOptions"
             bindLabel="name"
@@ -38,9 +38,12 @@
         >
           <ng-container [formGroupName]="systemIndex">
             <h4 class="col-12 my-3">System {{ systemIndex + 1 }}</h4>
-            <div class="col-md-6">
+            <div
+              class="col-md-6"
+              *ngIf="heatingCoolingSystemForm.get('systemCount')?.value > 1"
+            >
               <div class="input-box">
-                <label for="percentAreaServed">
+                <label class="required" for="percentAreaServed">
                   Percentage of Area Served
                 </label>
                 <input
@@ -69,7 +72,7 @@
             <h5 class="col-12 mt-3">Heating System</h5>
             <div class="col-md-6">
               <div class="select-box">
-                <label> Heating System Type </label>
+                <label class="required"> Heating System Type </label>
                 <ng-select
                   [items]="heatingSystemTypeOptions"
                   bindLabel="name"
@@ -95,9 +98,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div
+              class="col-md-6"
+              *ngIf="systemItem.get('heatingTracker')?.value?.efficiencyOptions"
+            >
               <div class="select-box">
-                <label> Know Heating Efficiency </label>
+                <label class="required"> Know Heating Efficiency </label>
                 <ng-select
                   [items]="booleanOptions"
                   bindLabel="name"
@@ -123,65 +129,88 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="select-box">
-                <label> Heating System Efficiency Unit </label>
-                <ng-select
-                  [items]="heatingEfficiencyUnitOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Heating System Efficiency Unit"
-                  id="heatingSystemEfficiencyUnit"
-                  formControlName="heatingSystemEfficiencyUnit"
-                >
-                </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('heatingSystemEfficiencyUnit')?.touched ||
-                      systemItem.get('heatingSystemEfficiencyUnit')?.dirty) &&
-                    systemItem.get('heatingSystemEfficiencyUnit')?.invalid
-                  "
-                >
-                  <label class="text-danger fw-semibold position-absolute">
-                    Heating System Efficiency Unit is invalid
+            <ng-container
+              *ngIf="
+                (systemItem.get('heatingTracker')?.value?.efficiencyOptions &&
+                  systemItem.get('knowHeatingEfficiency')?.value) ||
+                (systemItem.get('heatingTracker')?.value?.efficiencyOptions ==
+                  false &&
+                  systemItem.get('heatingTracker')?.value?.efficiencyValue)
+              "
+            >
+              <div
+                class="col-md-6"
+                *ngIf="systemItem.get('heatingTracker')?.value?.efficiencyUnit"
+              >
+                <div class="select-box">
+                  <label class="required">
+                    Heating System Efficiency Unit
                   </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-box">
-                <label for="heatingSystemEfficiencyValue">
-                  Heating System Efficiency Value
-                </label>
-                <input
-                  formControlName="heatingSystemEfficiencyValue"
-                  type="number"
-                  id="heatingSystemEfficiencyValue"
-                  placeholder="Heating System Efficiency Value"
-                />
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('heatingSystemEfficiencyValue')?.touched ||
-                      systemItem.get('heatingSystemEfficiencyValue')?.dirty) &&
-                    systemItem.get('heatingSystemEfficiencyValue')?.invalid
-                  "
-                >
-                  <label
-                    for="heatingSystemEfficiencyValue"
-                    class="text-danger fw-semibold position-absolute"
+                  <ng-select
+                    [items]="heatingEfficiencyUnitOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Heating System Efficiency Unit"
+                    id="heatingSystemEfficiencyUnit"
+                    formControlName="heatingSystemEfficiencyUnit"
                   >
-                    Heating System Efficiency Value is invalid
-                  </label>
+                  </ng-select>
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('heatingSystemEfficiencyUnit')?.touched ||
+                        systemItem.get('heatingSystemEfficiencyUnit')?.dirty) &&
+                      systemItem.get('heatingSystemEfficiencyUnit')?.invalid
+                    "
+                  >
+                    <label class="text-danger fw-semibold position-absolute">
+                      Heating System Efficiency Unit is invalid
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
+              <div class="col-md-6">
+                <div class="input-box">
+                  <label class="required" for="heatingSystemEfficiencyValue">
+                    Heating System Efficiency Value
+                  </label>
+                  <input
+                    formControlName="heatingSystemEfficiencyValue"
+                    type="number"
+                    id="heatingSystemEfficiencyValue"
+                    placeholder="Heating System Efficiency Value"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('heatingSystemEfficiencyValue')
+                        ?.touched ||
+                        systemItem.get('heatingSystemEfficiencyValue')
+                          ?.dirty) &&
+                      systemItem.get('heatingSystemEfficiencyValue')?.invalid
+                    "
+                  >
+                    <label
+                      for="heatingSystemEfficiencyValue"
+                      class="text-danger fw-semibold position-absolute"
+                    >
+                      Heating System Efficiency Value is invalid
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div
+              class="col-md-6"
+              *ngIf="
+                systemItem.get('heatingTracker')?.value?.efficiencyOptions &&
+                systemItem.get('knowHeatingEfficiency')?.value == false
+              "
+            >
               <div class="input-box">
-                <label for="heatingSystemYearInstalled">
+                <label class="required" for="heatingSystemYearInstalled">
                   Heating System Year Installed
                 </label>
                 <input
@@ -210,7 +239,7 @@
             <h5 class="col-12 mt-3">Cooling System</h5>
             <div class="col-md-6">
               <div class="select-box">
-                <label> Cooling System Type </label>
+                <label class="required"> Cooling System Type </label>
                 <ng-select
                   [items]="coolingSystemTypeOptions"
                   bindLabel="name"
@@ -236,9 +265,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div
+              class="col-md-6"
+              *ngIf="systemItem.get('coolingTracker')?.value?.efficiencyOptions"
+            >
               <div class="select-box">
-                <label> Know Cooling Efficiency </label>
+                <label class="required"> Know Cooling Efficiency </label>
                 <ng-select
                   [items]="booleanOptions"
                   bindLabel="name"
@@ -264,65 +296,88 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="select-box">
-                <label> Cooling System Efficiency Unit </label>
-                <ng-select
-                  [items]="coolingEfficiencyUnitOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Cooling System Efficiency Unit"
-                  id="coolingSystemEfficiencyUnit"
-                  formControlName="coolingSystemEfficiencyUnit"
-                >
-                </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('coolingSystemEfficiencyUnit')?.touched ||
-                      systemItem.get('coolingSystemEfficiencyUnit')?.dirty) &&
-                    systemItem.get('coolingSystemEfficiencyUnit')?.invalid
-                  "
-                >
-                  <label class="text-danger fw-semibold position-absolute">
-                    Cooling System Efficiency Unit is invalid
+            <ng-container
+              *ngIf="
+                (systemItem.get('coolingTracker')?.value?.efficiencyOptions &&
+                  systemItem.get('knowCoolingEfficiency')?.value) ||
+                (systemItem.get('coolingTracker')?.value?.efficiencyOptions ==
+                  false &&
+                  systemItem.get('coolingTracker')?.value?.efficiencyValue)
+              "
+            >
+              <div
+                class="col-md-6"
+                *ngIf="systemItem.get('coolingTracker')?.value?.efficiencyUnit"
+              >
+                <div class="select-box">
+                  <label class="required">
+                    Cooling System Efficiency Unit
                   </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-box">
-                <label for="coolingSystemEfficiencyValue">
-                  Cooling System Efficiency Value
-                </label>
-                <input
-                  formControlName="coolingSystemEfficiencyValue"
-                  type="number"
-                  id="coolingSystemEfficiencyValue"
-                  placeholder="Cooling System Efficiency Value"
-                />
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('coolingSystemEfficiencyValue')?.touched ||
-                      systemItem.get('coolingSystemEfficiencyValue')?.dirty) &&
-                    systemItem.get('coolingSystemEfficiencyValue')?.invalid
-                  "
-                >
-                  <label
-                    for="coolingSystemEfficiencyValue"
-                    class="text-danger fw-semibold position-absolute"
+                  <ng-select
+                    [items]="coolingEfficiencyUnitOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Cooling System Efficiency Unit"
+                    id="coolingSystemEfficiencyUnit"
+                    formControlName="coolingSystemEfficiencyUnit"
                   >
-                    Cooling System Efficiency Value is invalid
-                  </label>
+                  </ng-select>
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('coolingSystemEfficiencyUnit')?.touched ||
+                        systemItem.get('coolingSystemEfficiencyUnit')?.dirty) &&
+                      systemItem.get('coolingSystemEfficiencyUnit')?.invalid
+                    "
+                  >
+                    <label class="text-danger fw-semibold position-absolute">
+                      Cooling System Efficiency Unit is invalid
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
+              <div class="col-md-6">
+                <div class="input-box">
+                  <label class="required" for="coolingSystemEfficiencyValue">
+                    Cooling System Efficiency Value
+                  </label>
+                  <input
+                    formControlName="coolingSystemEfficiencyValue"
+                    type="number"
+                    id="coolingSystemEfficiencyValue"
+                    placeholder="Cooling System Efficiency Value"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('coolingSystemEfficiencyValue')
+                        ?.touched ||
+                        systemItem.get('coolingSystemEfficiencyValue')
+                          ?.dirty) &&
+                      systemItem.get('coolingSystemEfficiencyValue')?.invalid
+                    "
+                  >
+                    <label
+                      for="coolingSystemEfficiencyValue"
+                      class="text-danger fw-semibold position-absolute"
+                    >
+                      Cooling System Efficiency Value is invalid
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <div
+              class="col-md-6"
+              *ngIf="
+                systemItem.get('coolingTracker')?.value?.efficiencyOptions &&
+                systemItem.get('knowCoolingEfficiency')?.value == false
+              "
+            >
               <div class="input-box">
-                <label for="coolingSystemYearInstalled">
+                <label class="required" for="coolingSystemYearInstalled">
                   Cooling System Year Installed
                 </label>
                 <input
@@ -348,219 +403,232 @@
                 </div>
               </div>
             </div>
-            <h5 class="col-12 mt-3">Ducts</h5>
-            <div class="col-md-6">
-              <div class="select-box">
-                <label> Duct Leakage Test Performed </label>
-                <ng-select
-                  [items]="booleanOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Duct Leakage Test Performed"
-                  id="ductLeakageTestPerformed"
-                  formControlName="ductLeakageTestPerformed"
-                >
-                </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('ductLeakageTestPerformed')?.touched ||
-                      systemItem.get('ductLeakageTestPerformed')?.dirty) &&
-                    systemItem.get('ductLeakageTestPerformed')?.invalid
-                  "
-                >
-                  <label class="text-danger fw-semibold position-absolute">
-                    Duct Leakage Test Performed is invalid
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="input-box">
-                <label for="ductLeakageTestValue">
-                  DuctLeakage Test Value
-                </label>
-                <input
-                  formControlName="ductLeakageTestValue"
-                  type="number"
-                  id="ductLeakageTestValue"
-                  placeholder="DuctLeakage Test Value"
-                />
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('ductLeakageTestValue')?.touched ||
-                      systemItem.get('ductLeakageTestValue')?.dirty) &&
-                    systemItem.get('ductLeakageTestValue')?.invalid
-                  "
-                >
-                  <label
-                    for="ductLeakageTestValue"
-                    class="text-danger fw-semibold position-absolute"
+            <ng-container
+              *ngIf="
+                systemItem.get('heatingTracker')?.value?.ducts ||
+                systemItem.get('coolingTracker')?.value?.ducts
+              "
+            >
+              <h5 class="col-12 mt-3">Ducts</h5>
+              <div class="col-md-6">
+                <div class="select-box">
+                  <label class="required"> Duct Leakage Test Performed </label>
+                  <ng-select
+                    [items]="booleanOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Duct Leakage Test Performed"
+                    id="ductLeakageTestPerformed"
+                    formControlName="ductLeakageTestPerformed"
                   >
-                    DuctLeakage Test Value is invalid
-                  </label>
+                  </ng-select>
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('ductLeakageTestPerformed')?.touched ||
+                        systemItem.get('ductLeakageTestPerformed')?.dirty) &&
+                      systemItem.get('ductLeakageTestPerformed')?.invalid
+                    "
+                  >
+                    <label class="text-danger fw-semibold position-absolute">
+                      Duct Leakage Test Performed is invalid
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="select-box">
-                <label> Duct Are Professionally Sealed </label>
-                <ng-select
-                  [items]="booleanOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Duct Are Professionally Sealed"
-                  id="ductAreProfessionallySealed"
-                  formControlName="ductAreProfessionallySealed"
-                >
-                </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('ductAreProfessionallySealed')?.touched ||
-                      systemItem.get('ductAreProfessionallySealed')?.dirty) &&
-                    systemItem.get('ductAreProfessionallySealed')?.invalid
+              <div class="col-md-6">
+                <div class="input-box">
+                  <label class="required" for="ductLeakageTestValue">
+                    DuctLeakage Test Value
+                  </label>
+                  <input
+                    formControlName="ductLeakageTestValue"
+                    type="number"
+                    id="ductLeakageTestValue"
+                    placeholder="DuctLeakage Test Value"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('ductLeakageTestValue')?.touched ||
+                        systemItem.get('ductLeakageTestValue')?.dirty) &&
+                      systemItem.get('ductLeakageTestValue')?.invalid
+                    "
+                  >
+                    <label
+                      for="ductLeakageTestValue"
+                      class="text-danger fw-semibold position-absolute"
+                    >
+                      DuctLeakage Test Value is invalid
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="select-box">
+                  <label class="required">
+                    Duct Are Professionally Sealed
+                  </label>
+                  <ng-select
+                    [items]="booleanOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Duct Are Professionally Sealed"
+                    id="ductAreProfessionallySealed"
+                    formControlName="ductAreProfessionallySealed"
+                  >
+                  </ng-select>
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('ductAreProfessionallySealed')?.touched ||
+                        systemItem.get('ductAreProfessionallySealed')?.dirty) &&
+                      systemItem.get('ductAreProfessionallySealed')?.invalid
+                    "
+                  >
+                    <label class="text-danger fw-semibold position-absolute">
+                      Duct Are Professionally Sealed is invalid
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="select-box">
+                  <label class="required"> Duct Location Count </label>
+                  <ng-select
+                    [items]="ductLocationCountOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Duct Location Count"
+                    id="ductLocationCount"
+                    formControlName="ductLocationCount"
+                  >
+                  </ng-select>
+                  <div
+                    class="errormsg"
+                    *ngIf="
+                      (systemItem.get('ductLocationCount')?.touched ||
+                        systemItem.get('ductLocationCount')?.dirty) &&
+                      systemItem.get('ductLocationCount')?.invalid
+                    "
+                  >
+                    <label class="text-danger fw-semibold position-absolute">
+                      Duct Location Count is invalid
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <ng-container formArrayName="ductLocations">
+                <ng-container
+                  *ngFor="
+                    let ductLocationItem of ductLocationsObj(systemIndex)
+                      .controls;
+                    let ductLocationIndex = index
                   "
                 >
-                  <label class="text-danger fw-semibold position-absolute">
-                    Duct Are Professionally Sealed is invalid
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="select-box">
-                <label> Duct Location Count </label>
-                <ng-select
-                  [items]="ductLocationCountOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Duct Location Count"
-                  id="ductLocationCount"
-                  formControlName="ductLocationCount"
-                >
-                </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
-                    (systemItem.get('ductLocationCount')?.touched ||
-                      systemItem.get('ductLocationCount')?.dirty) &&
-                    systemItem.get('ductLocationCount')?.invalid
-                  "
-                >
-                  <label class="text-danger fw-semibold position-absolute">
-                    Duct Location Count is invalid
-                  </label>
-                </div>
-              </div>
-            </div>
-            <ng-container formArrayName="ductLocations">
-              <ng-container
-                *ngFor="
-                  let ductLocationItem of ductLocationsObj(systemIndex)
-                    .controls;
-                  let ductLocationIndex = index
-                "
-              >
-                <ng-container [formGroupName]="ductLocationIndex">
-                  <h5 class="mt-4 col-12">
-                    Duct Location {{ ductLocationIndex + 1 }}
-                  </h5>
-                  <div class="col-md-6">
-                    <div class="select-box">
-                      <label> Location </label>
-                      <ng-select
-                        [items]="ductLocationOptions"
-                        bindLabel="name"
-                        [clearable]="true"
-                        [closeOnSelect]="true"
-                        bindValue="value"
-                        placeholder="Location"
-                        id="location"
-                        formControlName="location"
-                      >
-                      </ng-select>
-                      <div
-                        class="errormsg"
-                        *ngIf="
-                          (ductLocationItem.get('location')?.touched ||
-                            ductLocationItem.get('location')?.dirty) &&
-                          ductLocationItem.get('location')?.invalid
-                        "
-                      >
-                        <label
-                          class="text-danger fw-semibold position-absolute"
+                  <ng-container [formGroupName]="ductLocationIndex">
+                    <h5 class="mt-4 col-12">
+                      Duct Location {{ ductLocationIndex + 1 }}
+                    </h5>
+                    <div class="col-md-6">
+                      <div class="select-box">
+                        <label class="required"> Location </label>
+                        <ng-select
+                          [items]="ductLocationOptions"
+                          bindLabel="name"
+                          [clearable]="true"
+                          [closeOnSelect]="true"
+                          bindValue="value"
+                          placeholder="Location"
+                          id="location"
+                          formControlName="location"
                         >
-                          Location is invalid
-                        </label>
+                        </ng-select>
+                        <div
+                          class="errormsg"
+                          *ngIf="
+                            (ductLocationItem.get('location')?.touched ||
+                              ductLocationItem.get('location')?.dirty) &&
+                            ductLocationItem.get('location')?.invalid
+                          "
+                        >
+                          <label
+                            class="text-danger fw-semibold position-absolute"
+                          >
+                            Location is invalid
+                          </label>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="input-box">
-                      <label for="percentageOfDucts">
-                        Percentage of ducts
-                      </label>
-                      <input
-                        formControlName="percentageOfDucts"
-                        type="number"
-                        id="percentageOfDucts"
-                        placeholder="Percentage of ducts"
-                      />
-                      <div
-                        class="errormsg"
-                        *ngIf="
-                          (ductLocationItem.get('percentageOfDucts')?.touched ||
-                            ductLocationItem.get('percentageOfDucts')?.dirty) &&
-                          ductLocationItem.get('percentageOfDucts')?.invalid
-                        "
-                      >
-                        <label
-                          for="percentageOfDucts"
-                          class="text-danger fw-semibold position-absolute"
-                        >
-                          Percentage of ducts is invalid
+                    <div class="col-md-6">
+                      <div class="input-box">
+                        <label class="required" for="percentageOfDucts">
+                          Percentage of ducts
                         </label>
+                        <input
+                          formControlName="percentageOfDucts"
+                          type="number"
+                          id="percentageOfDucts"
+                          placeholder="Percentage of ducts"
+                        />
+                        <div
+                          class="errormsg"
+                          *ngIf="
+                            (ductLocationItem.get('percentageOfDucts')
+                              ?.touched ||
+                              ductLocationItem.get('percentageOfDucts')
+                                ?.dirty) &&
+                            ductLocationItem.get('percentageOfDucts')?.invalid
+                          "
+                        >
+                          <label
+                            for="percentageOfDucts"
+                            class="text-danger fw-semibold position-absolute"
+                          >
+                            Percentage of ducts is invalid
+                          </label>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="select-box">
-                      <label> Ducts Is Insulated </label>
-                      <ng-select
-                        [items]="booleanOptions"
-                        bindLabel="name"
-                        [clearable]="true"
-                        [closeOnSelect]="true"
-                        bindValue="value"
-                        placeholder="Ducts Is Insulated "
-                        id="ductsIsInsulated"
-                        formControlName="ductsIsInsulated"
-                      >
-                      </ng-select>
-                      <div
-                        class="errormsg"
-                        *ngIf="
-                          (ductLocationItem.get('ductsIsInsulated')?.touched ||
-                            ductLocationItem.get('ductsIsInsulated')?.dirty) &&
-                          ductLocationItem.get('ductsIsInsulated')?.invalid
-                        "
-                      >
-                        <label
-                          class="text-danger fw-semibold position-absolute"
+                    <div class="col-md-6">
+                      <div class="select-box">
+                        <label class="required"> Ducts Is Insulated </label>
+                        <ng-select
+                          [items]="booleanOptions"
+                          bindLabel="name"
+                          [clearable]="true"
+                          [closeOnSelect]="true"
+                          bindValue="value"
+                          placeholder="Ducts Is Insulated "
+                          id="ductsIsInsulated"
+                          formControlName="ductsIsInsulated"
                         >
-                          Ducts Is Insulated is invalid
-                        </label>
+                        </ng-select>
+                        <div
+                          class="errormsg"
+                          *ngIf="
+                            (ductLocationItem.get('ductsIsInsulated')
+                              ?.touched ||
+                              ductLocationItem.get('ductsIsInsulated')
+                                ?.dirty) &&
+                            ductLocationItem.get('ductsIsInsulated')?.invalid
+                          "
+                        >
+                          <label
+                            class="text-danger fw-semibold position-absolute"
+                          >
+                            Ducts Is Insulated is invalid
+                          </label>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </ng-container>
                 </ng-container>
               </ng-container>
             </ng-container>

@@ -92,7 +92,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
       id: [null,],
       foundationType: [null, [Validators.required]],
       foundationArea: [null, [Validators.required]],
-      typeStatus: [{ wall: false, floor: false, slab: false }],
+      tracker: [{ wall: false, floor: false, slab: false }],
       slabInsulationLevel: [null,],
       floorInsulationLevel: [null,],
       foundationwallsInsulationLevel: [null,],
@@ -100,13 +100,13 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     })
 
     const foundationType = found.get('foundationType') as AbstractControl
-    const typeStatus = found.get('typeStatus') as AbstractControl
+    const tracker = found.get('tracker') as AbstractControl
     const slabInsulationLevel = found.get('slabInsulationLevel') as AbstractControl
     const floorInsulationLevel = found.get('floorInsulationLevel') as AbstractControl
     const foundationwallsInsulationLevel = found.get('foundationwallsInsulationLevel') as AbstractControl
 
     const enableWallFloor = () => {
-      typeStatus.setValue({ wall: true, floor: true, slab: false })
+      tracker.setValue({ wall: true, floor: true, slab: false })
       this.setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
       this.resetValuesAndValidations(slabInsulationLevel)
     }
@@ -114,7 +114,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     foundationType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       switch (foundationType.value) {
         case "Slab-on-grade foundation":
-          typeStatus.setValue({ wall: false, floor: false, slab: true })
+          tracker.setValue({ wall: false, floor: false, slab: true })
           this.setValidations(slabInsulationLevel)
           this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel])
           break;
@@ -122,7 +122,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
           enableWallFloor();
           break;
         case "Conditioned Basement":
-          typeStatus.setValue({ wall: true, floor: false, slab: false })
+          tracker.setValue({ wall: true, floor: false, slab: false })
           this.setValidations(foundationwallsInsulationLevel)
           this.resetValuesAndValidations([floorInsulationLevel, slabInsulationLevel])
           break;
@@ -133,13 +133,13 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
           enableWallFloor();
           break;
         case "Belly and Wing":
-          typeStatus.setValue({ wall: false, floor: true, slab: false })
+          tracker.setValue({ wall: false, floor: true, slab: false })
           this.setValidations(floorInsulationLevel)
           this.resetValuesAndValidations([slabInsulationLevel, foundationwallsInsulationLevel])
           break;
         default:
           this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel, slabInsulationLevel])
-          typeStatus.setValue({ wall: false, floor: false, slab: false })
+          tracker.setValue({ wall: false, floor: false, slab: false })
       }
     })
     return found;

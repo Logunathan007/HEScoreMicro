@@ -2,7 +2,7 @@ import { SystemsService } from './../../../shared/services/heating-cooling-syste
 import { DuctLocationService } from './../../../shared/services/heating-cooling-system/duct-location.service';
 import { Component, OnInit } from '@angular/core';
 import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
 import { BooleanOptions } from '../../../shared/lookups/common.lookup';
@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs';
 import { Result } from '../../../shared/models/common/result.model';
 import { DuctLocationReadModel } from '../../../shared/models/heating-cooling-system/duct-location-model';
 import { SystemsModule } from '../systems.module';
+import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-heating-cooling-system',
@@ -27,6 +28,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   buildingId: string | null | undefined;
   heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
   removeNullIdProperties = removeNullIdProperties
+  setValidations = setValidations
+  resetValuesAndValidations = resetValuesAndValidations
   booleanOptions = BooleanOptions
   heatingSystemTypeOptions = HeatingSystemTypeOptions
   coolingSystemTypeOptions = CoolingSystemTypeOptions
@@ -75,7 +78,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     var heatingCoolingSystem = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      systemCount: [null],
+      systemCount: [1, [Validators.required]],
       systems: this.fb.array([this.systemsInputs()]),
     })
     heatingCoolingSystem.get('systemCount')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -85,8 +88,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
             if (this.systemsObj.length == 1) {
               this.systemsObj.push(this.systemsInputs())
             }
-          }else if(val == 1){
-            if(this.systemsObj.length == 2){
+          } else if (val == 1) {
+            if (this.systemsObj.length == 2) {
               this.deleteSystems();
             }
           }
@@ -104,25 +107,176 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       id: [null],
       buildingId: [this.buildingId],
       percentAreaServed: [null],
-      heatingSystemType: [null],
+      heatingSystemType: [null, [Validators.required]],
+      heatingTracker: [{ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false }],
       knowHeatingEfficiency: [null],
       heatingSystemEfficiencyUnit: [null],
       heatingSystemEfficiencyValue: [null],
       heatingSystemYearInstalled: [null],
-      coolingSystemType: [null],
+      coolingSystemType: [null, [Validators.required]],
+      coolingTracker: [{ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false }],
       knowCoolingEfficiency: [null],
       coolingSystemEfficiencyUnit: [null],
       coolingSystemEfficiencyValue: [null],
       coolingSystemYearInstalled: [null],
       ductLeakageTestPerformed: [null],
-      ductLeakageTestValue:[null],
+      ductLeakageTestValue: [null],
       ductAreProfessionallySealed: [null],
       ductLocationCount: [null],
       ductLocations: this.fb.array([this.ductLocationInputs()]),
     })
-    systems.get('ductLocationCount')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
+    const percentAreaServed = systems.get('percentAreaServed') as AbstractControl
+    const heatingTracker = systems.get('heatingTracker') as AbstractControl
+    const heatingSystemType = systems.get('heatingSystemType') as AbstractControl
+    const knowHeatingEfficiency = systems.get('knowHeatingEfficiency') as AbstractControl
+    const heatingSystemEfficiencyUnit = systems.get('heatingSystemEfficiencyUnit') as AbstractControl
+    const heatingSystemEfficiencyValue = systems.get('heatingSystemEfficiencyValue') as AbstractControl
+    const heatingSystemYearInstalled = systems.get('heatingSystemYearInstalled') as AbstractControl
+    const coolingSystemType = systems.get('coolingSystemType') as AbstractControl
+    const coolingTracker = systems.get('coolingTracker') as AbstractControl
+    const knowCoolingEfficiency = systems.get('knowCoolingEfficiency') as AbstractControl
+    const coolingSystemEfficiencyUnit = systems.get('coolingSystemEfficiencyUnit') as AbstractControl
+    const coolingSystemEfficiencyValue = systems.get('coolingSystemEfficiencyValue') as AbstractControl
+    const coolingSystemYearInstalled = systems.get('coolingSystemYearInstalled') as AbstractControl
+    const ductLeakageTestPerformed = systems.get('ductLeakageTestPerformed') as AbstractControl
+    const ductLeakageTestValue = systems.get('ductLeakageTestValue') as AbstractControl
+    const ductAreProfessionallySealed = systems.get('ductAreProfessionallySealed') as AbstractControl
+    const ductLocationCount = systems.get('ductLocationCount') as AbstractControl
+    const ductLocations = systems.get('ductLocations') as FormArray
+
+    heatingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Central gas furnace":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Room (through-the-wall) gas furnace":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Gas boiler":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Propane (LPG) central furnace":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Propane (LPG) wall furnace":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
+          this.setValidations([heatingSystemEfficiencyValue])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
+          break;
+        case "Propane (LPG) boiler":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Oil furnace":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Oil boiler":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Electric furnace":
+          heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
+          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Electric heat pump":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
+          this.setValidations([knowHeatingEfficiency])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+        case "Ground coupled heat pump":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
+          this.setValidations([heatingSystemEfficiencyValue])
+          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
+          break;
+        case "Minisplit (ductless) heat pump":
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: true })
+          this.setValidations(heatingSystemEfficiencyValue)
+          this.setValidations(heatingSystemEfficiencyUnit)
+          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemYearInstalled]);
+          break;
+        default: // "Electric baseboard heater" "Electric boiler" "Wood stove" "Pellet stove" "None"
+          heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
+          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          break;
+      }
+    })
+
+    knowHeatingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        this.setValidations(heatingSystemEfficiencyValue)
+        if (heatingTracker.value?.efficiencyUnit) {
+          this.setValidations(heatingSystemEfficiencyUnit)
+        }
+        this.resetValuesAndValidations(heatingSystemYearInstalled)
+      } else if (val == false) {
+        this.resetValuesAndValidations([heatingSystemEfficiencyValue, heatingSystemEfficiencyUnit])
+        this.setValidations(heatingSystemYearInstalled)
+      }
+      // if give else wrong validation occur
+    })
+
+    coolingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Central air conditioner":
+          coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
+          this.setValidations(knowCoolingEfficiency)
+          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
+          break;
+        case "Room air conditioner":
+          coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: false })
+          this.setValidations(knowCoolingEfficiency)
+          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
+          break;
+        case "Electric heat pump":
+          coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
+          this.setValidations(knowCoolingEfficiency)
+          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
+          break;
+        case "Minisplit (ductless) heat pump":
+          coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
+          this.setValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue])
+          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemYearInstalled])
+          break;
+        case "Ground coupled heat pump":
+          coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
+          this.setValidations([coolingSystemEfficiencyValue])
+          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemYearInstalled])
+          break;
+        default: //"None" "Direct evaporative cooling"
+          coolingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
+          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled]);
+          break;
+      }
+    })
+
+    knowCoolingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        this.setValidations(coolingSystemEfficiencyValue)
+        if (coolingTracker.value?.efficiencyUnit) {
+          this.setValidations(coolingSystemEfficiencyUnit)
+        }
+        this.resetValuesAndValidations(coolingSystemYearInstalled)
+      } else if (val == false) {
+        this.setValidations(coolingSystemYearInstalled)
+        this.resetValuesAndValidations([coolingSystemEfficiencyValue, coolingSystemEfficiencyUnit])
+      }
+      // if give else wrong validation occur
+    })
+
+    ductLocationCount?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
-        var ductLocations = systems.get('ductLocations') as FormArray;
         if (val) {
           if (val > ductLocations.length) {
             while (val > ductLocations.length) {
@@ -142,7 +296,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       id: [null],
       buildingId: [this.buildingId],
       location: [null],
-      percentageOfDucts:[null],
+      percentageOfDucts: [null],
       ductsIsInsulated: [null],
     })
     return ducts;
