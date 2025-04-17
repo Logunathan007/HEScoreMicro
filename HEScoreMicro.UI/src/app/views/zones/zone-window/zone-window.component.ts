@@ -112,11 +112,13 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     knowWindowSpecification.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
         this.setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
-        this.setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(1)])
+        this.setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
         this.resetValuesAndValidations([panes, frameMaterial, glazingType])
       } else if (val == false) {
         this.resetValuesAndValidations([uFactor, shgc])
         this.setValidations([panes, frameMaterial, glazingType])
+      } else {
+        this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
       }
     })
     return window;

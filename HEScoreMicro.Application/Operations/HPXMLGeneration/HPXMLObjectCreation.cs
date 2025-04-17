@@ -274,12 +274,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 if (type == "Unconditioned Attic")
                 {
                     attic.AtticType = new AtticType { Attic = new AtticTypes() };
-                    attic.AttachedToWall = (zoneRoofDTO.KneeWallPresent == true) ? new AttachedToWall()
+                    if (zoneRoofDTO.KneeWallPresent == true)
                     {
-                        IdRef = id + "-wall-1",
-                    } : null;
-                    this.GenerateAtticWallObject(zoneRoofDTO, walls, attic.AttachedToWall.IdRef, 0);
-
+                        attic.AttachedToWall = new AttachedToWall()
+                        {
+                            IdRef = id + "-wall-1",
+                        };
+                        this.GenerateAtticWallObject(zoneRoofDTO, walls, attic.AttachedToWall.IdRef, 0);
+                    }
                     attic.AttachedToRoof = new AttachedToRoof()
                     {
                         IdRef = id + "-roof-1",
@@ -417,7 +419,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 GenerateSkylightObject(roofAtticDTO, skylights, idref);
             }
-
             roofs.Add(roof);
         }
         public void GenerateAtticFloorObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Floor> floors, string idref, int type)

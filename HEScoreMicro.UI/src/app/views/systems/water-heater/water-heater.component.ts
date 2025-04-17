@@ -10,7 +10,7 @@ import { WaterHeaterService } from "../../../shared/services/water-heater/water-
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { Result } from "../../../shared/models/common/result.model";
-import { resetControls, resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-water-heating-system',
@@ -28,7 +28,6 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   waterHeaterTypeOptions = WaterHeaterTypeOptions
   year1972Options = Year1972Options
   setValidations = setValidations
-  resetControls = resetControls
   resetValuesAndValidations = resetValuesAndValidations
 
   get waterHeaterControl() {

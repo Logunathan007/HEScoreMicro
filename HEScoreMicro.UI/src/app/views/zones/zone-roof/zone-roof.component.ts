@@ -5,13 +5,14 @@ import { ZoneRoofReadModel } from '../../../shared/models/zone-roof/zone-roof.re
 import { takeUntil } from 'rxjs';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
 import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BooleanOptions } from '../../../shared/lookups/common.lookup';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { ZoneRoofService } from '../../../shared/services/zone-roof/zone-roof.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../../shared/models/zone-roof/roof-attic.read.model';
+import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-roof',
@@ -19,12 +20,15 @@ import { RoofAtticReadModel } from '../../../shared/models/zone-roof/roof-attic.
   styleUrl: './zone-roof.component.scss',
   standalone: false
 })
+
 export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneRoofForm!: FormGroup | any;
   buildingId: string | null | undefined;
   zoneRoofReadModel!: ZoneRoofReadModel;
   removeNullIdProperties = removeNullIdProperties
+  setValidations = setValidations
+  resetValuesAndValidations = resetValuesAndValidations
   booleanOptions = BooleanOptions
   atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions
   roofConstructionOptions = RoofConstructionOptions
@@ -34,11 +38,10 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   frameMaterialOptions = FrameMaterialOptions
   glazingTypeOptions = GlazingTypeOptions
 
-
-
   get zoneRoofControl() {
     return this.zoneRoofForm.controls;
   }
+
   get roofAtticsObj() {
     return this.zoneRoofControl['roofAttics'] as FormArray
   }
@@ -70,7 +73,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     var zoneRoof = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      enableSecondRoofAttic: [null],
+      enableSecondRoofAttic: [null, [Validators.required]],
       roofAttics: this.fb.array([this.roofAtticInputs()]),
     })
     zoneRoof.get('enableSecondRoofAttic')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -96,16 +99,14 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   roofAtticInputs(): FormGroup {
     var found = this.fb.group({
       id: [null],
-      atticOrCeilingType: [null], //ng-select
-      construction: [null], //ng-select
-      exteriorFinish: [null],//ng-select
-      // cathedralCeilingArea: [null],
-      // cathedralCeilingInsulation: [null],
-      roofArea:[null,],
-      roofInsulation: [null],
-      roofColor: [null],//ng-select
-      absorptance: [null],
-      skylightsPresent: [null], //ng-select
+      atticOrCeilingType: [null, [Validators.required]], //ng-select
+      construction: [null, [Validators.required]], //ng-select
+      exteriorFinish: [null, [Validators.required]],//ng-select
+      roofArea: [null, [Validators.required]],
+      roofInsulation: [null, [Validators.required]],
+      roofColor: [null, [Validators.required]],//ng-select
+      absorptance: [null], //0-1
+      skylightsPresent: [null, [Validators.required]], //ng-select
       skylightArea: [null],
       solarScreen: [null],//ng-select
       knowSkylightSpecification: [null],//ng-select
@@ -121,6 +122,65 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       kneeWallInsulation: [null],
       buildingId: [this.buildingId],
     })
+    const atticOrCeilingType = found.get('atticOrCeilingType') as AbstractControl
+    const roofColor = found.get('roofColor') as AbstractControl
+    const absorptance = found.get('absorptance') as AbstractControl
+    const skylightsPresent = found.get('skylightsPresent') as AbstractControl
+    const skylightArea = found.get('skylightArea') as AbstractControl
+    const solarScreen = found.get('solarScreen') as AbstractControl
+    const knowSkylightSpecification = found.get('knowSkylightSpecification') as AbstractControl
+    const uFactor = found.get('uFactor') as AbstractControl
+    const shgc = found.get('shgc') as AbstractControl
+    const panes = found.get('panes') as AbstractControl
+    const frameMaterial = found.get('frameMaterial') as AbstractControl
+    const glazingType = found.get('glazingType') as AbstractControl
+    const atticFloorArea = found.get('atticFloorArea') as AbstractControl
+    const atticFloorInsulation = found.get('atticFloorInsulation') as AbstractControl
+    const kneeWallPresent = found.get('kneeWallPresent') as AbstractControl
+    const kneeWallArea = found.get('kneeWallArea') as AbstractControl
+    const kneeWallInsulation = found.get('kneeWallInsulation') as AbstractControl
+
+    atticOrCeilingType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      if (val == "Unconditioned Attic") {
+        this.setValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+      } else {
+        this.resetValuesAndValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+      }
+    })
+    roofColor.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      if (val == "Cool Color") {
+        this.setValidations(absorptance, [Validators.required, Validators.min(0), Validators.max(1)])
+      } else {
+        this.resetValuesAndValidations(absorptance)
+      }
+    })
+    skylightsPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      if (val) {
+        this.setValidations([solarScreen, skylightArea])
+      } else {
+        this.resetValuesAndValidations([solarScreen, skylightArea])
+      }
+    })
+    knowSkylightSpecification.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        this.setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
+        this.setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
+        this.resetValuesAndValidations([panes, frameMaterial, glazingType])
+      } else if (val == false) {
+        this.resetValuesAndValidations([uFactor, shgc])
+        this.setValidations([panes, frameMaterial, glazingType])
+      } else {
+        this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
+      }
+    })
+    kneeWallPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      if (val) {
+        this.setValidations([kneeWallArea, kneeWallInsulation])
+      } else {
+        this.resetValuesAndValidations([kneeWallArea, kneeWallInsulation])
+      }
+    })
+
     return found;
   }
 
@@ -151,6 +211,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
   onSave() {
     if (this.zoneRoofForm.invalid) {
       this.zoneRoofForm.markAllAsTouched();
@@ -184,6 +245,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
   deleteRoofAttic(arr: FormArray) {
     var id = arr.at(1).get('id')?.value;
     if (id) {
@@ -199,6 +261,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       arr.removeAt(1);
     }
   }
+
   goNext() {
     this.router.navigate(['zones/wall'], {
       queryParams: { id: this.buildingId }
