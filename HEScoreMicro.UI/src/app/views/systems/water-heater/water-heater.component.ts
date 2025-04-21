@@ -1,5 +1,5 @@
 import { WaterHeaterTypeOptions } from './../../../shared/lookups/water-heater.lookup';
-import { UnitOptions, Year1972Options } from './../../../shared/lookups/common.lookup';
+import { UnitOptions, Year1998Options } from './../../../shared/lookups/common.lookup';
 import { Component, OnInit } from "@angular/core";
 import { Unsubscriber } from "../../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
@@ -26,7 +26,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   unitOptions = UnitOptions
   waterHeaterTypeOptions = WaterHeaterTypeOptions
-  year1972Options = Year1972Options
+  year1998Options = Year1998Options
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
 

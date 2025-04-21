@@ -87,6 +87,7 @@ export class SummaryComponent extends Unsubscriber implements OnInit {
 
   generatePDF() {
     this.PDFLoader = true;
+    this.PDFResponse = null;
     this.hpxmlGenerationService.generatePDF(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
         if (val?.failed == false) {

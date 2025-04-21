@@ -6,7 +6,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, V
 import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
 import { BooleanOptions, Year1970Options } from '../../../shared/lookups/common.lookup';
-import { CoolingEfficiencyUnitOptions, CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
+import { CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, EERCoolingEfficiencyUnitOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SEERCoolingEfficiencyUnitOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,7 +33,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   booleanOptions = BooleanOptions
   heatingSystemTypeOptions = HeatingSystemTypeOptions
   coolingSystemTypeOptions = CoolingSystemTypeOptions
-  coolingEfficiencyUnitOptions = CoolingEfficiencyUnitOptions
+  seerCoolingEfficiencyUnitOptions = SEERCoolingEfficiencyUnitOptions
+  eerCoolingEfficiencyUnitOptions = EERCoolingEfficiencyUnitOptions
   ductLocationOptions = DuctLocationOptions
   systemCountOptions = SystemCountOptions
   ductLocationCountOptions = DuctLocationCountOptions
@@ -328,7 +329,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           if (val > 1) {
             this.setValidations(percent, [Validators.required, Validators.min(0), Validators.max(100)]);
           }
-          else {
+          else if(val) {
             this.resetValuesAndValidations(percent);
           }
         })

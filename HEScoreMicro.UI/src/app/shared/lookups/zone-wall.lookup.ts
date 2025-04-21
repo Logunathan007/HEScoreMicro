@@ -9,9 +9,10 @@ export const WallConstructionOptions = [
 ]
 
 export const WallExteriorFinishOptions = [
-  { name: "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding", value: "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding" },
-  { name: "Stucco", value: "Stucco" },
-  { name: "Vinyl Siding", value: "Vinyl Siding" },
-  { name: "Aluminum Siding", value: "Aluminum Siding" },
-  { name: "Brick Veneer", value: "Brick Veneer" },
+  { id: 0, name: "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding", value: "Wood Siding, Fiber Cement, Composite Shingle, or Masonite Siding" },
+  { id: 1, name: "Stucco", value: "Stucco" },
+  { id: 2, name: "Vinyl Siding", value: "Vinyl Siding" },
+  { id: 3, name: "Aluminum Siding", value: "Aluminum Siding" },
+  { id: 4, name: "Brick Veneer", value: "Brick Veneer" },
+  { id: 5, name: "None", value: "None" },
 ]

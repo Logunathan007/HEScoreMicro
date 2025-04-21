@@ -6,7 +6,7 @@ namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }
-        public double PercentAreaServed { get; set; }
+        public double? PercentAreaServed { get; set; }
         //Heating
         public string? HeatingSystemType { get; set; }
         public bool? KnowHeatingEfficiency { get; set; }

@@ -1073,7 +1073,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 return;
             }
-            id += "heater-1";
+            id += "-heater-1";
             HeatingSystem hs = new HeatingSystem
             {
                 SystemIdentifier = new SystemIdentifier
@@ -1167,15 +1167,15 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 hs.DistributionSystem = new DistributionSystem
                 {
-                    IdRef = id + "distribution-1"
+                    IdRef = id + "-distribution-1"
                 };
-                this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
+                this.GenerateDistributionSystemObject(system, distributionSystems, id + "-distribution-1");
             }
             heatingSystems.Add(hs);
         }
         public void GenerateCoolingSystemObject(SystemsDTO system, List<CoolingSystem> coolingSystems, List<HVACDistribution> distributionSystems, string id)
         {
-            id += "cooler-1";
+            id += "-cooler-1";
             if (system == null || system.CoolingSystemType == "None")
             {
                 return;
@@ -1212,14 +1212,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 cs.YearInstalled = system.CoolingSystemYearInstalled;
 
-                if (cs.CoolingSystemType == "central air conditioner")
+            }
+            if (cs.CoolingSystemType == "central air conditioner")
+            {
+                cs.DistributionSystem = new DistributionSystem
                 {
-                    cs.DistributionSystem = new DistributionSystem
-                    {
-                        IdRef = id + "distribution-1"
-                    };
-                    this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
-                }
+                    IdRef = id + "-distribution-1"
+                };
+                this.GenerateDistributionSystemObject(system, distributionSystems, id + "-distribution-1");
             }
             coolingSystems.Add(cs);
         }
@@ -1229,7 +1229,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 return;
             }
-            id += "heatpump-1";
+            id += "-heatpump-1";
             HeatPump hp = new HeatPump
             {
                 SystemIdentifier = new SystemIdentifier
@@ -1308,9 +1308,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             {
                 hp.DistributionSystem = new DistributionSystem
                 {
-                    IdRef = id + "distribution-1"
+                    IdRef = id + "-distribution-1"
                 };
-                this.GenerateDistributionSystemObject(system, distributionSystems, id + "distribution-1");
+                this.GenerateDistributionSystemObject(system, distributionSystems, id + "-distribution-1");
             }
 
             if (hp != null)

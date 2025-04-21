@@ -67,7 +67,7 @@
               <div class="select-box">
                 <label class="required"> Exterior Finish</label>
                 <ng-select
-                  [items]="wallExteriorFinishOptions"
+                  [items]="wallItem.get('exteriorFinishOptions')?.value"
                   bindLabel="name"
                   [clearable]="true"
                   [closeOnSelect]="true"
@@ -93,7 +93,9 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
-                <label class="required" for="wallInsulationLevel"> Wall Insulation Level </label>
+                <label class="required" for="wallInsulationLevel">
+                  Wall Insulation Level
+                </label>
                 <input
                   formControlName="wallInsulationLevel"
                   type="number"

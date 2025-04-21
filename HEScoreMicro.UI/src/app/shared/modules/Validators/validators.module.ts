@@ -35,20 +35,39 @@ export function setValidations(controls: AbstractControl | AbstractControl[], va
   }
 }
 
-//Reset Controls
-export function resetControls(controls:AbstractControl | AbstractControl[]){
-  if (Array.isArray(controls)) {
-    controls.forEach(ctrl => ctrl.reset());
-  } else {
-    controls.reset();
+export function windowAreaAverageValidator(group: AbstractControl): ValidationErrors | null {
+  debugger
+  const front = group.get('windowAreaFront')?.value || 0;
+  const back = group.get('windowAreaBack')?.value || 0;
+  const left = group.get('windowAreaLeft')?.value || 0;
+  const right = group.get('windowAreaRight')?.value || 0;
+  const average = (front + back + left + right) / 4;
+
+  if (average < 0 || average > 999) {
+    return { avgOutOfRange: average };
   }
+
+  return null;
 }
 
+//Reset Controls
 export function resetValuesAndValidations(controls:AbstractControl | AbstractControl[]){
   const updateControl = (ctrl: AbstractControl) => {
     ctrl.reset();
     ctrl.clearValidators();
     ctrl.updateValueAndValidity();
+  };
+
+  if (Array.isArray(controls)) {
+    controls.forEach(updateControl);
+  } else {
+    updateControl(controls);
+  }
+}
+
+export function resetValues(controls:AbstractControl | AbstractControl[]){
+  const updateControl = (ctrl: AbstractControl) => {
+    ctrl.reset();
   };
 
   if (Array.isArray(controls)) {

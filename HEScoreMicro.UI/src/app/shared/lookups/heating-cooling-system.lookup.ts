@@ -33,12 +33,12 @@ export const CoolingSystemTypeOptions = [
   { name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
 ]
 
-export const CoolingEfficiencyUnitOptions = [
+export const SEERCoolingEfficiencyUnitOptions = [
   { name: "Seasonal Energy Efficiency Ratio - Pre 2023 (SEER)", value: "SEER" },
   { name: "Seasonal Energy Efficiency Ratio (SEER2)", value: "SEER2" },
 ]
 
-export const CoolingEfficiencyUnitOptions2 = [
+export const EERCoolingEfficiencyUnitOptions = [
   { name: "Energy Efficiency Ratio (EER)", value: "EER" },
   { name: "Combined Energy Efficiency Ratio (CEER)", value: "CEER" }
 ]

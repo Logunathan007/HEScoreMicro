@@ -77,6 +77,5 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(result);
         }
-
     }
 }

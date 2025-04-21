@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HEScoreMicro.Persistence.Migrations
 {
     [DbContext(typeof(DbConnect))]
-    [Migration("20250409045642_mig-13")]
-    partial class mig13
+    [Migration("20250421132629_updated-table-3")]
+    partial class updatedtable3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,7 +47,6 @@ namespace HEScoreMicro.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DirectionFacedByFrontOfHome")
@@ -187,6 +186,9 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("text");
 
+                    b.Property<double?>("PercentageOfDucts")
+                        .HasColumnType("double precision");
+
                     b.Property<Guid>("SystemsId")
                         .HasColumnType("uuid");
 
@@ -246,11 +248,17 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<bool?>("DuctLeakageTestPerformed")
                         .HasColumnType("boolean");
 
+                    b.Property<double?>("DuctLeakageTestValue")
+                        .HasColumnType("double precision");
+
                     b.Property<int?>("DuctLocationCount")
                         .HasColumnType("integer");
 
                     b.Property<Guid?>("HeatingCoolingSystemId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("HeatingSystemEfficiencyUnit")
+                        .HasColumnType("text");
 
                     b.Property<double?>("HeatingSystemEfficiencyValue")
                         .HasColumnType("double precision");
@@ -267,7 +275,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<bool?>("KnowHeatingEfficiency")
                         .HasColumnType("boolean");
 
-                    b.Property<double>("PercentAreaServed")
+                    b.Property<double?>("PercentAreaServed")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
@@ -338,8 +346,8 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<string>("WaterHeaterType")
                         .HasColumnType("text");
 
-                    b.Property<double?>("YearOfManufacture")
-                        .HasColumnType("double precision");
+                    b.Property<int?>("YearOfManufacture")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

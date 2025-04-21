@@ -5,7 +5,7 @@ namespace HEScoreMicro.Domain.Entity
     {
         public Guid Id { get; set; }
         public DateTime AssessmentDate { get; set; }
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
         public int YearBuilt { get; set; }
         public int NumberOfBedrooms { get; set; }
         public int StoriesAboveGroundLevel { get; set; }

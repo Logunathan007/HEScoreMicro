@@ -324,7 +324,12 @@
                     Cooling System Efficiency Unit
                   </label>
                   <ng-select
-                    [items]="coolingEfficiencyUnitOptions"
+                    [items]="
+                      systemItem.get('coolingSystemType')?.value ===
+                      'Room air conditioner'
+                        ? eerCoolingEfficiencyUnitOptions
+                        : seerCoolingEfficiencyUnitOptions
+                    "
                     bindLabel="name"
                     [clearable]="true"
                     [closeOnSelect]="true"

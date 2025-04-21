@@ -1,4 +1,3 @@
-import { map } from "rxjs"
 
 export const OrientationOptions = [
   { name: 'north', value: 'north' },
@@ -10,6 +9,8 @@ export const OrientationOptions = [
   { name: 'west', value: 'west' },
   { name: 'northwest', value: 'northwest' },
 ]
+
+export const EmptyOptions = []
 
 export const BooleanOptions = [
   { name: "True", value: true },
@@ -35,3 +36,10 @@ export const Year1970Options = Array.from(
   { length: new Date().getFullYear() - 1969 },
   (_, i) => ({ name: (1970 + i).toString(), value: 1970 + i })
 );
+
+
+export const Year1998Options = Array.from(
+  { length: new Date().getFullYear() - 1997 },
+  (_, i) => ({ name: (1998 + i).toString(), value: 1998 + i })
+);
+

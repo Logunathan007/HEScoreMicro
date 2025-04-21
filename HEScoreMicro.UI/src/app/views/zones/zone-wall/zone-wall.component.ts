@@ -1,6 +1,6 @@
 import { WallReadModel } from './../../../shared/models/zone-wall/wall.read.model';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZoneWallService } from '../../../shared/services/zooe-wall/zooe-wall.service';
 import { CommonService } from '../../../shared/services/common/common.service';
@@ -12,6 +12,7 @@ import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.co
 import { takeUntil } from 'rxjs';
 import { Result } from '../../../shared/models/common/result.model';
 import { WallService } from '../../../shared/services/zooe-wall/wall.service';
+import { resetValues } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-wall',
@@ -25,6 +26,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   buildingId: string | null | undefined;
   zoneWallReadModel!: ZoneWallReadModel;
   removeNullIdProperties = removeNullIdProperties
+  resetValues = resetValues;
   booleanOptions = BooleanOptions
   wallConstructionOptions = WallConstructionOptions
   wallExteriorFinishOptions = WallExteriorFinishOptions
@@ -87,8 +89,43 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       buildingId: [this.buildingId],
       construction: [null, [Validators.required]],
       exteriorFinish: [null, [Validators.required]],
+      exteriorFinishOptions: [null],
       wallInsulationLevel: [null, [Validators.required]],
     })
+    let construction = wall.get('construction') as AbstractControl;
+    let exteriorFinish = wall.get('exteriorFinish') as AbstractControl;
+    let exteriorFinishOptions = wall.get('exteriorFinishOptions') as AbstractControl;
+
+    construction.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val) => {
+      switch (val) {
+        case "Wood Frame":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
+          break;
+        case "Wood Frame with rigid foam sheathing":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
+          break;
+        case "Wood Frame with Optimum Value Engineering (OVE)":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
+          break;
+        case "Structural Brick":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 5))
+          break;
+        case "Concrete Block or Stone":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 1 || obj.id == 4 || obj.id == 5))
+          break;
+        case "Straw Bale":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 1))
+          break;
+        case "Steel Frame":
+          exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
+          break;
+        default:
+          exteriorFinishOptions.setValue(null)
+          break;
+      }
+      this.resetValues(exteriorFinish)
+    })
+
     return wall;
   }
 

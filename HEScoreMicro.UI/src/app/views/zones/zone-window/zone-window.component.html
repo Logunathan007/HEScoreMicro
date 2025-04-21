@@ -113,6 +113,14 @@
           </div>
         </div>
       </div>
+      <div
+        class="col-12 errormsg mb-2"
+        *ngIf="zoneWindowForm.errors?.avgOutOfRange && zoneWindowForm.touched"
+      >
+        <label class="text-danger fw-semibold position-absolute"
+          >Average window area must be between 0 and 999 Current Average is {{zoneWindowForm.errors?.avgOutOfRange}}</label
+        >
+      </div>
       <div class="col-md-6">
         <div class="select-box">
           <label class="required"> Windows are same type </label>
@@ -232,7 +240,8 @@
                       for="uFactor"
                       class="text-danger fw-semibold position-absolute"
                     >
-                      UFactor is invalid {{ windowItem.get('uFactor')?.errors | json }}
+                      UFactor is invalid
+                      {{ windowItem.get("uFactor")?.errors | json }}
                     </label>
                   </div>
                 </div>
@@ -258,7 +267,8 @@
                       for="shgc"
                       class="text-danger fw-semibold position-absolute"
                     >
-                      SHGC is invalid {{ windowItem.get('shgc')?.errors | json }}
+                      SHGC is invalid
+                      {{ windowItem.get("shgc")?.errors | json }}
                     </label>
                   </div>
                 </div>
@@ -299,7 +309,7 @@
                 <div class="select-box">
                   <label class="required"> Frame Material </label>
                   <ng-select
-                    [items]="frameMaterialOptions"
+                    [items]="windowItem.get('frameMaterialOptions')?.value"
                     bindLabel="name"
                     [clearable]="true"
                     [closeOnSelect]="true"
@@ -327,7 +337,7 @@
                 <div class="select-box">
                   <label class="required"> Glazing Type </label>
                   <ng-select
-                    [items]="glazingTypeOptions"
+                    [items]="windowItem.get('glazingTypeOptions')?.value"
                     bindLabel="name"
                     [clearable]="true"
                     [closeOnSelect]="true"

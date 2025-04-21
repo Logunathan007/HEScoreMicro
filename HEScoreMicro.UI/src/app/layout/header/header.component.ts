@@ -23,7 +23,8 @@ export class HeaderComponent {
     this.headerNavs = [
       {
         name: "Address",
-        routerLink: "address"
+        routerLink: "address",
+        value:1
       },
       {
         name: "About",

@@ -4,7 +4,7 @@ import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.co
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZoneWindowReadModel } from '../../../shared/models/zone-window/zone-window.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions } from '../../../shared/lookups/common.lookup';
+import { BooleanOptions, EmptyOptions } from '../../../shared/lookups/common.lookup';
 import { takeUntil } from 'rxjs';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { ZoneWindowService } from '../../../shared/services/zone-window/zone-window.service';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Result } from '../../../shared/models/common/result.model';
 import { FrameMaterialOptions, GlazingTypeOptions, PaneOptions } from '../../../shared/lookups/zone-roof.looup';
 import { WindowReadModel } from '../../../shared/models/zone-window/window.model';
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-window',
@@ -28,10 +28,12 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   removeNullIdProperties = removeNullIdProperties
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
-  frameMaterialOptions = FrameMaterialOptions
-  glazingTypeOptions = GlazingTypeOptions
+  frameMaterialOptions = EmptyOptions
+  glazingTypeOptions = EmptyOptions
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
+  resetValues = resetValues
+  windowAreaAverageValidator = windowAreaAverageValidator
 
   get zoneWindowControl() {
     return this.zoneWindowForm.controls;
@@ -73,7 +75,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       windowAreaRight: [null, [Validators.required, Validators.min(0)]],
       windowsSame: [null, [Validators.required]],
       windows: this.fb.array([this.windowInputs()]),
-    })
+    }, { validators: [windowAreaAverageValidator] })
     const windowsSame = zoneWindow.get("windowsSame") as AbstractControl
     windowsSame?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
@@ -100,8 +102,11 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       uFactor: [null],
       shgc: [null],
       panes: [null],
+      panesOptions: [null],
       frameMaterial: [null],
+      frameMaterialOptions: [null],
       glazingType: [null],
+      glazingTypeOptions: [null],
     })
     const knowWindowSpecification = window.get('knowWindowSpecification') as AbstractControl
     const uFactor = window.get('uFactor') as AbstractControl
@@ -109,6 +114,9 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     const panes = window.get('panes') as AbstractControl
     const frameMaterial = window.get('frameMaterial') as AbstractControl
     const glazingType = window.get('glazingType') as AbstractControl
+    const frameMaterialOptions = window.get('frameMaterialOptions') as AbstractControl
+    const glazingTypeOptions = window.get('glazingTypeOptions') as AbstractControl
+
     knowWindowSpecification.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
         this.setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
@@ -121,6 +129,56 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
         this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
       }
     })
+    panes.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Single-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions.filter(obj => obj.id == 0 || obj.id == 2))
+          break;
+        case "Double-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions)
+          break;
+        case "Triple-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions.filter(obj => obj.id == 2))
+          break;
+        default:
+          this.resetValues([frameMaterialOptions])
+      }
+      this.resetValues([frameMaterial, glazingType, glazingTypeOptions])
+    })
+    frameMaterial.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Aluminum":
+          switch (panes?.value) {
+            case "Single-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1))
+              break;
+            case "Double-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1 || obj.id == 2))
+              break;
+          }
+          break;
+        case "Aluminum with Thermal Break":
+          glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1 || obj.id == 2 || obj.id == 5))
+          break;
+        case "Wood or Vinyl":
+          switch (panes?.value) {
+            case "Single-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1))
+              break;
+            case "Double-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions)
+              break;
+            case "Triple-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 5))
+              break;
+          }
+          break;
+        default:
+          this.resetValues([glazingTypeOptions])
+      }
+      this.resetValues(glazingType)
+    })
+
     return window;
   }
 
@@ -137,13 +195,15 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     if (this.buildingId) {
       this.zoneWindowService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWindowReadModel>) => {
-          if (val?.failed == false)
+          if (val?.failed == false) {
             if (val?.data?.windowsSame == false) {
               while (this.windowsObj.length < 4) {
                 this.windowsObj.push(this.windowInputs())
               }
             }
-          this.zoneWindowForm.patchValue(val.data)
+            this.zoneWindowForm.patchValue(val.data)
+          }
+
         },
         error: (err: any) => {
           console.log(err);

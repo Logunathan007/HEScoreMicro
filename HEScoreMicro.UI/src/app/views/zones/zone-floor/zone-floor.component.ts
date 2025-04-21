@@ -64,7 +64,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     var zoneFloor = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      enableSecondFoundation: [null],
+      enableSecondFoundation: [false,[Validators.required]],
       foundations: this.fb.array([this.foundationInputs()]),
     })
     zoneFloor.get('enableSecondFoundation')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({

@@ -30,6 +30,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             _hPXMLObjectCreation = hPXMLObjectCreation;
             _configuration = configuration;
             _buildingOperations = buildingOperations;
+
+            // Configure Time out problem
+            _st_Api_HandlerPort.Endpoint.Binding.SendTimeout = TimeSpan.FromMinutes(5);
+            _st_Api_HandlerPort.Endpoint.Binding.ReceiveTimeout = TimeSpan.FromMinutes(5);
         }
         public async Task<ResponseDTO<string>> GetHPXMLString(Guid Id)
         {

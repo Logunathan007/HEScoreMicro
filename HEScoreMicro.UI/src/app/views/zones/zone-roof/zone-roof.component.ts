@@ -12,7 +12,7 @@ import { ZoneRoofService } from '../../../shared/services/zone-roof/zone-roof.se
 import { ActivatedRoute, Router } from '@angular/router';
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../../shared/models/zone-roof/roof-attic.read.model';
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { resetValues, resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-roof',
@@ -29,6 +29,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
+  resetValues = resetValues
   booleanOptions = BooleanOptions
   atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions
   roofConstructionOptions = RoofConstructionOptions
@@ -73,7 +74,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     var zoneRoof = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      enableSecondRoofAttic: [null, [Validators.required]],
+      enableSecondRoofAttic: [false, [Validators.required]],
       roofAttics: this.fb.array([this.roofAtticInputs()]),
     })
     zoneRoof.get('enableSecondRoofAttic')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -112,9 +113,12 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       knowSkylightSpecification: [null],//ng-select
       uFactor: [null],
       shgc: [null],
-      panes: [null],//ng-select
-      frameMaterial: [null],//ng-select
-      glazingType: [null],//ng-select
+      panes: [null],
+      panesOptions: [null],
+      frameMaterial: [null],
+      frameMaterialOptions: [null],
+      glazingType: [null],
+      glazingTypeOptions: [null],
       atticFloorArea: [null],
       atticFloorInsulation: [null],
       kneeWallPresent: [null],//ng-select
@@ -139,6 +143,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     const kneeWallPresent = found.get('kneeWallPresent') as AbstractControl
     const kneeWallArea = found.get('kneeWallArea') as AbstractControl
     const kneeWallInsulation = found.get('kneeWallInsulation') as AbstractControl
+    const frameMaterialOptions = found.get('frameMaterialOptions') as AbstractControl
+    const glazingTypeOptions = found.get('glazingTypeOptions') as AbstractControl
 
     atticOrCeilingType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val == "Unconditioned Attic") {
@@ -173,6 +179,56 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
         this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
       }
     })
+    panes.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Single-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions.filter(obj => obj.id == 0 || obj.id == 2))
+          break;
+        case "Double-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions)
+          break;
+        case "Triple-Pane":
+          frameMaterialOptions.setValue(FrameMaterialOptions.filter(obj => obj.id == 2))
+          break;
+        default:
+          this.resetValues([frameMaterialOptions])
+      }
+      this.resetValues([frameMaterial, glazingType, glazingTypeOptions])
+    })
+    frameMaterial.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      switch (val) {
+        case "Aluminum":
+          switch (panes?.value) {
+            case "Single-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1))
+              break;
+            case "Double-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1 || obj.id == 2))
+              break;
+          }
+          break;
+        case "Aluminum with Thermal Break":
+          glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1 || obj.id == 2 || obj.id == 5))
+          break;
+        case "Wood or Vinyl":
+          switch (panes?.value) {
+            case "Single-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 0 || obj.id == 1))
+              break;
+            case "Double-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions)
+              break;
+            case "Triple-Pane":
+              glazingTypeOptions.setValue(GlazingTypeOptions.filter(obj => obj.id == 5))
+              break;
+          }
+          break;
+        default:
+          this.resetValues([glazingTypeOptions])
+      }
+      this.resetValues(glazingType)
+    })
+
     kneeWallPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
         this.setValidations([kneeWallArea, kneeWallInsulation])
@@ -197,13 +253,14 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     if (this.buildingId) {
       this.zoneRoofService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneRoofReadModel>) => {
-          if (val?.failed == false)
+          if (val?.failed == false) {
             if (val?.data?.enableSecondRoofAttic) {
               if (this.roofAtticsObj.length == 1) {
                 this.roofAtticsObj.push(this.roofAtticInputs())
               }
             }
-          this.zoneRoofForm.patchValue(val.data)
+            this.zoneRoofForm.patchValue(val.data)
+          }
         },
         error: (err: any) => {
           console.log(err);

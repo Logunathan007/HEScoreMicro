@@ -275,14 +275,25 @@
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Panes </label>
-                    <ng-select [items]="paneOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                      bindValue="value" placeholder="Panes" id="panes" formControlName="panes">
+                    <ng-select
+                      [items]="paneOptions"
+                      bindLabel="name"
+                      [clearable]="true"
+                      [closeOnSelect]="true"
+                      bindValue="value"
+                      placeholder="Panes"
+                      id="panes"
+                      formControlName="panes"
+                    >
                     </ng-select>
-                    <div class="errormsg" *ngIf="
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('panes')?.touched ||
                           roofAtticItem.get('panes')?.dirty) &&
                         roofAtticItem.get('panes')?.invalid
-                      ">
+                      "
+                    >
                       <label class="text-danger fw-semibold position-absolute">
                         Panes is invalid
                       </label>
@@ -292,14 +303,25 @@
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Frame Material </label>
-                    <ng-select [items]="frameMaterialOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                      bindValue="value" placeholder="Frame Material" id="frameMaterial" formControlName="frameMaterial">
+                    <ng-select
+                      [items]="roofAtticItem.get('frameMaterialOptions')?.value"
+                      bindLabel="name"
+                      [clearable]="true"
+                      [closeOnSelect]="true"
+                      bindValue="value"
+                      placeholder="Frame Material"
+                      id="frameMaterial"
+                      formControlName="frameMaterial"
+                    >
                     </ng-select>
-                    <div class="errormsg" *ngIf="
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('frameMaterial')?.touched ||
                           roofAtticItem.get('frameMaterial')?.dirty) &&
                         roofAtticItem.get('frameMaterial')?.invalid
-                      ">
+                      "
+                    >
                       <label class="text-danger fw-semibold position-absolute">
                         Frame Material is invalid
                       </label>
@@ -309,14 +331,25 @@
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Glazing Type </label>
-                    <ng-select [items]="glazingTypeOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                      bindValue="value" placeholder="Glazing Type" id="glazingType" formControlName="glazingType">
+                    <ng-select
+                      [items]="roofAtticItem.get('glazingTypeOptions')?.value"
+                      bindLabel="name"
+                      [clearable]="true"
+                      [closeOnSelect]="true"
+                      bindValue="value"
+                      placeholder="Glazing Type"
+                      id="glazingType"
+                      formControlName="glazingType"
+                    >
                     </ng-select>
-                    <div class="errormsg" *ngIf="
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('glazingType')?.touched ||
                           roofAtticItem.get('glazingType')?.dirty) &&
                         roofAtticItem.get('glazingType')?.invalid
-                      ">
+                      "
+                    >
                       <label class="text-danger fw-semibold position-absolute">
                         Glazing Type is invalid
                       </label>

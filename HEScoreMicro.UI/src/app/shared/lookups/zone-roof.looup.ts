@@ -34,16 +34,16 @@ export const PaneOptions = [
 ]
 
 export const FrameMaterialOptions = [
-  { name: "Aluminum", value: "Aluminum" },
-  { name: "Aluminum with Thermal Break", value: "Aluminum with Thermal Break" },
-  { name: "Wood or Vinyl", value: "Wood or Vinyl" },
+  { id: 0, name: "Aluminum", value: "Aluminum" },
+  { id: 1, name: "Aluminum with Thermal Break", value: "Aluminum with Thermal Break" },
+  { id: 2, name: "Wood or Vinyl", value: "Wood or Vinyl" },
 ]
 
 export const GlazingTypeOptions = [
-  { name: "Clear", value: "Clear" },
-  { name: "Tinted", value: "Tinted" },
-  { name: "Solar-Control low-E", value: "Solar-Control low-E" },
-  { name: "Solar-Control low-E, argon gas fill", value: "Solar-Control low-E, argon gas fill" },
-  { name: "Insulating low-E", value: "Insulating low-E" },
-  { name: "Insulating low-E, argon gas fill", value: "Insulating low-E, argon gas fill" },
+  { id: 0, name: "Clear", value: "Clear" },
+  { id: 1, name: "Tinted", value: "Tinted" },
+  { id: 2, name: "Solar-Control low-E", value: "Solar-Control low-E" },
+  { id: 3, name: "Solar-Control low-E, argon gas fill", value: "Solar-Control low-E, argon gas fill" },
+  { id: 4, name: "Insulating low-E", value: "Insulating low-E" },
+  { id: 5, name: "Insulating low-E, argon gas fill", value: "Insulating low-E, argon gas fill" },
 ]

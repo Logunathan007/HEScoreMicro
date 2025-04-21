@@ -31,6 +31,7 @@ export function removeNullIdProperties(obj: any): any {
   }
   return obj;
 }
+
 export function removeAllIdProperties(obj: any): any {
   if (Array.isArray(obj)) {
       return obj.map(removeAllIdProperties); // Recursively apply for arrays

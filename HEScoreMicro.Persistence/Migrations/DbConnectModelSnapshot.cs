@@ -44,7 +44,6 @@ namespace HEScoreMicro.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DirectionFacedByFrontOfHome")
@@ -273,7 +272,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<bool?>("KnowHeatingEfficiency")
                         .HasColumnType("boolean");
 
-                    b.Property<double>("PercentAreaServed")
+                    b.Property<double?>("PercentAreaServed")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
