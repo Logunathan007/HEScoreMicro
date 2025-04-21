@@ -42,7 +42,10 @@
               class="col-md-6"
               *ngIf="heatingCoolingSystemForm.get('systemCount')?.value > 1"
             >
-              <div class="input-box">
+              <div
+                class="input-box"
+                *ngIf="heatingCoolingSystemForm.get('systemCount')?.value > 1"
+              >
                 <label class="required" for="percentAreaServed">
                   Percentage of Area Served
                 </label>
@@ -65,6 +68,7 @@
                     class="text-danger fw-semibold position-absolute"
                   >
                     Percent Area Served is invalid
+                    {{ systemItem.get("percentAreaServed")?.errors | json }}
                   </label>
                 </div>
               </div>
@@ -94,6 +98,7 @@
                 >
                   <label class="text-danger fw-semibold position-absolute">
                     Heating System Type is invalid
+                    {{ systemItem.get("heatingSystemType")?.errors | json }}
                   </label>
                 </div>
               </div>
@@ -197,6 +202,10 @@
                       class="text-danger fw-semibold position-absolute"
                     >
                       Heating System Efficiency Value is invalid
+                      {{
+                        systemItem.get("heatingSystemEfficiencyValue")?.errors
+                          | json
+                      }}
                     </label>
                   </div>
                 </div>
@@ -209,16 +218,19 @@
                 systemItem.get('knowHeatingEfficiency')?.value == false
               "
             >
-              <div class="input-box">
-                <label class="required" for="heatingSystemYearInstalled">
-                  Heating System Year Installed
-                </label>
-                <input
-                  formControlName="heatingSystemYearInstalled"
-                  type="number"
-                  id="heatingSystemYearInstalled"
+              <div class="select-box">
+                <label class="required"> Heating System Year Installed</label>
+                <ng-select
+                  [items]="year1970Options"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
                   placeholder="Heating System Year Installed"
-                />
+                  id="heatingSystemYearInstalled"
+                  formControlName="heatingSystemYearInstalled"
+                >
+                </ng-select>
                 <div
                   class="errormsg"
                   *ngIf="
@@ -227,10 +239,7 @@
                     systemItem.get('heatingSystemYearInstalled')?.invalid
                   "
                 >
-                  <label
-                    for="heatingSystemYearInstalled"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  <label class="text-danger fw-semibold position-absolute">
                     Heating System Year Installed is invalid
                   </label>
                 </div>
@@ -261,6 +270,7 @@
                 >
                   <label class="text-danger fw-semibold position-absolute">
                     Cooling System Type is invalid
+                    {{ systemItem.get("coolingSystemType")?.errors | json }}
                   </label>
                 </div>
               </div>
@@ -364,6 +374,10 @@
                       class="text-danger fw-semibold position-absolute"
                     >
                       Cooling System Efficiency Value is invalid
+                      {{
+                        systemItem.get("coolingSystemEfficiencyValue")?.errors
+                          | json
+                      }}
                     </label>
                   </div>
                 </div>
@@ -376,16 +390,19 @@
                 systemItem.get('knowCoolingEfficiency')?.value == false
               "
             >
-              <div class="input-box">
-                <label class="required" for="coolingSystemYearInstalled">
-                  Cooling System Year Installed
-                </label>
-                <input
-                  formControlName="coolingSystemYearInstalled"
-                  type="number"
-                  id="coolingSystemYearInstalled"
+              <div class="select-box">
+                <label class="required"> Cooling System Year Installed</label>
+                <ng-select
+                  [items]="year1970Options"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
                   placeholder="Cooling System Year Installed"
-                />
+                  id="coolingSystemYearInstalled"
+                  formControlName="coolingSystemYearInstalled"
+                >
+                </ng-select>
                 <div
                   class="errormsg"
                   *ngIf="
@@ -394,10 +411,7 @@
                     systemItem.get('coolingSystemYearInstalled')?.invalid
                   "
                 >
-                  <label
-                    for="coolingSystemYearInstalled"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  <label class="text-danger fw-semibold position-absolute">
                     Cooling System Year Installed is invalid
                   </label>
                 </div>
@@ -438,7 +452,10 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div
+                class="col-md-6"
+                *ngIf="systemItem.get('ductLeakageTestPerformed')?.value"
+              >
                 <div class="input-box">
                   <label class="required" for="ductLeakageTestValue">
                     DuctLeakage Test Value
@@ -462,11 +479,19 @@
                       class="text-danger fw-semibold position-absolute"
                     >
                       DuctLeakage Test Value is invalid
+                      {{
+                        systemItem.get("ductLeakageTestValue")?.errors | json
+                      }}
                     </label>
                   </div>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div
+                class="col-md-6"
+                *ngIf="
+                  systemItem.get('ductLeakageTestPerformed')?.value == false
+                "
+              >
                 <div class="select-box">
                   <label class="required">
                     Duct Are Professionally Sealed
@@ -566,7 +591,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div
+                      class="col-md-6"
+                      *ngIf="systemItem.get('ductLocationCount')?.value > 1"
+                    >
                       <div class="input-box">
                         <label class="required" for="percentageOfDucts">
                           Percentage of ducts

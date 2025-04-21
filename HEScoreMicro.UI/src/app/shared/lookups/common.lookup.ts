@@ -30,3 +30,8 @@ export const Year1972Options = Array.from(
   { length: new Date().getFullYear() - 1971 },
   (_, i) => ({ name: (1972 + i).toString(), value: 1972 + i })
 );
+
+export const Year1970Options = Array.from(
+  { length: new Date().getFullYear() - 1969 },
+  (_, i) => ({ name: (1970 + i).toString(), value: 1970 + i })
+);

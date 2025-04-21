@@ -1,27 +1,27 @@
 <div class="col-md-6">
   <div class="select-box">
-    <label class="required"> Year Of Manufacture</label>
+    <label class="required"> Cooling System Year Installed</label>
     <ng-select
-      [items]="year1972Options"
+      [items]="year1970Options"
       bindLabel="name"
       [clearable]="true"
       [closeOnSelect]="true"
       bindValue="value"
-      placeholder="Water Heater Type"
-      id="yearOfManufacture"
-      formControlName="yearOfManufacture"
+      placeholder=""
+      id="coolingSystemYearInstalled"
+      formControlName="coolingSystemYearInstalled"
     >
     </ng-select>
     <div
       class="errormsg"
       *ngIf="
-        (waterHeaterControl['yearOfManufacture']?.touched ||
-          waterHeaterControl['yearOfManufacture']?.dirty) &&
-        waterHeaterControl['yearOfManufacture']?.invalid
+        (systemItem.get('coolingSystemYearInstalled')?.touched ||
+          systemItem.get('coolingSystemYearInstalled')?.dirty) &&
+        systemItem.get('coolingSystemYearInstalled')?.invalid
       "
     >
       <label class="text-danger fw-semibold position-absolute">
-        Year Of Manufacture is invalid
+        Cooling System Year Installed is invalid
       </label>
     </div>
   </div>

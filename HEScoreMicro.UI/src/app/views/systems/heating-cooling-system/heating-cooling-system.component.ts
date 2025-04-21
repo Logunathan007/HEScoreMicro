@@ -2,10 +2,10 @@ import { SystemsService } from './../../../shared/services/heating-cooling-syste
 import { DuctLocationService } from './../../../shared/services/heating-cooling-system/duct-location.service';
 import { Component, OnInit } from '@angular/core';
 import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions } from '../../../shared/lookups/common.lookup';
+import { BooleanOptions, Year1970Options } from '../../../shared/lookups/common.lookup';
 import { CoolingEfficiencyUnitOptions, CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
@@ -38,6 +38,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   systemCountOptions = SystemCountOptions
   ductLocationCountOptions = DuctLocationCountOptions
   heatingEfficiencyUnitOptions = HeatingEfficiencyUnitOptions
+  year1970Options = Year1970Options
 
   get heatingCoolingSystemControl() {
     return this.heatingCoolingSystemForm.controls;
@@ -81,23 +82,28 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       systemCount: [1, [Validators.required]],
       systems: this.fb.array([this.systemsInputs()]),
     })
-    heatingCoolingSystem.get('systemCount')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (val: any) => {
-        if (val) {
-          if (val == 2) {
-            if (this.systemsObj.length == 1) {
-              this.systemsObj.push(this.systemsInputs())
-            }
-          } else if (val == 1) {
-            if (this.systemsObj.length == 2) {
-              this.deleteSystems();
-            }
+    const systemCount = heatingCoolingSystem.get('systemCount') as AbstractControl;
+    const systems = heatingCoolingSystem.get('systems') as FormArray;
+    systemCount?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        if (val == 2) {
+          if (this.systemsObj.length == 1) {
+            this.systemsObj.push(this.systemsInputs())
+          }
+        } else if (val == 1) {
+          if (this.systemsObj.length == 2) {
+            this.deleteSystems();
           }
         }
-      },
-      error: (err: any) => {
-        console.log(err);
       }
+      systems.controls.forEach((control: AbstractControl) => {
+        const percentAreaServed = control.get('percentAreaServed') as AbstractControl
+        if (val > 1) {
+          this.setValidations(percentAreaServed, [Validators.required, Validators.min(0), Validators.max(100)]);
+        } else {
+          this.resetValuesAndValidations(percentAreaServed);
+        }
+      })
     })
     return heatingCoolingSystem;
   }
@@ -107,25 +113,25 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       id: [null],
       buildingId: [this.buildingId],
       percentAreaServed: [null],
-      heatingSystemType: [null, [Validators.required]],
+      heatingSystemType: [null],
       heatingTracker: [{ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false }],
       knowHeatingEfficiency: [null],
       heatingSystemEfficiencyUnit: [null],
       heatingSystemEfficiencyValue: [null],
       heatingSystemYearInstalled: [null],
-      coolingSystemType: [null, [Validators.required]],
+      coolingSystemType: [null],
       coolingTracker: [{ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false }],
       knowCoolingEfficiency: [null],
       coolingSystemEfficiencyUnit: [null],
       coolingSystemEfficiencyValue: [null],
       coolingSystemYearInstalled: [null],
-      ductLeakageTestPerformed: [null],
+      ductLeakageTestPerformed: [null, [Validators.required]],
       ductLeakageTestValue: [null],
       ductAreProfessionallySealed: [null],
-      ductLocationCount: [null],
-      ductLocations: this.fb.array([this.ductLocationInputs()]),
+      ductLocationCount: [null, [Validators.required]],
+      ductLocations: this.fb.array([]),
     })
-    const percentAreaServed = systems.get('percentAreaServed') as AbstractControl
+
     const heatingTracker = systems.get('heatingTracker') as AbstractControl
     const heatingSystemType = systems.get('heatingSystemType') as AbstractControl
     const knowHeatingEfficiency = systems.get('knowHeatingEfficiency') as AbstractControl
@@ -143,6 +149,35 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     const ductAreProfessionallySealed = systems.get('ductAreProfessionallySealed') as AbstractControl
     const ductLocationCount = systems.get('ductLocationCount') as AbstractControl
     const ductLocations = systems.get('ductLocations') as FormArray
+
+    const heatingSystemTypeValidation = (control: AbstractControl): ValidationErrors | null => {
+      coolingSystemType.setErrors(null)
+      if (heatingSystemType?.value?.endsWith("heat pump") || coolingSystemType?.value?.endsWith("heat pump")) {
+        if (!(heatingSystemType?.value == coolingSystemType?.value || coolingSystemType?.value == "None" || coolingSystemType?.value == null)) {
+          return { "Mismatch Type": "Cooling System is " + coolingSystemType?.value }
+        }
+      }
+      return null;
+    }
+    const coolingSystemTypeValidation = (control: AbstractControl): ValidationErrors | null => {
+      heatingSystemType.setErrors(null)
+      if (heatingSystemType?.value?.endsWith("heat pump") || coolingSystemType?.value?.endsWith("heat pump")) {
+        if (!(heatingSystemType?.value == coolingSystemType?.value || heatingSystemType?.value == "None" || heatingSystemType?.value == null)) {
+          return { "Mismatch Type": "Heating System is " + heatingSystemType?.value }
+        }
+      }
+      return null;
+    }
+    this.setValidations(coolingSystemType, [Validators.required, coolingSystemTypeValidation])
+    this.setValidations(heatingSystemType, [Validators.required, heatingSystemTypeValidation])
+
+    const ductSystemsValidation = (flag: boolean) => {
+      if (flag) {
+        this.setValidations([ductLeakageTestPerformed, ductLocationCount])
+      } else {
+        this.resetValuesAndValidations([ductLeakageTestPerformed, ductLocationCount])
+      }
+    }
 
     heatingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       switch (val) {
@@ -168,7 +203,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           break;
         case "Propane (LPG) wall furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
-          this.setValidations([heatingSystemEfficiencyValue])
+          this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(0.6), Validators.max(1)])
           this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         case "Propane (LPG) boiler":
@@ -192,17 +227,17 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           break;
         case "Electric heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
-          this.setValidations([knowHeatingEfficiency])
+          this.setValidations([knowHeatingEfficiency], [Validators.required, Validators.min(6), Validators.max(20)])
           this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Ground coupled heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
-          this.setValidations([heatingSystemEfficiencyValue])
+          this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(2), Validators.max(5)])
           this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         case "Minisplit (ductless) heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: true })
-          this.setValidations(heatingSystemEfficiencyValue)
+          this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
           this.setValidations(heatingSystemEfficiencyUnit)
           this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
@@ -211,11 +246,12 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
       }
+      ductSystemsValidation(heatingTracker?.value?.ducts)
     })
 
     knowHeatingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(heatingSystemEfficiencyValue)
+        this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(0.6), Validators.max(1)])
         if (heatingTracker.value?.efficiencyUnit) {
           this.setValidations(heatingSystemEfficiencyUnit)
         }
@@ -251,7 +287,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           break;
         case "Ground coupled heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
-          this.setValidations([coolingSystemEfficiencyValue])
+          this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
           this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemYearInstalled])
           break;
         default: //"None" "Direct evaporative cooling"
@@ -259,11 +295,12 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled]);
           break;
       }
+      ductSystemsValidation(coolingTracker?.value?.ducts)
     })
 
     knowCoolingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(coolingSystemEfficiencyValue)
+        this.setValidations(coolingSystemEfficiencyValue, [Validators.required, Validators.min(8), Validators.max(40)])
         if (coolingTracker.value?.efficiencyUnit) {
           this.setValidations(coolingSystemEfficiencyUnit)
         }
@@ -286,6 +323,27 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
             this.deleteDuctLocation(val, ductLocations);
           }
         }
+        ductLocations.controls.forEach((control: AbstractControl) => {
+          var percent = control.get('percentageOfDucts') as AbstractControl;
+          if (val > 1) {
+            this.setValidations(percent, [Validators.required, Validators.min(0), Validators.max(100)]);
+          }
+          else {
+            this.resetValuesAndValidations(percent);
+          }
+        })
+      }
+    })
+
+    ductLeakageTestPerformed?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      if (val) {
+        this.setValidations(ductLeakageTestValue, [Validators.required, Validators.min(0), Validators.max(1000)])
+        this.resetValuesAndValidations(ductAreProfessionallySealed)
+      } else if (val == false) {
+        this.setValidations(ductAreProfessionallySealed)
+        this.resetValuesAndValidations(ductLeakageTestValue)
+      } else {
+        this.resetValuesAndValidations([ductLeakageTestValue, ductAreProfessionallySealed])
       }
     })
     return systems;
@@ -295,9 +353,9 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     var ducts = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      location: [null],
+      location: [null, [Validators.required]],
       percentageOfDucts: [null],
-      ductsIsInsulated: [null],
+      ductsIsInsulated: [null, [Validators.required]],
     })
     return ducts;
   }
@@ -342,6 +400,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   onSave() {
+    console.log(this.heatingCoolingSystemForm);
     if (this.heatingCoolingSystemForm.invalid) {
       this.heatingCoolingSystemForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -374,6 +433,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       })
     }
   }
+
+
 
   deleteSystems() {
     var id = this.systemsObj.at(1).get('id')?.value;
