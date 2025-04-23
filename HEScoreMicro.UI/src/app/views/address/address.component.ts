@@ -1,7 +1,6 @@
 import { AssessmentType, DwellingUnitTypeOptions } from '../../shared/lookups/address.lookup';
 import { AddressReadModel } from './../../shared/models/address/address.read.model';
 import { AddressService } from './../../shared/services/address/address.service';
-import { CommonService } from '../../shared/services/common/common.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,11 +29,10 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   }
 
   constructor(
-    protected commonService: CommonService,
     private addressService: AddressService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
+    public route:ActivatedRoute,
+    public router:Router
   ) {
     super()
   }
@@ -48,6 +46,12 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   //variable declarations
   variableDeclaration() {
     this.addressForm = this.addressInput();
+  }
+
+  getBuildingId() {
+    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      this.buildingId = params.get('id') ?? ""
+    })
   }
 
   addressInput(){
@@ -75,16 +79,6 @@ export class AddressComponent extends Unsubscriber implements OnInit {
 
     return address
   }
-
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
-
   getData() {
     if (this.buildingId) {
       this.addressService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -124,7 +118,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
         next: (val: Result<AddressReadModel>) => {
           if (val?.failed == false) {
             this.addressForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+            this.buildingId = val.data?.buildingId
           }
           console.log(val);
         },

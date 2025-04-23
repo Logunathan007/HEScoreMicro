@@ -1,13 +1,11 @@
 import { WaterHeaterTypeOptions } from '../../shared/lookups/water-heater.lookup';
 import { UnitOptions, Year1998Options } from '../../shared/lookups/common.lookup';
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { WaterHeaterReadModel } from "../../shared/models/water-heater/water-heater.model";
 import { BooleanOptions } from "../../shared/lookups/common.lookup";
-import { CommonService } from "../../shared/services/common/common.service";
 import { WaterHeaterService } from "../../shared/services/water-heater/water-heater.service";
-import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { Result } from "../../shared/models/common/result.model";
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
@@ -21,7 +19,7 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   //variable initializations
   waterHeaterForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId')buildingId: string | null | undefined;
   waterHeaterReadModel!: WaterHeaterReadModel;
   booleanOptions = BooleanOptions
   unitOptions = UnitOptions
@@ -35,17 +33,13 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   }
 
   constructor(
-    protected commonService: CommonService,
     private waterHeaterService: WaterHeaterService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
     this.variableDeclaration();
     this.getData();
   }
@@ -112,14 +106,6 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
     }
   }
 
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
   getData() {
     if (this.buildingId) {
       this.waterHeaterService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -159,7 +145,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
         next: (val: Result<WaterHeaterReadModel>) => {
           if (val?.failed == false) {
             this.waterHeaterForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },
@@ -173,5 +159,4 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   goNext() {
     this.move.emit(true);
   }
-
 }

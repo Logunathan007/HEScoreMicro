@@ -1,5 +1,5 @@
 import { RoofAtticService } from '../../shared/services/zone-roof/roof-attic.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Result } from '../../shared/models/common/result.model';
 import { ZoneRoofReadModel } from '../../shared/models/zone-roof/zone-roof.read.model';
 import { takeUntil } from 'rxjs';
@@ -7,9 +7,7 @@ import { removeNullIdProperties } from '../../shared/modules/Transformers/Transo
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BooleanOptions } from '../../shared/lookups/common.lookup';
-import { CommonService } from '../../shared/services/common/common.service';
 import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
 import { resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
@@ -24,7 +22,7 @@ import { resetValues, resetValuesAndValidations, setValidations } from '../../sh
 export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneRoofForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId') buildingId: string | null | undefined;
   zoneRoofReadModel!: ZoneRoofReadModel;
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
@@ -49,18 +47,15 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
 
 
   constructor(
-    protected commonService: CommonService,
     private zoneRoofService: ZoneRoofService,
     private roofAtticService: RoofAtticService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
+
     this.variableDeclaration();
     this.getData();
   }
@@ -241,15 +236,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     return found;
   }
 
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
-
   getData() {
     if (this.buildingId) {
       this.zoneRoofService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -293,7 +279,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneRoofReadModel>) => {
           if (val?.failed == false) {
             this.zoneRoofForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },

@@ -1,15 +1,13 @@
 import { SystemsService } from '../../shared/services/heating-cooling-system/systems.service';
 import { DuctLocationService } from '../../shared/services/heating-cooling-system/duct-location.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions, Year1970Options, Year1998Options } from '../../shared/lookups/common.lookup';
+import { BooleanOptions, Year1998Options } from '../../shared/lookups/common.lookup';
 import { CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, EERCoolingEfficiencyUnitOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SEERCoolingEfficiencyUnitOptions, SystemCountOptions } from '../../shared/lookups/heating-cooling-system.lookup';
-import { CommonService } from '../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../shared/services/heating-cooling-system/heating-cooling-system.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { Result } from '../../shared/models/common/result.model';
 import { DuctLocationReadModel } from '../../shared/models/heating-cooling-system/duct-location-model';
@@ -25,7 +23,7 @@ import { SystemsReadModel } from '../../shared/models/heating-cooling-system/sys
 export class HeatingCoolingSystemComponent extends Unsubscriber implements OnInit {
   //variable initializations
   heatingCoolingSystemForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId')buildingId: string | null | undefined;
   heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
@@ -54,19 +52,19 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   constructor(
-    protected commonService: CommonService,
+
     private heatingCoolingSystemService: HeatingCoolingSystemService,
     private ductLocationService: DuctLocationService,
     private systemsService: SystemsService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
+
+
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
+
     this.variableDeclaration();
     this.getData();
   }
@@ -377,15 +375,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     return ducts;
   }
 
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
-
   getData() {
     if (this.buildingId) {
       this.heatingCoolingSystemService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -440,7 +429,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
         next: (val: Result<HeatingCoolingSystemReadModel>) => {
           if (val?.failed == false) {
             this.heatingCoolingSystemForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },

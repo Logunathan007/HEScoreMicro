@@ -1,9 +1,7 @@
 import { WallReadModel } from '../../shared/models/zone-wall/wall.read.model';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ZoneWallService } from '../../shared/services/zooe-wall/zooe-wall.service';
-import { CommonService } from '../../shared/services/common/common.service';
 import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { WallConstructionOptions, WallExteriorFinishOptions } from '../../shared/lookups/zone-wall.lookup';
@@ -23,7 +21,7 @@ import { resetValues } from '../../shared/modules/Validators/validators.module';
 export class ZoneWallComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWallForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId') buildingId: string | null | undefined;
   zoneWallReadModel!: ZoneWallReadModel;
   removeNullIdProperties = removeNullIdProperties
   resetValues = resetValues;
@@ -39,18 +37,14 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   }
 
   constructor(
-    protected commonService: CommonService,
     private zoneWallService: ZoneWallService,
     private wallService: WallService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
     this.variableDeclaration();
     this.getData();
   }
@@ -125,17 +119,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       }
       this.resetValues(exteriorFinish)
     })
-
     return wall;
-  }
-
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
   }
 
   getData() {
@@ -185,7 +169,6 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneWallReadModel>) => {
           if (val?.failed == false) {
             this.zoneWallForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
           }
           console.log(val);
         },

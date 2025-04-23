@@ -20,17 +20,17 @@
   <div class="container py-lg-4 py-md-3 py-2">
     <h3 class="text-center mb-4">{{ navs[selectedIndex] }}</h3>
     <ng-container [ngSwitch]="selectedIndex">
-      <app-about (move)="move($event)" *ngSwitchCase="0"></app-about>
-      <app-zone-roof  (move)="move($event)" *ngSwitchCase="1"></app-zone-roof>
-      <app-zone-floor  (move)="move($event)" *ngSwitchCase="2"></app-zone-floor>
-      <app-zone-wall  (move)="move($event)" *ngSwitchCase="3"></app-zone-wall>
-      <app-zone-window  (move)="move($event)" *ngSwitchCase="4"></app-zone-window>
-      <app-heating-cooling-system  (move)="move($event)"
+      <app-about [buildingId]="buildingId" (move)="move($event)" *ngSwitchCase="0"></app-about>
+      <app-zone-roof [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="1"></app-zone-roof>
+      <app-zone-floor [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="2"></app-zone-floor>
+      <app-zone-wall [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="3"></app-zone-wall>
+      <app-zone-window [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="4"></app-zone-window>
+      <app-heating-cooling-system [buildingId]="buildingId"  (move)="move($event)"
         *ngSwitchCase="5"
       ></app-heating-cooling-system>
-      <app-water-heating-system  (move)="move($event)" *ngSwitchCase="6"></app-water-heating-system>
-      <app-pv-system  (move)="move($event)" *ngSwitchCase="7"></app-pv-system>
-      <app-summary *ngSwitchCase="8"></app-summary>
+      <app-water-heating-system [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="6"></app-water-heating-system>
+      <app-pv-system [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="7"></app-pv-system>
+      <app-summary [buildingId]="buildingId" *ngSwitchCase="8"></app-summary>
     </ng-container>
     <app-print-hpxml [buildingId]="this.buildingId"></app-print-hpxml>
   </div>

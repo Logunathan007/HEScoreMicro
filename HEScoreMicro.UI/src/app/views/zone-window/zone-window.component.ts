@@ -1,5 +1,5 @@
 import { FrameMaterialOptions, GlazingTypeOptions } from './../../shared/lookups/zone-roof.looup';
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ZoneWindowReadModel } from "../../shared/models/zone-window/zone-window.model";
@@ -7,10 +7,8 @@ import { removeNullIdProperties } from "../../shared/modules/Transformers/Transo
 import { BooleanOptions, EmptyOptions } from "../../shared/lookups/common.lookup";
 import { PaneOptions } from "../../shared/lookups/zone-roof.looup";
 import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from "../../shared/modules/Validators/validators.module";
-import { CommonService } from "../../shared/services/common/common.service";
 import { ZoneWindowService } from "../../shared/services/zone-window/zone-window.service";
 import { WindowService } from "../../shared/services/zone-window/window.service";
-import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { Result } from '../../shared/models/common/result.model';
 import { WindowReadModel } from '../../shared/models/zone-window/window.model';
@@ -24,14 +22,13 @@ import { WindowReadModel } from '../../shared/models/zone-window/window.model';
 export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWindowForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId')buildingId: string | null | undefined;
   zoneWindowReadModel!: ZoneWindowReadModel;
   removeNullIdProperties = removeNullIdProperties
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
   glazingTypeOptions = EmptyOptions
-
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
   resetValues = resetValues
@@ -44,20 +41,15 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     return this.zoneWindowControl['windows'] as FormArray
   }
 
-
   constructor(
-    protected commonService: CommonService,
     private zoneWindowService: ZoneWindowService,
     private windowService: WindowService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
     this.variableDeclaration();
     this.getData();
   }
@@ -180,17 +172,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       }
       this.resetValues(glazingType)
     })
-
     return window;
-  }
-
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
   }
 
   getData() {
@@ -205,7 +187,6 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
             }
             this.zoneWindowForm.patchValue(val.data)
           }
-
         },
         error: (err: any) => {
           console.log(err);
@@ -237,7 +218,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneWindowReadModel>) => {
           if (val?.failed == false) {
             this.zoneWindowForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+            this.buildingId = val.data?.buildingId;
           }
           console.log(val);
         },
@@ -247,6 +228,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
   deleteWindows() {
     const windowIds: string[] = this.windowsObj?.value?.reduce((acc: string[], obj: WindowReadModel, index: number) => {
       if (obj.id && index != 0) acc.push(obj.id);
@@ -271,6 +253,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       }
     }
   }
+
   @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
     this.move.emit(true);

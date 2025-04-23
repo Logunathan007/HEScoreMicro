@@ -1,12 +1,10 @@
 import { OrientationOptions, Year2000Options } from '../../shared/lookups/common.lookup';
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { PVSystemReadModel } from "../../shared/models/pv-system/pv-system.model";
 import { BooleanOptions } from "../../shared/lookups/common.lookup";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { CommonService } from "../../shared/services/common/common.service";
 import { PVSystemService } from "../../shared/services/pv-system/pv-system.service";
-import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
 import { Result } from "../../shared/models/common/result.model";
 import { AnglePanelsAreTiltedOptions } from "../../shared/lookups/pv-system.lookup";
@@ -21,7 +19,7 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class PVSystemComponent extends Unsubscriber implements OnInit {
   //variable initializations
   pVSystemForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId')buildingId: string | null | undefined;
   pVSystemReadModel!: PVSystemReadModel;
   booleanOptions = BooleanOptions
   anglePanelsAreTiltedOptions = AnglePanelsAreTiltedOptions
@@ -34,17 +32,14 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   }
 
   constructor(
-    protected commonService: CommonService,
     private pVSystemService: PVSystemService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
+
     this.variableDeclaration();
     this.getData();
   }
@@ -94,14 +89,6 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
     return pvSystem;
   }
 
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
   getData() {
     if (this.buildingId) {
       this.pVSystemService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -141,7 +128,7 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
         next: (val: Result<PVSystemReadModel>) => {
           if (val?.failed == false) {
             this.pVSystemForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },

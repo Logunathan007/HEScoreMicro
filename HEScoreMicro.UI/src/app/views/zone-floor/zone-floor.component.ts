@@ -1,8 +1,6 @@
 import { FoundationService } from '../../shared/services/zone-floor/foundation.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonService } from '../../shared/services/common/common.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { ZoneFloorReadModel } from '../../shared/models/zone-floor/zone-floor.read.model';
 import { BooleanOptions } from '../../shared/lookups/common.lookup';
@@ -23,7 +21,7 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneFloorForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId') buildingId: string | null | undefined;
   zoneFloorReadModel!: ZoneFloorReadModel;
   booleanOptions = BooleanOptions
   foundationTypeOptions = FoundationTypeOptions
@@ -39,18 +37,14 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   }
 
   constructor(
-    protected commonService: CommonService,
     private zoneFloorService: ZoneFloorService,
     private foundationService: FoundationService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
     this.variableDeclaration();
     this.getData();
   }
@@ -145,15 +139,6 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     return found;
   }
 
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
-  }
-
   getData() {
     if (this.buildingId) {
       this.zoneFloorService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -196,7 +181,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneFloorReadModel>) => {
           if (val?.failed == false) {
             this.zoneFloorForm.patchValue(val.data)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },

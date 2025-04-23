@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../shared/services/common/common.service';
 import { AboutService } from '../../shared/services/about/about.service';
 import { AboutReadModel } from '../../shared/models/about/about.read.model';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
@@ -10,6 +8,7 @@ import { takeUntil } from 'rxjs';
 import { BooleanOptions, OrientationOptions } from '../../shared/lookups/common.lookup';
 import { ManufacturedHomeTypeOptions } from '../../shared/lookups/about.lookup';
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -20,7 +19,7 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class AboutComponent extends Unsubscriber implements OnInit {
   //variable initializations
   aboutForm!: FormGroup | any;
-  buildingId: string | null | undefined;
+  @Input('buildingId') buildingId: string | null | undefined;
   aboutReadModel!: AboutReadModel;
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
@@ -28,22 +27,20 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
 
+  @Output() myEvent = new EventEmitter<any>();
+
   get aboutControl() {
     return this.aboutForm.controls;
   }
 
   constructor(
-    protected commonService: CommonService,
-    private aboutService: AboutService,
     public fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
+    private aboutService: AboutService,
   ) {
     super()
   }
 
   ngOnInit(): void {
-    this.getBuildingId();
     this.variableDeclaration();
     this.getData();
   }
@@ -52,6 +49,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   variableDeclaration() {
     this.aboutForm = this.aboutInputs();
   }
+
 
   aboutInputs(): FormGroup {
     var about = this.fb.group({
@@ -82,15 +80,6 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       }
     })
     return about;
-  }
-
-  getBuildingId() {
-    this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params.get('id')) {
-        this.commonService.buildingId = params.get('id');
-      }
-      this.buildingId = params.get('id') ?? this.commonService.buildingId ?? ""
-    })
   }
 
   patchToForm(val: Result<AboutReadModel>) {
@@ -124,7 +113,8 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       this.aboutReadModel = this.aboutForm.value
       this.aboutService.update(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AboutReadModel>) => {
-          this.patchToForm(val)
+          this.patchToForm(val);
+          this.myEvent.emit();
           console.log(val);
         },
         error: (err: any) => {
@@ -138,7 +128,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
         next: (val: Result<AboutReadModel>) => {
           if (val?.failed == false) {
             this.patchToForm(val)
-            this.buildingId = this.commonService.buildingId = val.data?.buildingId;
+
           }
           console.log(val);
         },
