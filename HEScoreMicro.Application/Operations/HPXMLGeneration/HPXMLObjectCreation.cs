@@ -1050,11 +1050,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 {
                     this.GenerateHeatPumpObject(system, heatPumps, distributionSystems, id);
                 }
-                else
-                {
-                    this.GenerateHeatingSystemObject(system, heatingSystems, distributionSystems, id);
-                    this.GenerateCoolingSystemObject(system, coolingSystems, distributionSystems, id);
-                }
+                this.GenerateHeatingSystemObject(system, heatingSystems, distributionSystems, id);
+                this.GenerateCoolingSystemObject(system, coolingSystems, distributionSystems, id);
                 i++;
             }
             hVAC.HVACPlant = new HVACPlant()
@@ -1069,7 +1066,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
         public void GenerateHeatingSystemObject(SystemsDTO system, List<HeatingSystem> heatingSystems, List<HVACDistribution> distributionSystems, string id)
         {
-            if (system == null || system.HeatingSystemType == "None")
+            if (system == null || system.HeatingSystemType == "None" || system.HeatingSystemType.EndsWith("heat pump"))
             {
                 return;
             }
@@ -1176,7 +1173,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         public void GenerateCoolingSystemObject(SystemsDTO system, List<CoolingSystem> coolingSystems, List<HVACDistribution> distributionSystems, string id)
         {
             id += "-cooler-1";
-            if (system == null || system.CoolingSystemType == "None")
+            if (system == null || system.CoolingSystemType == "None" || system.CoolingSystemType.EndsWith("heat pump"))
             {
                 return;
             }
@@ -1237,35 +1234,25 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     Id = id
                 },
             };
-            bool heatpumpForHeating = false;
-            bool heatpumpForCooling = false;
-            if (system.CoolingSystemType == "None")
+
+            if (!system.CoolingSystemType.EndsWith("heat pump") && system.HeatingSystemType.EndsWith("heat pump"))
             {
                 hp.FractionCoolLoadServed = 0;
             }
-            else
+            hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null ? new AnnualHeatingEfficiency()
             {
-                heatpumpForHeating = true;
-                hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null ? new AnnualHeatingEfficiency()
-                {
-                    Value = system.HeatingSystemEfficiencyValue,
-                } : null;
-                hp.YearInstalled = system.HeatingSystemYearInstalled;
-            }
+                Value = system.HeatingSystemEfficiencyValue,
+            } : null;
 
-            if (system.HeatingSystemType == "None")
+            if (!system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump"))
             {
                 hp.FractionHeatLoadServed = 0;
             }
-            else
+            hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null ? new AnnualCoolingEfficiency()
             {
-                heatpumpForCooling = true;
-                hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null ? new AnnualCoolingEfficiency()
-                {
-                    Value = system.CoolingSystemEfficiencyValue,
-                } : null;
-                hp.YearInstalled = system.CoolingSystemYearInstalled;
-            }
+                Value = system.CoolingSystemEfficiencyValue,
+            } : null;
+            hp.YearInstalled = system.CoolingSystemYearInstalled ?? system.HeatingSystemYearInstalled;
 
             if (system.HeatingSystemType == "Electric heat pump" || system.CoolingSystemType == "Electric heat pump") //heat_pump
             {
@@ -1374,7 +1361,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     },
                     DuctLocation = this.GetDuctLocation(ductLocationDTO.Location),
                     DuctInsulationThickness = (ductLocationDTO.DuctsIsInsulated == true) ? 1 : null,
-                    FractionDuctArea = area
+                    FractionDuctArea = area ?? .5 // TODO Need to clarify
                 };
                 ducts.Add(ductsObj);
                 i++;

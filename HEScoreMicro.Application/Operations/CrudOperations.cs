@@ -65,7 +65,7 @@ namespace HEScoreMicro.Application.CrudOperations
         public async Task<ResponseDTO<TEntityDTO>> Add(TEntity entity)
         {
             await _table.AddAsync(entity);
-            await _context.SaveChangesAsync(); // Save changes to the database
+            await _context.SaveChangesAsync(); 
             var entityDTO = _mapper.Map<TEntityDTO>(entity);
             return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Added", Data = entityDTO };
         }
@@ -77,7 +77,7 @@ namespace HEScoreMicro.Application.CrudOperations
         public async Task<ResponseDTO<TEntityDTO>> Update(TEntity entity)
         {
             _table.Update(entity);
-            await _context.SaveChangesAsync(); // Save changes to the database
+            await _context.SaveChangesAsync(); 
             var entityDTO = _mapper.Map<TEntityDTO>(entity);
             return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Updated", Data=entityDTO };
         }

@@ -162,7 +162,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     })
     skylightsPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
-        this.setValidations([solarScreen, skylightArea])
+        this.setValidations(solarScreen)
+        this.setValidations(skylightArea,[Validators.required,Validators.min(1),Validators.max(300)])
       } else {
         this.resetValuesAndValidations([solarScreen, skylightArea])
       }

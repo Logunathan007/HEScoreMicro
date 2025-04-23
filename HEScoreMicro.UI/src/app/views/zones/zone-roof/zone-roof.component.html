@@ -4,15 +4,25 @@
       <div class="col-md-6">
         <div class="select-box">
           <label class="required"> Enable Second RoofAttic </label>
-          <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-            bindValue="value" placeholder="Enable Second RoofAttic" id="enableSecondRoofAttic"
-            formControlName="enableSecondRoofAttic">
+          <ng-select
+            [items]="booleanOptions"
+            bindLabel="name"
+            [clearable]="true"
+            [closeOnSelect]="true"
+            bindValue="value"
+            placeholder="Enable Second RoofAttic"
+            id="enableSecondRoofAttic"
+            formControlName="enableSecondRoofAttic"
+          >
           </ng-select>
-          <div class="errormsg" *ngIf="
+          <div
+            class="errormsg"
+            *ngIf="
               (zoneRoofForm.get('enableSecondRoofAttic')?.touched ||
                 zoneRoofForm.get('enableSecondRoofAttic')?.dirty) &&
               zoneRoofForm.get('enableSecondRoofAttic')?.invalid
-            ">
+            "
+          >
             <label class="text-danger fw-semibold position-absolute">
               Enable Second RoofAttic is invalid
             </label>
@@ -20,24 +30,36 @@
         </div>
       </div>
       <ng-container formArrayName="roofAttics">
-        <ng-container *ngFor="
+        <ng-container
+          *ngFor="
             let roofAtticItem of roofAtticsObj.controls;
             let roofAtticIndex = index
-          ">
+          "
+        >
           <ng-container [formGroupName]="roofAtticIndex">
             <h4 class="col-12 my-3">RoofAttic {{ roofAtticIndex + 1 }}</h4>
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Attic Or Ceiling Type </label>
-                <ng-select [items]="atticOrCeilingTypeOptions" bindLabel="name" [clearable]="true"
-                  [closeOnSelect]="true" bindValue="value" placeholder="Attic Or Ceiling Type" id="atticOrCeilingType"
-                  formControlName="atticOrCeilingType">
+                <ng-select
+                  [items]="atticOrCeilingTypeOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Attic Or Ceiling Type"
+                  id="atticOrCeilingType"
+                  formControlName="atticOrCeilingType"
+                >
                 </ng-select>
-                <div class="errormsg" *ngIf="
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('atticOrCeilingType')?.touched ||
                       roofAtticItem.get('atticOrCeilingType')?.dirty) &&
                     roofAtticItem.get('atticOrCeilingType')?.invalid
-                  ">
+                  "
+                >
                   <label class="text-danger fw-semibold position-absolute">
                     Attic Or Ceiling Type is invalid
                   </label>
@@ -47,14 +69,25 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Construction </label>
-                <ng-select [items]="roofConstructionOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                  bindValue="value" placeholder="Construction" id="construction" formControlName="construction">
+                <ng-select
+                  [items]="roofConstructionOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Construction"
+                  id="construction"
+                  formControlName="construction"
+                >
                 </ng-select>
-                <div class="errormsg" *ngIf="
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('construction')?.touched ||
                       roofAtticItem.get('construction')?.dirty) &&
                     roofAtticItem.get('construction')?.invalid
-                  ">
+                  "
+                >
                   <label class="text-danger fw-semibold position-absolute">
                     Construction is invalid
                   </label>
@@ -64,15 +97,25 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Exterior Finish </label>
-                <ng-select [items]="roofExteriorFinishOptions" bindLabel="name" [clearable]="true"
-                  [closeOnSelect]="true" bindValue="value" placeholder="Exterior Finish" id="exteriorFinish"
-                  formControlName="exteriorFinish">
+                <ng-select
+                  [items]="roofExteriorFinishOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Exterior Finish"
+                  id="exteriorFinish"
+                  formControlName="exteriorFinish"
+                >
                 </ng-select>
-                <div class="errormsg" *ngIf="
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('exteriorFinish')?.touched ||
                       roofAtticItem.get('exteriorFinish')?.dirty) &&
                     roofAtticItem.get('exteriorFinish')?.invalid
-                  ">
+                  "
+                >
                   <label class="text-danger fw-semibold position-absolute">
                     Exterior Finish is invalid
                   </label>
@@ -83,30 +126,41 @@
               <div class="input-box">
                 <label class="required" for="roofArea">
                   {{
-                  roofAtticItem.get("atticOrCeilingType")?.value ==
-                  "Cathedral Ceiling"
-                  ? "Cathedral Ceiling "
-                  : "Roof "
+                    roofAtticItem.get("atticOrCeilingType")?.value ==
+                    "Cathedral Ceiling"
+                      ? "Cathedral Ceiling "
+                      : "Roof "
                   }}
                   Area
                 </label>
-                <input formControlName="roofArea" type="number" id="roofArea" [placeholder]="
+                <input
+                  formControlName="roofArea"
+                  type="number"
+                  id="roofArea"
+                  [placeholder]="
                     roofAtticItem.get('atticOrCeilingType')?.value ==
                     'Cathedral Ceiling'
                       ? 'Cathedral Ceiling Area'
                       : 'Roof Area'
-                  " />
-                <div class="errormsg" *ngIf="
+                  "
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('roofArea')?.touched ||
                       roofAtticItem.get('roofArea')?.dirty) &&
                     roofAtticItem.get('roofArea')?.invalid
-                  ">
-                  <label for="roofArea" class="text-danger fw-semibold position-absolute">
+                  "
+                >
+                  <label
+                    for="roofArea"
+                    class="text-danger fw-semibold position-absolute"
+                  >
                     {{
-                    roofAtticItem.get("atticOrCeilingType")?.value ==
-                    "Cathedral Ceiling"
-                    ? "Cathedral Ceiling "
-                    : "Roof "
+                      roofAtticItem.get("atticOrCeilingType")?.value ==
+                      "Cathedral Ceiling"
+                        ? "Cathedral Ceiling "
+                        : "Roof "
                     }}
                     Area is invalid
                   </label>
@@ -118,14 +172,24 @@
                 <label class="required" for="roofInsulation">
                   Roof Insulation
                 </label>
-                <input formControlName="roofInsulation" type="number" id="roofInsulation"
-                  placeholder="Roof Insulation" />
-                <div class="errormsg" *ngIf="
+                <input
+                  formControlName="roofInsulation"
+                  type="number"
+                  id="roofInsulation"
+                  placeholder="Roof Insulation"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('roofInsulation')?.touched ||
                       roofAtticItem.get('roofInsulation')?.dirty) &&
                     roofAtticItem.get('roofInsulation')?.invalid
-                  ">
-                  <label for="roofInsulation" class="text-danger fw-semibold position-absolute">
+                  "
+                >
+                  <label
+                    for="roofInsulation"
+                    class="text-danger fw-semibold position-absolute"
+                  >
                     Roof Insulation is invalid
                   </label>
                 </div>
@@ -134,31 +198,57 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Roof Color </label>
-                <ng-select [items]="roofColorOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                  bindValue="value" placeholder="Roof Color" id="roofColor" formControlName="roofColor">
+                <ng-select
+                  [items]="roofColorOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Roof Color"
+                  id="roofColor"
+                  formControlName="roofColor"
+                >
                 </ng-select>
-                <div class="errormsg" *ngIf="
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('roofColor')?.touched ||
                       roofAtticItem.get('roofColor')?.dirty) &&
                     roofAtticItem.get('roofColor')?.invalid
-                  ">
+                  "
+                >
                   <label class="text-danger fw-semibold position-absolute">
                     Roof Color is invalid
                   </label>
                 </div>
               </div>
             </div>
-            <div class="col-md-6" *ngIf="roofAtticItem.get('roofColor')?.value == 'Cool Color'">
+            <div
+              class="col-md-6"
+              *ngIf="roofAtticItem.get('roofColor')?.value == 'Cool Color'"
+            >
               <div class="input-box">
                 <label class="required" for="absorptance"> Absorptance </label>
-                <input formControlName="absorptance" type="number" id="absorptance" placeholder="Absorptance" />
-                <div class="errormsg" *ngIf="
+                <input
+                  formControlName="absorptance"
+                  type="number"
+                  id="absorptance"
+                  placeholder="Absorptance"
+                />
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('absorptance')?.touched ||
                       roofAtticItem.get('absorptance')?.dirty) &&
                     roofAtticItem.get('absorptance')?.invalid
-                  ">
-                  <label for="absorptance" class="text-danger fw-semibold position-absolute">
-                    Absorptance is invalid {{ roofAtticItem.get('absorptance')?.errors | json }}
+                  "
+                >
+                  <label
+                    for="absorptance"
+                    class="text-danger fw-semibold position-absolute"
+                  >
+                    Absorptance is invalid
+                    {{ roofAtticItem.get("absorptance")?.errors | json }}
                   </label>
                 </div>
               </div>
@@ -167,15 +257,25 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Skylights Present </label>
-                <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                  bindValue="value" placeholder="Skylights Present" id="skylightsPresent"
-                  formControlName="skylightsPresent">
+                <ng-select
+                  [items]="booleanOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Skylights Present"
+                  id="skylightsPresent"
+                  formControlName="skylightsPresent"
+                >
                 </ng-select>
-                <div class="errormsg" *ngIf="
+                <div
+                  class="errormsg"
+                  *ngIf="
                     (roofAtticItem.get('skylightsPresent')?.touched ||
                       roofAtticItem.get('skylightsPresent')?.dirty) &&
                     roofAtticItem.get('skylightsPresent')?.invalid
-                  ">
+                  "
+                >
                   <label class="text-danger fw-semibold position-absolute">
                     Skylights Present is invalid
                   </label>
@@ -188,14 +288,26 @@
                   <label class="required" for="skylightArea">
                     Skylight Area
                   </label>
-                  <input formControlName="skylightArea" type="number" id="skylightArea" placeholder="Skylight Area" />
-                  <div class="errormsg" *ngIf="
+                  <input
+                    formControlName="skylightArea"
+                    type="number"
+                    id="skylightArea"
+                    placeholder="Skylight Area"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('skylightArea')?.touched ||
                         roofAtticItem.get('skylightArea')?.dirty) &&
                       roofAtticItem.get('skylightArea')?.invalid
-                    ">
-                    <label for="skylightArea" class="text-danger fw-semibold position-absolute">
+                    "
+                  >
+                    <label
+                      for="skylightArea"
+                      class="text-danger fw-semibold position-absolute"
+                    >
                       Skylight Area is invalid
+                      {{ roofAtticItem.get("skylightArea")?.errors | json }}
                     </label>
                   </div>
                 </div>
@@ -203,14 +315,25 @@
               <div class="col-md-6">
                 <div class="select-box">
                   <label class="required"> Solar Screen </label>
-                  <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                    bindValue="value" placeholder="Solar Screen" id="solarScreen" formControlName="solarScreen">
+                  <ng-select
+                    [items]="booleanOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Solar Screen"
+                    id="solarScreen"
+                    formControlName="solarScreen"
+                  >
                   </ng-select>
-                  <div class="errormsg" *ngIf="
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('solarScreen')?.touched ||
                         roofAtticItem.get('solarScreen')?.dirty) &&
                       roofAtticItem.get('solarScreen')?.invalid
-                    ">
+                    "
+                  >
                     <label class="text-danger fw-semibold position-absolute">
                       Solar Screen is invalid
                     </label>
@@ -220,35 +343,59 @@
               <div class="col-md-6">
                 <div class="select-box">
                   <label class="required"> Known Skylight Specification </label>
-                  <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                    bindValue="value" placeholder="Known Skylight Specification" id="knowSkylightSpecification"
-                    formControlName="knowSkylightSpecification">
+                  <ng-select
+                    [items]="booleanOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="Known Skylight Specification"
+                    id="knowSkylightSpecification"
+                    formControlName="knowSkylightSpecification"
+                  >
                   </ng-select>
-                  <div class="errormsg" *ngIf="
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('knowSkylightSpecification')
                         ?.touched ||
                         roofAtticItem.get('knowSkylightSpecification')
                           ?.dirty) &&
                       roofAtticItem.get('knowSkylightSpecification')?.invalid
-                    ">
+                    "
+                  >
                     <label class="text-danger fw-semibold position-absolute">
                       Known Skylight Specification is invalid
                     </label>
                   </div>
                 </div>
               </div>
-              <ng-container *ngIf="roofAtticItem.get('knowSkylightSpecification')?.value">
+              <ng-container
+                *ngIf="roofAtticItem.get('knowSkylightSpecification')?.value"
+              >
                 <div class="col-md-6">
                   <div class="input-box">
                     <label class="required" for="uFactor"> UFactor </label>
-                    <input formControlName="uFactor" type="number" id="uFactor" placeholder="UFactor" />
-                    <div class="errormsg" *ngIf="
+                    <input
+                      formControlName="uFactor"
+                      type="number"
+                      id="uFactor"
+                      placeholder="UFactor"
+                    />
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('uFactor')?.touched ||
                           roofAtticItem.get('uFactor')?.dirty) &&
                         roofAtticItem.get('uFactor')?.invalid
-                      ">
-                      <label for="uFactor" class="text-danger fw-semibold position-absolute">
-                        UFactor is invalid {{ roofAtticItem.get('uFactor')?.errors | json }}
+                      "
+                    >
+                      <label
+                        for="uFactor"
+                        class="text-danger fw-semibold position-absolute"
+                      >
+                        UFactor is invalid
+                        {{ roofAtticItem.get("uFactor")?.errors | json }}
                       </label>
                     </div>
                   </div>
@@ -256,22 +403,36 @@
                 <div class="col-md-6">
                   <div class="input-box">
                     <label class="required" for="shgc"> SHGC </label>
-                    <input formControlName="shgc" type="number" id="shgc" placeholder="SHGC" />
-                    <div class="errormsg" *ngIf="
+                    <input
+                      formControlName="shgc"
+                      type="number"
+                      id="shgc"
+                      placeholder="SHGC"
+                    />
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('shgc')?.touched ||
                           roofAtticItem.get('shgc')?.dirty) &&
                         roofAtticItem.get('shgc')?.invalid
-                      ">
-                      <label for="shgc" class="text-danger fw-semibold position-absolute">
-                        SHGC is invalid {{ roofAtticItem.get('shgc')?.errors | json }}
+                      "
+                    >
+                      <label
+                        for="shgc"
+                        class="text-danger fw-semibold position-absolute"
+                      >
+                        SHGC is invalid
+                        {{ roofAtticItem.get("shgc")?.errors | json }}
                       </label>
                     </div>
                   </div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="
+              <ng-container
+                *ngIf="
                   roofAtticItem.get('knowSkylightSpecification')?.value == false
-                ">
+                "
+              >
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Panes </label>
@@ -358,24 +519,36 @@
                 </div>
               </ng-container>
             </ng-container>
-            <ng-container *ngIf="
+            <ng-container
+              *ngIf="
                 roofAtticItem.get('atticOrCeilingType')?.value ==
                 'Unconditioned Attic'
-              ">
+              "
+            >
               <h5 class="mt-4">Floor</h5>
               <div class="col-md-6">
                 <div class="input-box">
                   <label class="required" for="atticFloorArea">
                     Attic Floor Area
                   </label>
-                  <input formControlName="atticFloorArea" type="number" id="atticFloorArea"
-                    placeholder="Attic Floor Area" />
-                  <div class="errormsg" *ngIf="
+                  <input
+                    formControlName="atticFloorArea"
+                    type="number"
+                    id="atticFloorArea"
+                    placeholder="Attic Floor Area"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('atticFloorArea')?.touched ||
                         roofAtticItem.get('atticFloorArea')?.dirty) &&
                       roofAtticItem.get('atticFloorArea')?.invalid
-                    ">
-                    <label for="atticFloorArea" class="text-danger fw-semibold position-absolute">
+                    "
+                  >
+                    <label
+                      for="atticFloorArea"
+                      class="text-danger fw-semibold position-absolute"
+                    >
                       Attic Floor Area is invalid
                     </label>
                   </div>
@@ -386,14 +559,24 @@
                   <label class="required" for="atticFloorInsulation">
                     Attic Floor Insulation
                   </label>
-                  <input formControlName="atticFloorInsulation" type="number" id="atticFloorInsulation"
-                    placeholder="Attic Floor Insulation" />
-                  <div class="errormsg" *ngIf="
+                  <input
+                    formControlName="atticFloorInsulation"
+                    type="number"
+                    id="atticFloorInsulation"
+                    placeholder="Attic Floor Insulation"
+                  />
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('atticFloorInsulation')?.touched ||
                         roofAtticItem.get('atticFloorInsulation')?.dirty) &&
                       roofAtticItem.get('atticFloorInsulation')?.invalid
-                    ">
-                    <label for="atticFloorInsulation" class="text-danger fw-semibold position-absolute">
+                    "
+                  >
+                    <label
+                      for="atticFloorInsulation"
+                      class="text-danger fw-semibold position-absolute"
+                    >
                       Attic Floor Insulation is invalid
                     </label>
                   </div>
@@ -403,15 +586,25 @@
               <div class="col-md-6">
                 <div class="select-box">
                   <label class="required"> KneeWall Present </label>
-                  <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
-                    bindValue="value" placeholder="KneeWall Present" id="kneeWallPresent"
-                    formControlName="kneeWallPresent">
+                  <ng-select
+                    [items]="booleanOptions"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
+                    placeholder="KneeWall Present"
+                    id="kneeWallPresent"
+                    formControlName="kneeWallPresent"
+                  >
                   </ng-select>
-                  <div class="errormsg" *ngIf="
+                  <div
+                    class="errormsg"
+                    *ngIf="
                       (roofAtticItem.get('kneeWallPresent')?.touched ||
                         roofAtticItem.get('kneeWallPresent')?.dirty) &&
                       roofAtticItem.get('kneeWallPresent')?.invalid
-                    ">
+                    "
+                  >
                     <label class="text-danger fw-semibold position-absolute">
                       KneeWall Present is invalid
                     </label>
@@ -424,14 +617,24 @@
                     <label class="required" for="kneeWallArea">
                       Knee Wall Area
                     </label>
-                    <input formControlName="kneeWallArea" type="number" id="kneeWallArea"
-                      placeholder="Knee Wall Area" />
-                    <div class="errormsg" *ngIf="
+                    <input
+                      formControlName="kneeWallArea"
+                      type="number"
+                      id="kneeWallArea"
+                      placeholder="Knee Wall Area"
+                    />
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('kneeWallArea')?.touched ||
                           roofAtticItem.get('kneeWallArea')?.dirty) &&
                         roofAtticItem.get('kneeWallArea')?.invalid
-                      ">
-                      <label for="kneeWallArea" class="text-danger fw-semibold position-absolute">
+                      "
+                    >
+                      <label
+                        for="kneeWallArea"
+                        class="text-danger fw-semibold position-absolute"
+                      >
                         Knee Wall Area is invalid
                       </label>
                     </div>
@@ -442,14 +645,24 @@
                     <label class="required" for="kneeWallInsulation">
                       Knee Wall Insulation
                     </label>
-                    <input formControlName="kneeWallInsulation" type="number" id="kneeWallInsulation"
-                      placeholder="Knee Wall Insulation" />
-                    <div class="errormsg" *ngIf="
+                    <input
+                      formControlName="kneeWallInsulation"
+                      type="number"
+                      id="kneeWallInsulation"
+                      placeholder="Knee Wall Insulation"
+                    />
+                    <div
+                      class="errormsg"
+                      *ngIf="
                         (roofAtticItem.get('kneeWallInsulation')?.touched ||
                           roofAtticItem.get('kneeWallInsulation')?.dirty) &&
                         roofAtticItem.get('kneeWallInsulation')?.invalid
-                      ">
-                      <label for="kneeWallInsulation" class="text-danger fw-semibold position-absolute">
+                      "
+                    >
+                      <label
+                        for="kneeWallInsulation"
+                        class="text-danger fw-semibold position-absolute"
+                      >
                         Knee Wall Insulation is invalid
                       </label>
                     </div>

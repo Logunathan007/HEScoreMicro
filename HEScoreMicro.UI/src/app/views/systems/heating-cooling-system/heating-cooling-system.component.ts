@@ -5,7 +5,7 @@ import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.co
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
 import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions, Year1970Options } from '../../../shared/lookups/common.lookup';
+import { BooleanOptions, Year1970Options, Year1998Options } from '../../../shared/lookups/common.lookup';
 import { CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, EERCoolingEfficiencyUnitOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SEERCoolingEfficiencyUnitOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
 import { CommonService } from '../../../shared/services/common/common.service';
 import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
@@ -39,7 +39,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   systemCountOptions = SystemCountOptions
   ductLocationCountOptions = DuctLocationCountOptions
   heatingEfficiencyUnitOptions = HeatingEfficiencyUnitOptions
-  year1970Options = Year1970Options
+  year1998Options = Year1998Options
 
   get heatingCoolingSystemControl() {
     return this.heatingCoolingSystemForm.controls;
@@ -152,19 +152,35 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     const ductLocations = systems.get('ductLocations') as FormArray
 
     const heatingSystemTypeValidation = (control: AbstractControl): ValidationErrors | null => {
+      let heatType = control?.value
+      let coolType = coolingSystemType?.value
       coolingSystemType.setErrors(null)
-      if (heatingSystemType?.value?.endsWith("heat pump") || coolingSystemType?.value?.endsWith("heat pump")) {
-        if (!(heatingSystemType?.value == coolingSystemType?.value || coolingSystemType?.value == "None" || coolingSystemType?.value == null)) {
-          return { "Mismatch Type": "Cooling System is " + coolingSystemType?.value }
+      if (heatType == "Electric baseboard heater" || heatType?.endsWith("boiler") || heatType?.endsWith("furnace")) {
+        if (coolType == "Ground coupled heat pump" || coolType == "Electric heat pump") {
+          return { "typeMisMatch": `${heatType} not matched to ${coolType}` }
+        }
+      } else if (heatType?.endsWith("heat pump")) {
+        if (!(!coolType || coolType == "None" || coolType == heatType || coolType == "Direct evaporative cooling" || coolType == "Direct evaporative cooling" || coolType == "Minisplit (ductless) heat pump")) {
+          return { "typeMisMatch": `${heatType} not matched to ${coolType}` }
         }
       }
       return null;
     }
     const coolingSystemTypeValidation = (control: AbstractControl): ValidationErrors | null => {
+      let heatType = heatingSystemType?.value
+      let coolType = control?.value
       heatingSystemType.setErrors(null)
-      if (heatingSystemType?.value?.endsWith("heat pump") || coolingSystemType?.value?.endsWith("heat pump")) {
-        if (!(heatingSystemType?.value == coolingSystemType?.value || heatingSystemType?.value == "None" || heatingSystemType?.value == null)) {
-          return { "Mismatch Type": "Heating System is " + heatingSystemType?.value }
+      if (coolType == "Central air conditioner") {
+        if (heatType?.endsWith("heat pump")) {
+          return { "typeMisMatch": `${coolType} not matched to ${heatType}` }
+        }
+      } else if (coolType == "Ground coupled heat pump" || coolType == "Electric heat pump") {
+        if (!(!heatType || heatType == "None" || coolType == heatType || heatType?.endsWith("stove"))) {
+          return { "typeMisMatch": `${coolType} not matched to ${heatType}` }
+        }
+      } else if (coolType == "Minisplit (ductless) heat pump") {
+        if (heatType == "Ground coupled heat pump" || heatType == "Electric heat pump") {
+          return { "typeMisMatch": `${coolType} not matched to ${heatType}` }
         }
       }
       return null;
@@ -237,7 +253,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         case "Minisplit (ductless) heat pump":
-          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: true })
+          heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
           this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
           this.setValidations(heatingSystemEfficiencyUnit)
           this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemYearInstalled]);
@@ -329,7 +345,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           if (val > 1) {
             this.setValidations(percent, [Validators.required, Validators.min(0), Validators.max(100)]);
           }
-          else if(val) {
+          else if (val) {
             this.resetValuesAndValidations(percent);
           }
         })
@@ -434,8 +450,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       })
     }
   }
-
-
 
   deleteSystems() {
     var id = this.systemsObj.at(1).get('id')?.value;

@@ -1,21 +1,21 @@
 export const HeatingSystemTypeOptions = [
-  { name: "None", value: "None" },
-  { name: "Central gas furnace", value: "Central gas furnace" },
-  { name: "Room (through-the-wall) gas furnace", value: "Room (through-the-wall) gas furnace" },
-  { name: "Gas boiler", value: "Gas boiler" },
-  { name: "Propane (LPG) central furnace", value: "Propane (LPG) central furnace" },
-  { name: "Propane (LPG) wall furnace", value: "Propane (LPG) wall furnace" },
-  { name: "Propane (LPG) boiler", value: "Propane (LPG) boiler" },
-  { name: "Oil furnace", value: "Oil furnace" },
-  { name: "Oil boiler", value: "Oil boiler" },
-  { name: "Electric furnace", value: "Electric furnace" },
-  { name: "Electric heat pump", value: "Electric heat pump" },
-  { name: "Electric baseboard heater", value: "Electric baseboard heater" },
-  { name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
-  { name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
-  { name: "Electric boiler", value: "Electric boiler" },
-  { name: "Wood stove", value: "Wood stove" },
-  { name: "Pellet stove", value: "Pellet stove" },
+  { id: 0, name: "None", value: "None" },
+  { id: 1, name: "Central gas furnace", value: "Central gas furnace" },
+  { id: 2, name: "Room (through-the-wall) gas furnace", value: "Room (through-the-wall) gas furnace" },
+  { id: 3, name: "Gas boiler", value: "Gas boiler" },
+  { id: 4, name: "Propane (LPG) central furnace", value: "Propane (LPG) central furnace" },
+  { id: 5, name: "Propane (LPG) wall furnace", value: "Propane (LPG) wall furnace" },
+  { id: 6, name: "Propane (LPG) boiler", value: "Propane (LPG) boiler" },
+  { id: 7, name: "Oil furnace", value: "Oil furnace" },
+  { id: 8, name: "Oil boiler", value: "Oil boiler" },
+  { id: 9, name: "Electric furnace", value: "Electric furnace" },
+  { id: 10, name: "Electric heat pump", value: "Electric heat pump" },
+  { id: 11, name: "Electric baseboard heater", value: "Electric baseboard heater" },
+  { id: 12, name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
+  { id: 13, name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
+  { id: 14, name: "Electric boiler", value: "Electric boiler" },
+  { id: 15, name: "Wood stove", value: "Wood stove" },
+  { id: 16, name: "Pellet stove", value: "Pellet stove" },
 ]
 
 export const HeatingEfficiencyUnitOptions = [
@@ -24,13 +24,13 @@ export const HeatingEfficiencyUnitOptions = [
 ]
 
 export const CoolingSystemTypeOptions = [
-  { name: "None", value: "None" },
-  { name: "Central air conditioner", value: "Central air conditioner" },
-  { name: "Room air conditioner", value: "Room air conditioner" },
-  { name: "Electric heat pump", value: "Electric heat pump" },
-  { name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
-  { name: "Direct evaporative cooling", value: "Direct evaporative cooling" },
-  { name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
+  { id: 0, name: "None", value: "None" },
+  { id: 1, name: "Central air conditioner", value: "Central air conditioner" },
+  { id: 2, name: "Room air conditioner", value: "Room air conditioner" },
+  { id: 3, name: "Electric heat pump", value: "Electric heat pump" },
+  { id: 4, name: "Minisplit (ductless) heat pump", value: "Minisplit (ductless) heat pump" },
+  { id: 5, name: "Direct evaporative cooling", value: "Direct evaporative cooling" },
+  { id: 6, name: "Ground coupled heat pump", value: "Ground coupled heat pump" },
 ]
 
 export const SEERCoolingEfficiencyUnitOptions = [
