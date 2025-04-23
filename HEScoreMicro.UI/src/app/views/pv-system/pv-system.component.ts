@@ -1,16 +1,16 @@
-import { OrientationOptions, Year2000Options } from './../../../shared/lookups/common.lookup';
-import { Component, OnInit } from "@angular/core";
-import { PVSystemReadModel } from "../../../shared/models/pv-system/pv-system.model";
-import { BooleanOptions } from "../../../shared/lookups/common.lookup";
-import { Unsubscriber } from "../../../shared/modules/unsubscribe/unsubscribe.component.";
+import { OrientationOptions, Year2000Options } from '../../shared/lookups/common.lookup';
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { PVSystemReadModel } from "../../shared/models/pv-system/pv-system.model";
+import { BooleanOptions } from "../../shared/lookups/common.lookup";
+import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { CommonService } from "../../../shared/services/common/common.service";
-import { PVSystemService } from "../../../shared/services/pv-system/pv-system.service";
+import { CommonService } from "../../shared/services/common/common.service";
+import { PVSystemService } from "../../shared/services/pv-system/pv-system.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { Result } from "../../../shared/models/common/result.model";
-import { AnglePanelsAreTiltedOptions } from "../../../shared/lookups/pv-system.lookup";
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { Result } from "../../shared/models/common/result.model";
+import { AnglePanelsAreTiltedOptions } from "../../shared/lookups/pv-system.lookup";
+import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-pv-system',
@@ -151,10 +151,10 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['summary'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }
 

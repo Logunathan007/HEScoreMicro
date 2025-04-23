@@ -135,7 +135,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
     }
   }
   goNext() {
-    this.router.navigate(['about'], {
+    this.router.navigate(['building'], {
       queryParams: { id: this.buildingId }
     });
   }

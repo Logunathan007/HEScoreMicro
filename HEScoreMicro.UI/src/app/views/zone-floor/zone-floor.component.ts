@@ -1,18 +1,18 @@
-import { FoundationService } from './../../../shared/services/zone-floor/foundation.service';
-import { Component, OnInit } from '@angular/core';
+import { FoundationService } from '../../shared/services/zone-floor/foundation.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonService } from '../../../shared/services/common/common.service';
+import { CommonService } from '../../shared/services/common/common.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
-import { ZoneFloorReadModel } from '../../../shared/models/zone-floor/zone-floor.read.model';
-import { BooleanOptions } from '../../../shared/lookups/common.lookup';
-import { ZoneFloorService } from '../../../shared/services/zone-floor/zone-floor.service';
-import { Result } from '../../../shared/models/common/result.model';
+import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
+import { ZoneFloorReadModel } from '../../shared/models/zone-floor/zone-floor.read.model';
+import { BooleanOptions } from '../../shared/lookups/common.lookup';
+import { ZoneFloorService } from '../../shared/services/zone-floor/zone-floor.service';
+import { Result } from '../../shared/models/common/result.model';
 import { takeUntil } from 'rxjs';
-import { FoundationTypeOptions } from '../../../shared/lookups/zone-floor.lookups';
-import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { FoundationReadModel } from '../../../shared/models/zone-floor/foundation.read.model';
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { FoundationTypeOptions } from '../../shared/lookups/zone-floor.lookups';
+import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+import { FoundationReadModel } from '../../shared/models/zone-floor/foundation.read.model';
+import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-floor',
@@ -221,10 +221,10 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
       arr.removeAt(1);
     }
   }
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['zones/roof'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }
 

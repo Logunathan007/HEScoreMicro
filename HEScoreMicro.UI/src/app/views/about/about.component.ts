@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../shared/services/common/common.service';
@@ -148,9 +148,10 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['zones/floor'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }

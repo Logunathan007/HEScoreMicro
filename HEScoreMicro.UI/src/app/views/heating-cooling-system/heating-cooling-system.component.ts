@@ -1,20 +1,20 @@
-import { SystemsService } from './../../../shared/services/heating-cooling-system/systems.service';
-import { DuctLocationService } from './../../../shared/services/heating-cooling-system/duct-location.service';
-import { Component, OnInit } from '@angular/core';
-import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
+import { SystemsService } from '../../shared/services/heating-cooling-system/systems.service';
+import { DuctLocationService } from '../../shared/services/heating-cooling-system/duct-location.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { HeatingCoolingSystemReadModel } from '../../../shared/models/heating-cooling-system/heating-cooling-system.model';
-import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions, Year1970Options, Year1998Options } from '../../../shared/lookups/common.lookup';
-import { CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, EERCoolingEfficiencyUnitOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SEERCoolingEfficiencyUnitOptions, SystemCountOptions } from '../../../shared/lookups/heating-cooling-system.lookup';
-import { CommonService } from '../../../shared/services/common/common.service';
-import { HeatingCoolingSystemService } from '../../../shared/services/heating-cooling-system/heating-cooling-system.service';
+import { HeatingCoolingSystemReadModel } from '../../shared/models/heating-cooling-system/heating-cooling-system.model';
+import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+import { BooleanOptions, Year1970Options, Year1998Options } from '../../shared/lookups/common.lookup';
+import { CoolingSystemTypeOptions, DuctLocationCountOptions, DuctLocationOptions, EERCoolingEfficiencyUnitOptions, HeatingEfficiencyUnitOptions, HeatingSystemTypeOptions, SEERCoolingEfficiencyUnitOptions, SystemCountOptions } from '../../shared/lookups/heating-cooling-system.lookup';
+import { CommonService } from '../../shared/services/common/common.service';
+import { HeatingCoolingSystemService } from '../../shared/services/heating-cooling-system/heating-cooling-system.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../../shared/models/common/result.model';
-import { DuctLocationReadModel } from '../../../shared/models/heating-cooling-system/duct-location-model';
-import { SystemsModule } from '../systems.module';
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { Result } from '../../shared/models/common/result.model';
+import { DuctLocationReadModel } from '../../shared/models/heating-cooling-system/duct-location-model';
+import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { SystemsReadModel } from '../../shared/models/heating-cooling-system/systems-model';
 
 @Component({
   selector: 'app-heating-cooling-system',
@@ -455,7 +455,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     var id = this.systemsObj.at(1).get('id')?.value;
     if (id) {
       this.systemsService.delete(id).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (res: Result<SystemsModule>) => {
+        next: (res: Result<SystemsReadModel>) => {
           if (res.failed == false) {
             this.systemsObj.removeAt(1);
           }
@@ -496,9 +496,9 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     }
   }
 
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['systems/water-heater'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }

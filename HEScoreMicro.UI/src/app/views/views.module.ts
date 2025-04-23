@@ -11,8 +11,14 @@ import { ViewsComponent } from './views.component';
 import { SummaryComponent } from './summary/summary.component';
 import { UnsubscribeModule } from '../shared/modules/unsubscribe/unsubscribe.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PrintHpxmlComponent } from './print-hpxml/print-hpxml.component';
+import { ZoneFloorComponent } from './zone-floor/zone-floor.component';
+import { ZoneRoofComponent } from './zone-roof/zone-roof.component';
+import { ZoneWallComponent } from './zone-wall/zone-wall.component';
+import { ZoneWindowComponent } from './zone-window/zone-window.component';
+import { PVSystemComponent } from './pv-system/pv-system.component';
+import { WaterHeaterComponent } from './water-heater/water-heater.component';
+import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-cooling-system.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +26,14 @@ import { PrintHpxmlComponent } from './print-hpxml/print-hpxml.component';
     AddressComponent,
     ViewsComponent,
     SummaryComponent,
-    // PrintHpxmlComponent,
+    PrintHpxmlComponent,
+    ZoneFloorComponent,
+    ZoneRoofComponent,
+    ZoneWallComponent,
+    ZoneWindowComponent,
+    PVSystemComponent,
+    WaterHeaterComponent,
+    HeatingCoolingSystemComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +45,6 @@ import { PrintHpxmlComponent } from './print-hpxml/print-hpxml.component';
     NgxJsonViewerModule,
     BsDatepickerModule,
     UnsubscribeModule,
-    PrintHpxmlComponent
   ],
 })
 export class ViewsModule { }

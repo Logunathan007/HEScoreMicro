@@ -1,18 +1,19 @@
-import { WindowService } from './../../../shared/services/zone-window/window.service';
-import { Component, OnInit } from '@angular/core';
-import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ZoneWindowReadModel } from '../../../shared/models/zone-window/zone-window.model';
-import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions, EmptyOptions } from '../../../shared/lookups/common.lookup';
-import { takeUntil } from 'rxjs';
-import { CommonService } from '../../../shared/services/common/common.service';
-import { ZoneWindowService } from '../../../shared/services/zone-window/zone-window.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Result } from '../../../shared/models/common/result.model';
-import { FrameMaterialOptions, GlazingTypeOptions, PaneOptions } from '../../../shared/lookups/zone-roof.looup';
-import { WindowReadModel } from '../../../shared/models/zone-window/window.model';
-import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from '../../../shared/modules/Validators/validators.module';
+import { FrameMaterialOptions, GlazingTypeOptions } from './../../shared/lookups/zone-roof.looup';
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ZoneWindowReadModel } from "../../shared/models/zone-window/zone-window.model";
+import { removeNullIdProperties } from "../../shared/modules/Transformers/TransormerFunction";
+import { BooleanOptions, EmptyOptions } from "../../shared/lookups/common.lookup";
+import { PaneOptions } from "../../shared/lookups/zone-roof.looup";
+import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from "../../shared/modules/Validators/validators.module";
+import { CommonService } from "../../shared/services/common/common.service";
+import { ZoneWindowService } from "../../shared/services/zone-window/zone-window.service";
+import { WindowService } from "../../shared/services/zone-window/window.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { takeUntil } from "rxjs";
+import { Result } from '../../shared/models/common/result.model';
+import { WindowReadModel } from '../../shared/models/zone-window/window.model';
 
 @Component({
   selector: 'app-zone-window',
@@ -30,6 +31,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
   glazingTypeOptions = EmptyOptions
+
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
   resetValues = resetValues
@@ -269,9 +271,9 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       }
     }
   }
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['systems/heat-cool-system'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }

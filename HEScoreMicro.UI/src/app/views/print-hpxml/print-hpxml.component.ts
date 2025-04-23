@@ -6,7 +6,7 @@ import { Result } from '../../shared/models/common/result.model';
 
 @Component({
   selector: 'app-print-hpxml',
-  standalone: true,
+  standalone: false,
   templateUrl: './print-hpxml.component.html',
   styleUrl: './print-hpxml.component.scss'
 })

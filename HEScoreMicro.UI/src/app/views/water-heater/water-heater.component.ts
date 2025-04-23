@@ -1,16 +1,16 @@
-import { WaterHeaterTypeOptions } from './../../../shared/lookups/water-heater.lookup';
-import { UnitOptions, Year1998Options } from './../../../shared/lookups/common.lookup';
-import { Component, OnInit } from "@angular/core";
-import { Unsubscriber } from "../../../shared/modules/unsubscribe/unsubscribe.component.";
+import { WaterHeaterTypeOptions } from '../../shared/lookups/water-heater.lookup';
+import { UnitOptions, Year1998Options } from '../../shared/lookups/common.lookup';
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { WaterHeaterReadModel } from "../../../shared/models/water-heater/water-heater.model";
-import { BooleanOptions } from "../../../shared/lookups/common.lookup";
-import { CommonService } from "../../../shared/services/common/common.service";
-import { WaterHeaterService } from "../../../shared/services/water-heater/water-heater.service";
+import { WaterHeaterReadModel } from "../../shared/models/water-heater/water-heater.model";
+import { BooleanOptions } from "../../shared/lookups/common.lookup";
+import { CommonService } from "../../shared/services/common/common.service";
+import { WaterHeaterService } from "../../shared/services/water-heater/water-heater.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { takeUntil } from "rxjs";
-import { Result } from "../../../shared/models/common/result.model";
-import { resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { Result } from "../../shared/models/common/result.model";
+import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-water-heating-system',
@@ -169,9 +169,9 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['systems/pv-system'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }

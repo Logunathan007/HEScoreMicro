@@ -34,7 +34,9 @@
 .cursor-pointer {
   cursor: pointer;
 }
-
+.h-fit{
+  height: fit-content;
+}
 .errormsg {
   label {
     font-size: 12px !important;

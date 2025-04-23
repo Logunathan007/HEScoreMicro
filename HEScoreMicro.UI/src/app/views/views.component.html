@@ -1,2 +1,37 @@
-
-<router-outlet></router-outlet>
+<div class="d-md-flex">
+  <div
+    class="bg-white z-1 h-fit overflow-auto position-sticky top-0 px-4 pt-lg-3 pt-1 border-end flex-md-column justify-content-md-start flex-md-nowrap gap-md-0 d-flex justify-content-around flex-wrap gap-3"
+  >
+    <h6
+      class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
+      [routerLink]="['/create-building']"
+    >
+      New <br class="d-md-block d-none"> Building
+    </h6>
+    <h6
+      class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
+      *ngFor="let item of navs; let ind = index"
+      [ngClass]="{ 'fw-bolder': selectedIndex === ind }"
+      (click)="selectedIndex = ind"
+    >
+      {{ item }}
+    </h6>
+  </div>
+  <div class="container py-lg-4 py-md-3 py-2">
+    <h3 class="text-center mb-4">{{ navs[selectedIndex] }}</h3>
+    <ng-container [ngSwitch]="selectedIndex">
+      <app-about (move)="move($event)" *ngSwitchCase="0"></app-about>
+      <app-zone-roof  (move)="move($event)" *ngSwitchCase="1"></app-zone-roof>
+      <app-zone-floor  (move)="move($event)" *ngSwitchCase="2"></app-zone-floor>
+      <app-zone-wall  (move)="move($event)" *ngSwitchCase="3"></app-zone-wall>
+      <app-zone-window  (move)="move($event)" *ngSwitchCase="4"></app-zone-window>
+      <app-heating-cooling-system  (move)="move($event)"
+        *ngSwitchCase="5"
+      ></app-heating-cooling-system>
+      <app-water-heating-system  (move)="move($event)" *ngSwitchCase="6"></app-water-heating-system>
+      <app-pv-system  (move)="move($event)" *ngSwitchCase="7"></app-pv-system>
+      <app-summary *ngSwitchCase="8"></app-summary>
+    </ng-container>
+    <app-print-hpxml [buildingId]="this.buildingId"></app-print-hpxml>
+  </div>
+</div>

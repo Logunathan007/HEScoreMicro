@@ -1,18 +1,18 @@
-import { RoofAtticService } from './../../../shared/services/zone-roof/roof-attic.service';
-import { Component, OnInit } from '@angular/core';
-import { Result } from '../../../shared/models/common/result.model';
-import { ZoneRoofReadModel } from '../../../shared/models/zone-roof/zone-roof.read.model';
+import { RoofAtticService } from '../../shared/services/zone-roof/roof-attic.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Result } from '../../shared/models/common/result.model';
+import { ZoneRoofReadModel } from '../../shared/models/zone-roof/zone-roof.read.model';
 import { takeUntil } from 'rxjs';
-import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
+import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BooleanOptions } from '../../../shared/lookups/common.lookup';
-import { CommonService } from '../../../shared/services/common/common.service';
-import { ZoneRoofService } from '../../../shared/services/zone-roof/zone-roof.service';
+import { BooleanOptions } from '../../shared/lookups/common.lookup';
+import { CommonService } from '../../shared/services/common/common.service';
+import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../../shared/lookups/zone-roof.looup';
-import { RoofAtticReadModel } from '../../../shared/models/zone-roof/roof-attic.read.model';
-import { resetValues, resetValuesAndValidations, setValidations } from '../../../shared/modules/Validators/validators.module';
+import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
+import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
+import { resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-roof',
@@ -320,10 +320,10 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     }
   }
 
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['zones/wall'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }
 

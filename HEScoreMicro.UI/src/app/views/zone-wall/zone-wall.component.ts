@@ -1,18 +1,18 @@
-import { WallReadModel } from './../../../shared/models/zone-wall/wall.read.model';
-import { Component, OnInit } from '@angular/core';
+import { WallReadModel } from '../../shared/models/zone-wall/wall.read.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ZoneWallService } from '../../../shared/services/zooe-wall/zooe-wall.service';
-import { CommonService } from '../../../shared/services/common/common.service';
-import { removeNullIdProperties } from '../../../shared/modules/Transformers/TransormerFunction';
-import { BooleanOptions } from '../../../shared/lookups/common.lookup';
-import { WallConstructionOptions, WallExteriorFinishOptions } from '../../../shared/lookups/zone-wall.lookup';
-import { ZoneWallReadModel } from '../../../shared/models/zone-wall/zone-wall.read.model';
-import { Unsubscriber } from '../../../shared/modules/unsubscribe/unsubscribe.component.';
+import { ZoneWallService } from '../../shared/services/zooe-wall/zooe-wall.service';
+import { CommonService } from '../../shared/services/common/common.service';
+import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+import { BooleanOptions } from '../../shared/lookups/common.lookup';
+import { WallConstructionOptions, WallExteriorFinishOptions } from '../../shared/lookups/zone-wall.lookup';
+import { ZoneWallReadModel } from '../../shared/models/zone-wall/zone-wall.read.model';
+import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
-import { Result } from '../../../shared/models/common/result.model';
-import { WallService } from '../../../shared/services/zooe-wall/wall.service';
-import { resetValues } from '../../../shared/modules/Validators/validators.module';
+import { Result } from '../../shared/models/common/result.model';
+import { WallService } from '../../shared/services/zooe-wall/wall.service';
+import { resetValues } from '../../shared/modules/Validators/validators.module';
 
 @Component({
   selector: 'app-zone-wall',
@@ -219,9 +219,9 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       }
     }
   }
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
-    this.router.navigate(['zones/window'], {
-      queryParams: { id: this.buildingId }
-    })
+    this.move.emit(true);
   }
+
 }
