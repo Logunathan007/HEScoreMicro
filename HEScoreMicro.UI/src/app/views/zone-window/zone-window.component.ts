@@ -12,6 +12,8 @@ import { WindowService } from "../../shared/services/zone-window/window.service"
 import { takeUntil } from "rxjs";
 import { Result } from '../../shared/models/common/result.model';
 import { WindowReadModel } from '../../shared/models/zone-window/window.model';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
+import { ZoneRoofReadModel } from '../../shared/models/zone-roof/zone-roof.read.model';
 
 @Component({
   selector: 'app-zone-window',
@@ -22,8 +24,10 @@ import { WindowReadModel } from '../../shared/models/zone-window/window.model';
 export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWindowForm!: FormGroup | any;
-  @Input('buildingId')buildingId: string | null | undefined;
-  zoneWindowReadModel!: ZoneWindowReadModel;
+  @Input('buildingId') buildingId: string | null | undefined;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
+  @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
   removeNullIdProperties = removeNullIdProperties
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
@@ -176,22 +180,13 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   }
 
   getData() {
-    if (this.buildingId) {
-      this.zoneWindowService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<ZoneWindowReadModel>) => {
-          if (val?.failed == false) {
-            if (val?.data?.windowsSame == false) {
-              while (this.windowsObj.length < 4) {
-                this.windowsObj.push(this.windowInputs())
-              }
-            }
-            this.zoneWindowForm.patchValue(val.data)
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
+    if (this.zoneWindowReadModel) {
+      if (this.zoneWindowReadModel?.windowsSame == false) {
+        while (this.windowsObj.length < 4) {
+          this.windowsObj.push(this.windowInputs())
         }
-      })
+      }
+      this.zoneWindowForm.patchValue(this.zoneWindowReadModel)
     }
   }
 
@@ -206,8 +201,13 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     if (this.zoneWindowForm.value?.id) {
       this.zoneWindowService.update(this.zoneWindowReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWindowReadModel>) => {
-          this.zoneWindowForm.patchValue(val.data)
-          console.log(val);
+          if (val.failed == false) {
+            this.zoneWindowForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "zone-window",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -218,7 +218,10 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneWindowReadModel>) => {
           if (val?.failed == false) {
             this.zoneWindowForm.patchValue(val.data)
-            this.buildingId = val.data?.buildingId;
+            this.updateEvent.emit({
+              fieldType: "zone-window",
+              field: val.data
+            })
           }
           console.log(val);
         },

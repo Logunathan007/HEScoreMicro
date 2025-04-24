@@ -9,6 +9,7 @@ import { BooleanOptions, OrientationOptions } from '../../shared/lookups/common.
 import { ManufacturedHomeTypeOptions } from '../../shared/lookups/about.lookup';
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { ActivatedRoute } from '@angular/router';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-about',
@@ -20,7 +21,11 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   //variable initializations
   aboutForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
-  aboutReadModel!: AboutReadModel;
+  @Input('input') aboutReadModel!: AboutReadModel | undefined;
+
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<AboutReadModel>> = new EventEmitter();
+
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
   manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
@@ -57,7 +62,6 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       assessmentDate: [null, [Validators.required]],
       yearBuilt: [null, [Validators.required, Validators.min(1600), Validators.max(new Date().getFullYear())]],
       numberOfBedrooms: [null, [Validators.required, Validators.min(1), Validators.max(10)]],
-      // TODO for manufacture home it is missing
       storiesAboveGroundLevel: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
       interiorFloorToCeilingHeight: [null, [Validators.required, Validators.min(6), Validators.max(12)]],
       totalConditionedFloorArea: [null, [Validators.required]],
@@ -82,60 +86,58 @@ export class AboutComponent extends Unsubscriber implements OnInit {
     return about;
   }
 
-  patchToForm(val: Result<AboutReadModel>) {
-    if (val.data?.assessmentDate)
-      val.data.assessmentDate = new Date(val.data?.assessmentDate);
-    this.aboutForm.patchValue(val.data)
+  patchToForm(val: AboutReadModel | undefined) {
+    if (val) {
+      if (val?.assessmentDate)
+        val.assessmentDate = new Date(val?.assessmentDate);
+      this.aboutForm.patchValue(val)
+    }
   }
 
   getData() {
-    if (this.buildingId) {
-      this.aboutService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<AboutReadModel>) => {
-          if (val?.failed == false) {
-            this.patchToForm(val)
-          }
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
+    if (this.aboutReadModel) {
+      this.patchToForm(this.aboutReadModel)
     }
   }
+
   onSave() {
     if (this.aboutForm.invalid) {
       this.aboutForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    if (this.aboutForm.value?.id) {
-      this.aboutReadModel = this.aboutForm.value
-      this.aboutService.update(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<AboutReadModel>) => {
-          this.patchToForm(val);
-          this.myEvent.emit();
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
-    } else {
-      this.aboutReadModel = this.aboutForm.value
-      delete this.aboutReadModel.id;
-      this.aboutService.create(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<AboutReadModel>) => {
-          if (val?.failed == false) {
-            this.patchToForm(val)
-
+    this.aboutReadModel = this.aboutForm.value
+    if (this.aboutReadModel) {
+      if (this.aboutForm.value?.id) {
+        this.aboutService.update(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
+          next: (val: Result<AboutReadModel>) => {
+            this.patchToForm(val?.data);
+            this.updateEvent.emit({
+              fieldType: "about",
+              field: val.data
+            })
+          },
+          error: (err: any) => {
+            console.log(err);
           }
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
+        })
+      } else {
+        delete this.aboutReadModel.id;
+        this.aboutService.create(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
+          next: (val: Result<AboutReadModel>) => {
+            if (val?.failed == false) {
+              this.patchToForm(val.data)
+              this.updateEvent.emit({
+                fieldType: "about",
+                field: val.data
+              })
+            }
+          },
+          error: (err: any) => {
+            console.log(err);
+          }
+        })
+      }
     }
   }
 

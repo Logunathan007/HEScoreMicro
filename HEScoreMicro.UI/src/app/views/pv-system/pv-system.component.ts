@@ -9,6 +9,7 @@ import { takeUntil } from "rxjs";
 import { Result } from "../../shared/models/common/result.model";
 import { AnglePanelsAreTiltedOptions } from "../../shared/lookups/pv-system.lookup";
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-pv-system',
@@ -19,14 +20,17 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class PVSystemComponent extends Unsubscriber implements OnInit {
   //variable initializations
   pVSystemForm!: FormGroup | any;
-  @Input('buildingId')buildingId: string | null | undefined;
-  pVSystemReadModel!: PVSystemReadModel;
+  @Input('buildingId') buildingId: string | null | undefined;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<PVSystemReadModel>> = new EventEmitter();
+  @Input('input') pVSystemReadModel!: PVSystemReadModel;
   booleanOptions = BooleanOptions
   anglePanelsAreTiltedOptions = AnglePanelsAreTiltedOptions
   orientationOptions = OrientationOptions
   year2000Options = Year2000Options
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
+
   get pVSystemControl() {
     return this.pVSystemForm.controls;
   }
@@ -39,7 +43,6 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.variableDeclaration();
     this.getData();
   }
@@ -90,20 +93,11 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   }
 
   getData() {
-    if (this.buildingId) {
-      this.pVSystemService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<PVSystemReadModel>) => {
-          if (val?.failed == false) {
-            this.pVSystemForm.patchValue(val.data)
-          }
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
+    if (this.pVSystemReadModel) {
+      this.pVSystemForm.patchValue(this.pVSystemReadModel)
     }
   }
+
   onSave() {
     if (this.pVSystemForm.invalid) {
       this.pVSystemForm.markAllAsTouched();
@@ -114,8 +108,13 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       this.pVSystemReadModel = this.pVSystemForm.value
       this.pVSystemService.update(this.pVSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<PVSystemReadModel>) => {
-          this.pVSystemForm.patchValue(val.data)
-          console.log(val);
+          if (val?.failed == false) {
+            this.pVSystemForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "pv-system",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -128,7 +127,10 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
         next: (val: Result<PVSystemReadModel>) => {
           if (val?.failed == false) {
             this.pVSystemForm.patchValue(val.data)
-
+            this.updateEvent.emit({
+              fieldType: "pv-system",
+              field: val.data
+            })
           }
           console.log(val);
         },

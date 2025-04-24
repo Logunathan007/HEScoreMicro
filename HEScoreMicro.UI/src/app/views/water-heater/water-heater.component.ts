@@ -9,6 +9,7 @@ import { WaterHeaterService } from "../../shared/services/water-heater/water-hea
 import { takeUntil } from "rxjs";
 import { Result } from "../../shared/models/common/result.model";
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-water-heating-system',
@@ -19,8 +20,10 @@ import { resetValuesAndValidations, setValidations } from '../../shared/modules/
 export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   //variable initializations
   waterHeaterForm!: FormGroup | any;
-  @Input('buildingId')buildingId: string | null | undefined;
-  waterHeaterReadModel!: WaterHeaterReadModel;
+  @Input('buildingId') buildingId: string | null | undefined;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<WaterHeaterReadModel>> = new EventEmitter();
+  @Input('input') waterHeaterReadModel!: WaterHeaterReadModel;
   booleanOptions = BooleanOptions
   unitOptions = UnitOptions
   waterHeaterTypeOptions = WaterHeaterTypeOptions
@@ -91,13 +94,14 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
     })
     return waterHeater;
   }
-
   energyValueValidation(waterHeaterType: string | null): ValidatorFn[] {
-    if (waterHeaterType?.endsWith("Storage")) {
-      return [Validators.required, Validators.min(0.45), Validators.max(0.95)]
-    } else if (waterHeaterType == "Electric Instantaneous") {
+    if (waterHeaterType == "Electric Instantaneous" || waterHeaterType == "Electric Storage") {
       return [Validators.required, Validators.min(0.86), Validators.max(0.99)]
-    } else if (waterHeaterType?.endsWith("Instantaneous")) {
+    } else if (waterHeaterType == "Propane (LPG) Storage" || waterHeaterType == "Natural Gas Storage") {
+      return [Validators.required, Validators.min(0.5), Validators.max(0.95)]
+    } else if (waterHeaterType == "Oil Storage") {
+      return [Validators.required, Validators.min(0.45), Validators.max(0.95)]
+    } else if (waterHeaterType == "Gas Instantaneous" || waterHeaterType == "Propane Instantaneous" || waterHeaterType == "Oil Instantaneous") {
       return [Validators.required, Validators.min(0.7), Validators.max(0.99)]
     } else if (waterHeaterType == "Electric Heat Pump") {
       return [Validators.required, Validators.min(1), Validators.max(5)]
@@ -107,20 +111,11 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   }
 
   getData() {
-    if (this.buildingId) {
-      this.waterHeaterService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<WaterHeaterReadModel>) => {
-          if (val?.failed == false) {
-            this.waterHeaterForm.patchValue(val.data)
-          }
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
+    if (this.waterHeaterReadModel) {
+      this.waterHeaterForm.patchValue(this.waterHeaterReadModel)
     }
   }
+
   onSave() {
     if (this.waterHeaterForm.invalid) {
       this.waterHeaterForm.markAllAsTouched();
@@ -131,8 +126,13 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
       this.waterHeaterReadModel = this.waterHeaterForm.value
       this.waterHeaterService.update(this.waterHeaterReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<WaterHeaterReadModel>) => {
-          this.waterHeaterForm.patchValue(val.data)
-          console.log(val);
+          if (val?.failed == false) {
+            this.waterHeaterForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "water-heater",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -145,7 +145,10 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
         next: (val: Result<WaterHeaterReadModel>) => {
           if (val?.failed == false) {
             this.waterHeaterForm.patchValue(val.data)
-
+            this.updateEvent.emit({
+              fieldType: "water-heater",
+              field: val.data
+            })
           }
           console.log(val);
         },

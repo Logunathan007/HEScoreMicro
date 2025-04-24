@@ -1,10 +1,8 @@
 import { HpxmlGenerationService } from './../../shared/services/hpxml-generation/hpxml-generation.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
-import { BuildingService } from '../../shared/services/building/building.service';
 import { takeUntil } from 'rxjs';
 import { BuildingReadModel } from '../../shared/models/building/building.model';
-import { Result } from '../../shared/models/common/result.model';
 import { removeAllIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 @Component({
   selector: 'app-summary',
@@ -12,49 +10,34 @@ import { removeAllIdProperties } from '../../shared/modules/Transformers/Transor
   styleUrl: './summary.component.scss',
   standalone: false
 })
-export class SummaryComponent extends Unsubscriber implements OnInit {
-
-  @Input('buildingId')buildingId: string = "";
-  buildingData: BuildingReadModel | null | undefined;
+export class SummaryComponent extends Unsubscriber implements OnInit, OnChanges {
+  @Input('buildingId') buildingId: string = "";
+  @Input('input') buildingData: BuildingReadModel | null | undefined;
+  buildingCopy: BuildingReadModel | null | undefined
   buildingToggle: boolean = false
   removeAllIdProperties = removeAllIdProperties
   validationData: any;
   validationStatus: any;
   validationToggle: boolean = true;
   PDFResponse: any;
-  PDFLoader:boolean = false;
-  pdfToggle:boolean = true;
+  PDFLoader: boolean = false;
+  pdfToggle: boolean = true;
 
-  constructor(private buildingService: BuildingService,
-    private hpxmlGenerationService:HpxmlGenerationService
+  constructor(
+    private hpxmlGenerationService: HpxmlGenerationService
   ) {
     super();
   }
 
   ngOnInit(): void {
-
-    this.getData();
   }
 
-
-  getData() {
-    if (this.buildingId) {
-      this.buildingService.getById(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<BuildingReadModel>) => {
-          if (val?.failed == false) {
-            this.buildingData = this.removeAllIdProperties(val?.data)
-          }
-          console.log(val);
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      })
-    }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.buildingCopy = removeAllIdProperties(JSON.parse(JSON.stringify(this.buildingData)))
   }
 
   validate() {
-    if(!this.buildingId) return
+    if (!this.buildingId) return
     this.hpxmlGenerationService.validateInputs(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
         if (val?.failed == false) {
@@ -101,6 +84,4 @@ export class SummaryComponent extends Unsubscriber implements OnInit {
       }
     })
   }
-
-
 }

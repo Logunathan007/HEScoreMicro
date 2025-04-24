@@ -36,7 +36,6 @@ export function setValidations(controls: AbstractControl | AbstractControl[], va
 }
 
 export function windowAreaAverageValidator(group: AbstractControl): ValidationErrors | null {
-  debugger
   const front = group.get('windowAreaFront')?.value || 0;
   const back = group.get('windowAreaBack')?.value || 0;
   const left = group.get('windowAreaLeft')?.value || 0;

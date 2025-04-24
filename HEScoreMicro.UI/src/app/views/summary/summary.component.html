@@ -1,7 +1,7 @@
 <div class="containter">
   <div
     class="overflow-x-auto border rounded-xl-4 rounded-md-3 rounded-2 p-xl-5 p-lg-4 p-md-3 p-2 mb-4 position-relative"
-    *ngIf="buildingData"
+    *ngIf="buildingCopy"
     style="background-color: rgba(0, 0, 0, 0.089)"
   >
     <h4>Summary Info:</h4>
@@ -14,9 +14,8 @@
     </button>
     <ngx-json-viewer
       [expanded]="buildingToggle"
-      [json]="buildingData"
+      [json]="buildingCopy"
     ></ngx-json-viewer>
-
     <button class="bg-success btn-style mx-auto mt-4 mb-0" (click)="validate()">
       Validate
     </button>

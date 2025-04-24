@@ -11,6 +11,7 @@ import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.servi
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
 import { resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-zone-roof',
@@ -23,7 +24,9 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneRoofForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
-  zoneRoofReadModel!: ZoneRoofReadModel;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<ZoneRoofReadModel>> = new EventEmitter();
+  @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
@@ -45,7 +48,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     return this.zoneRoofControl['roofAttics'] as FormArray
   }
 
-
   constructor(
     private zoneRoofService: ZoneRoofService,
     private roofAtticService: RoofAtticService,
@@ -55,7 +57,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.variableDeclaration();
     this.getData();
   }
@@ -158,7 +159,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     skylightsPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
         this.setValidations(solarScreen)
-        this.setValidations(skylightArea,[Validators.required,Validators.min(1),Validators.max(300)])
+        this.setValidations(skylightArea, [Validators.required, Validators.min(1), Validators.max(300)])
       } else {
         this.resetValuesAndValidations([solarScreen, skylightArea])
       }
@@ -224,7 +225,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
       }
       this.resetValues(glazingType)
     })
-
     kneeWallPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
         this.setValidations([kneeWallArea, kneeWallInsulation])
@@ -232,27 +232,17 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
         this.resetValuesAndValidations([kneeWallArea, kneeWallInsulation])
       }
     })
-
     return found;
   }
 
   getData() {
-    if (this.buildingId) {
-      this.zoneRoofService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<ZoneRoofReadModel>) => {
-          if (val?.failed == false) {
-            if (val?.data?.enableSecondRoofAttic) {
-              if (this.roofAtticsObj.length == 1) {
-                this.roofAtticsObj.push(this.roofAtticInputs())
-              }
-            }
-            this.zoneRoofForm.patchValue(val.data)
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
+    if (this.zoneRoofReadModel) {
+      if (this.zoneRoofReadModel?.enableSecondRoofAttic) {
+        if (this.roofAtticsObj.length == 1) {
+          this.roofAtticsObj.push(this.roofAtticInputs())
         }
-      })
+      }
+      this.zoneRoofForm.patchValue(this.zoneRoofReadModel)
     }
   }
 
@@ -267,8 +257,13 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
     if (this.zoneRoofForm.value?.id) {
       this.zoneRoofService.update(this.zoneRoofReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneRoofReadModel>) => {
-          this.zoneRoofForm.patchValue(val.data)
-          console.log(val);
+          if (val.failed == false) {
+            this.zoneRoofForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "zone-roof",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -279,9 +274,11 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneRoofReadModel>) => {
           if (val?.failed == false) {
             this.zoneRoofForm.patchValue(val.data)
-
+            this.updateEvent.emit({
+              fieldType: "zone-roof",
+              field: val.data
+            })
           }
-          console.log(val);
         },
         error: (err: any) => {
           console.log(err);

@@ -11,6 +11,7 @@ import { FoundationTypeOptions } from '../../shared/lookups/zone-floor.lookups';
 import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 import { FoundationReadModel } from '../../shared/models/zone-floor/foundation.read.model';
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-zone-floor',
@@ -22,7 +23,9 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneFloorForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
-  zoneFloorReadModel!: ZoneFloorReadModel;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<ZoneFloorReadModel>> = new EventEmitter();
+  @Input('input') zoneFloorReadModel!: ZoneFloorReadModel;
   booleanOptions = BooleanOptions
   foundationTypeOptions = FoundationTypeOptions
   removeNullIdProperties = removeNullIdProperties
@@ -58,7 +61,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
     var zoneFloor = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      enableSecondFoundation: [false,[Validators.required]],
+      enableSecondFoundation: [false, [Validators.required]],
       foundations: this.fb.array([this.foundationInputs()]),
     })
     zoneFloor.get('enableSecondFoundation')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
@@ -140,22 +143,13 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   }
 
   getData() {
-    if (this.buildingId) {
-      this.zoneFloorService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<ZoneFloorReadModel>) => {
-          if (val?.failed == false) {
-            if (val?.data?.enableSecondFoundation) {
-              if (this.foundationsObj.length == 1) {
-                this.foundationsObj.push(this.foundationInputs())
-              }
-            }
-            this.zoneFloorForm.patchValue(val.data)
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
+    if (this.zoneFloorReadModel) {
+      if (this.zoneFloorReadModel?.enableSecondFoundation) {
+        if (this.foundationsObj.length == 1) {
+          this.foundationsObj.push(this.foundationInputs())
         }
-      })
+      }
+      this.zoneFloorForm.patchValue(this.zoneFloorReadModel)
     }
   }
   onSave() {
@@ -170,7 +164,10 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
       this.zoneFloorService.update(this.zoneFloorReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneFloorReadModel>) => {
           this.zoneFloorForm.patchValue(val.data)
-          console.log(val);
+          this.updateEvent.emit({
+            fieldType: "zone-floor",
+            field: val.data
+          })
         },
         error: (err: any) => {
           console.log(err);
@@ -181,7 +178,10 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneFloorReadModel>) => {
           if (val?.failed == false) {
             this.zoneFloorForm.patchValue(val.data)
-
+            this.updateEvent.emit({
+              fieldType: "zone-floor",
+              field: val.data
+            })
           }
           console.log(val);
         },
@@ -210,6 +210,5 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   goNext() {
     this.move.emit(true);
   }
-
 }
 

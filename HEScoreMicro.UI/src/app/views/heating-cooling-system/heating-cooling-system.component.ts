@@ -13,6 +13,7 @@ import { Result } from '../../shared/models/common/result.model';
 import { DuctLocationReadModel } from '../../shared/models/heating-cooling-system/duct-location-model';
 import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { SystemsReadModel } from '../../shared/models/heating-cooling-system/systems-model';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
   selector: 'app-heating-cooling-system',
@@ -23,8 +24,10 @@ import { SystemsReadModel } from '../../shared/models/heating-cooling-system/sys
 export class HeatingCoolingSystemComponent extends Unsubscriber implements OnInit {
   //variable initializations
   heatingCoolingSystemForm!: FormGroup | any;
-  @Input('buildingId')buildingId: string | null | undefined;
-  heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
+  @Input('buildingId') buildingId: string | null | undefined;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<HeatingCoolingSystemReadModel>> = new EventEmitter();
+  @Input('input') heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
@@ -52,13 +55,10 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   constructor(
-
     private heatingCoolingSystemService: HeatingCoolingSystemService,
     private ductLocationService: DuctLocationService,
     private systemsService: SystemsService,
     public fb: FormBuilder,
-
-
   ) {
     super()
   }
@@ -186,8 +186,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     this.setValidations(coolingSystemType, [Validators.required, coolingSystemTypeValidation])
     this.setValidations(heatingSystemType, [Validators.required, heatingSystemTypeValidation])
 
-    const ductSystemsValidation = (flag: boolean) => {
-      if (flag) {
+    const ductSystemsValidation = () => {
+      if (heatingTracker.value?.ducts || coolingTracker.value?.ducts) {
         this.setValidations([ductLeakageTestPerformed, ductLocationCount])
       } else {
         this.resetValuesAndValidations([ductLeakageTestPerformed, ductLocationCount])
@@ -261,7 +261,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
       }
-      ductSystemsValidation(heatingTracker?.value?.ducts)
+      ductSystemsValidation()
     })
 
     knowHeatingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
@@ -297,7 +297,8 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           break;
         case "Minisplit (ductless) heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
-          this.setValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue])
+          this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
+          this.setValidations([coolingSystemEfficiencyUnit])
           this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemYearInstalled])
           break;
         case "Ground coupled heat pump":
@@ -310,7 +311,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled]);
           break;
       }
-      ductSystemsValidation(coolingTracker?.value?.ducts)
+      ductSystemsValidation()
     })
 
     knowCoolingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
@@ -357,8 +358,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       } else if (val == false) {
         this.setValidations(ductAreProfessionallySealed)
         this.resetValuesAndValidations(ductLeakageTestValue)
-      } else {
-        this.resetValuesAndValidations([ductLeakageTestValue, ductAreProfessionallySealed])
       }
     })
     return systems;
@@ -376,32 +375,23 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   getData() {
-    if (this.buildingId) {
-      this.heatingCoolingSystemService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<HeatingCoolingSystemReadModel>) => {
-          if (val?.failed == false) {
-            if (val?.data?.systems.length) {
-              this.systemsObj.clear()
-              var a = 0;
-              while (val?.data?.systemCount > this.systemsObj.length) {
-                var system: FormGroup = this.systemsInputs()
-                var arr = system.get('ductLocations') as FormArray;
-                while (val?.data?.systems[a]?.ductLocations?.length > arr.length) {
-                  arr.push(this.ductLocationInputs());
-                }
-                this.systemsObj.push(system);
-                a++;
-              }
-            } else {
-              this.systemsObj.push(this.systemsInputs())
-            }
-            this.heatingCoolingSystemForm.patchValue(val.data)
+    if (this.heatingCoolingSystemReadModel) {
+      if (this.heatingCoolingSystemReadModel?.systems.length) {
+        this.systemsObj.clear()
+        var a = 0;
+        while (this.heatingCoolingSystemReadModel?.systemCount > this.systemsObj.length) {
+          var system: FormGroup = this.systemsInputs()
+          var arr = system.get('ductLocations') as FormArray;
+          while (this.heatingCoolingSystemReadModel?.systems[a]?.ductLocations?.length > arr.length) {
+            arr.push(this.ductLocationInputs());
           }
-        },
-        error: (err: any) => {
-          console.log(err);
+          this.systemsObj.push(system);
+          a++;
         }
-      })
+      } else {
+        this.systemsObj.push(this.systemsInputs())
+      }
+      this.heatingCoolingSystemForm.patchValue(this.heatingCoolingSystemReadModel)
     }
   }
 
@@ -417,8 +407,13 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     if (this.heatingCoolingSystemForm.value?.id) {
       this.heatingCoolingSystemService.update(this.heatingCoolingSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<HeatingCoolingSystemReadModel>) => {
-          this.heatingCoolingSystemForm.patchValue(val.data)
-          console.log(val);
+          if (val?.failed == false) {
+            this.heatingCoolingSystemForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "heating-cooling-system",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -429,7 +424,10 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
         next: (val: Result<HeatingCoolingSystemReadModel>) => {
           if (val?.failed == false) {
             this.heatingCoolingSystemForm.patchValue(val.data)
-
+            this.updateEvent.emit({
+              fieldType: "heating-cooling-system",
+              field: val.data
+            })
           }
           console.log(val);
         },

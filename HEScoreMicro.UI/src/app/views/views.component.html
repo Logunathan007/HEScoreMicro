@@ -6,32 +6,87 @@
       class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
       [routerLink]="['/create-building']"
     >
-      New <br class="d-md-block d-none"> Building
+      New <br class="d-md-block d-none" />
+      Building
     </h6>
     <h6
       class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
       *ngFor="let item of navs; let ind = index"
       [ngClass]="{ 'fw-bolder': selectedIndex === ind }"
-      (click)="selectedIndex = ind"
+      (click)="move(ind)"
     >
       {{ item }}
     </h6>
   </div>
   <div class="container py-lg-4 py-md-3 py-2">
+    @if (building) {
     <h3 class="text-center mb-4">{{ navs[selectedIndex] }}</h3>
     <ng-container [ngSwitch]="selectedIndex">
-      <app-about [buildingId]="buildingId" (move)="move($event)" *ngSwitchCase="0"></app-about>
-      <app-zone-roof [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="1"></app-zone-roof>
-      <app-zone-floor [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="2"></app-zone-floor>
-      <app-zone-wall [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="3"></app-zone-wall>
-      <app-zone-window [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="4"></app-zone-window>
-      <app-heating-cooling-system [buildingId]="buildingId"  (move)="move($event)"
+      <app-about
+        [input]="building.about"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="0"
+      ></app-about>
+      <app-zone-roof
+        [input]="building.zoneRoof"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="1"
+      ></app-zone-roof>
+      <app-zone-floor
+        [input]="building.zoneFloor"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="2"
+      ></app-zone-floor>
+      <app-zone-wall
+        [input]="building.zoneWall"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="3"
+      ></app-zone-wall>
+      <app-zone-window
+        [input]="building.zoneWindow"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="4"
+      ></app-zone-window>
+      <app-heating-cooling-system
+        [input]="building.heatingCoolingSystem"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
         *ngSwitchCase="5"
       ></app-heating-cooling-system>
-      <app-water-heating-system [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="6"></app-water-heating-system>
-      <app-pv-system [buildingId]="buildingId"  (move)="move($event)" *ngSwitchCase="7"></app-pv-system>
-      <app-summary [buildingId]="buildingId" *ngSwitchCase="8"></app-summary>
+      <app-water-heating-system
+        [input]="building.waterHeater"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="6"
+      ></app-water-heating-system>
+      <app-pv-system
+        [input]="building.pvSystem"
+        (update)="updateBuilding($event)"
+        [buildingId]="buildingId"
+        (move)="move($event)"
+        *ngSwitchCase="7"
+      ></app-pv-system>
+      <app-summary
+        [input]="building"
+        [buildingId]="buildingId"
+        *ngSwitchCase="8"
+      ></app-summary>
     </ng-container>
     <app-print-hpxml [buildingId]="this.buildingId"></app-print-hpxml>
+    } @else {
+    <h3>Building not selected...</h3>
+    }
   </div>
 </div>

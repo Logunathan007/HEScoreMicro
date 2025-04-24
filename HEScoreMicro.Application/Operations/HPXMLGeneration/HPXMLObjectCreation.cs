@@ -1146,7 +1146,17 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     efficiencyUnitFlag = false;
                     break;
             }
-
+            if (system.PercentAreaServed != null)
+            {
+                if (system.CoolingSystemType == "None")
+                {
+                    hs.FractionHeatLoadServed = system.PercentAreaServed / 100;
+                }
+                else
+                {
+                    hs.FractionHeatLoadServed = (system.PercentAreaServed / 100) / 2d;
+                }
+            }
             if (system.KnowHeatingEfficiency == true && efficiencyUnitFlag)
             {
                 hs.AnnualHeatingEfficiency = new AnnualHeatingEfficiency()
@@ -1196,7 +1206,17 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     cs.CoolingSystemType = "evaporative cooler";
                     break;
             }
-
+            if (system.PercentAreaServed != null)
+            {
+                if (system.HeatingSystemType == "None")
+                {
+                    cs.FractionCoolLoadServed = (system.PercentAreaServed / 100);
+                }
+                else
+                {
+                    cs.FractionCoolLoadServed = (system.PercentAreaServed / 100) / 2d;
+                }
+            }
             if (system.KnowCoolingEfficiency == true)
             {
                 cs.AnnualCoolingEfficiency = new AnnualCoolingEfficiency()
@@ -1238,8 +1258,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             if (!system.CoolingSystemType.EndsWith("heat pump") && system.HeatingSystemType.EndsWith("heat pump"))
             {
                 hp.FractionCoolLoadServed = 0;
+                if (system.PercentAreaServed != null)
+                    hp.FractionHeatLoadServed = (system.PercentAreaServed / 100);
             }
-            hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null ? new AnnualHeatingEfficiency()
+            hp.AnnualHeatingEfficiency = system.HeatingSystemEfficiencyValue != null && system.HeatingSystemType.EndsWith("heat pump") ? new AnnualHeatingEfficiency()
             {
                 Value = system.HeatingSystemEfficiencyValue,
             } : null;
@@ -1247,11 +1269,20 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             if (!system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump"))
             {
                 hp.FractionHeatLoadServed = 0;
+                if(system.PercentAreaServed != null)
+                    hp.FractionCoolLoadServed = (system.PercentAreaServed / 100);
             }
-            hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null ? new AnnualCoolingEfficiency()
+            hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null && system.CoolingSystemType.EndsWith("heat pump") ? new AnnualCoolingEfficiency()
             {
                 Value = system.CoolingSystemEfficiencyValue,
             } : null;
+
+            if (system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump") && system.PercentAreaServed != null)
+            {
+                hp.FractionCoolLoadServed = (system.PercentAreaServed / 100) / 2d;
+                hp.FractionHeatLoadServed = (system.PercentAreaServed / 100) / 2d;
+            }
+
             hp.YearInstalled = system.CoolingSystemYearInstalled ?? system.HeatingSystemYearInstalled;
 
             if (system.HeatingSystemType == "Electric heat pump" || system.CoolingSystemType == "Electric heat pump") //heat_pump
@@ -1352,7 +1383,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             var count = ductLocationDTOs.Count;
             foreach (var ductLocationDTO in ductLocationDTOs)
             {
-                var area = (count > 1) ? (ductLocationDTO.PercentageOfDucts == null ? 0 / 100 : ductLocationDTO.PercentageOfDucts / 100) : null;
+                var area = (count > 1) ? (ductLocationDTO.PercentageOfDucts == null ? 0 : ductLocationDTO.PercentageOfDucts / 100) : null;
                 Ducts ductsObj = new Ducts
                 {
                     SystemIdentifier = new SystemIdentifier

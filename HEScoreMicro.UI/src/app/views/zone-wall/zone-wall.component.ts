@@ -1,4 +1,4 @@
-import { WallReadModel } from '../../shared/models/zone-wall/wall.read.model';
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZoneWallService } from '../../shared/services/zooe-wall/zooe-wall.service';
@@ -11,6 +11,8 @@ import { takeUntil } from 'rxjs';
 import { Result } from '../../shared/models/common/result.model';
 import { WallService } from '../../shared/services/zooe-wall/wall.service';
 import { resetValues } from '../../shared/modules/Validators/validators.module';
+import { EmitterModel } from '../../shared/models/common/emitter.model';
+import { WallReadModel } from '../../shared/models/zone-wall/wall.read.model';
 
 @Component({
   selector: 'app-zone-wall',
@@ -22,7 +24,9 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWallForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
-  zoneWallReadModel!: ZoneWallReadModel;
+  @Output('update')
+  updateEvent: EventEmitter<EmitterModel<ZoneWallReadModel>> = new EventEmitter();
+  @Input('input') zoneWallReadModel!: ZoneWallReadModel;
   removeNullIdProperties = removeNullIdProperties
   resetValues = resetValues;
   booleanOptions = BooleanOptions
@@ -123,29 +127,21 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   }
 
   getData() {
-    if (this.buildingId) {
-      this.zoneWallService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
-        next: (val: Result<ZoneWallReadModel>) => {
-          if (val?.failed == false) {
-            if (val?.data?.exteriorWallSame == false) {
-              while (this.wallsObj.length < 4) {
-                this.wallsObj.push(this.wallInputs())
-              }
-            } else {
-              if (this.wallsObj.length != 1) {
-                this.wallsObj.clear();
-                this.wallsObj.push(this.wallInputs())
-              }
-            }
-            this.zoneWallForm.patchValue(val.data)
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
+    if (this.zoneWallReadModel) {
+      if (this.zoneWallReadModel?.exteriorWallSame == false) {
+        while (this.wallsObj.length < 4) {
+          this.wallsObj.push(this.wallInputs())
         }
-      })
+      } else {
+        if (this.wallsObj.length != 1) {
+          this.wallsObj.clear();
+          this.wallsObj.push(this.wallInputs())
+        }
+      }
+      this.zoneWallForm.patchValue(this.zoneWallReadModel)
     }
   }
+
   onSave() {
     if (this.zoneWallForm.invalid) {
       this.zoneWallForm.markAllAsTouched();
@@ -157,8 +153,13 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     if (this.zoneWallForm.value?.id) {
       this.zoneWallService.update(this.zoneWallReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWallReadModel>) => {
-          this.zoneWallForm.patchValue(val.data)
-          console.log(val);
+          if (val?.failed == false) {
+            this.zoneWallForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "zone-wall",
+              field: val.data
+            })
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -169,8 +170,11 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
         next: (val: Result<ZoneWallReadModel>) => {
           if (val?.failed == false) {
             this.zoneWallForm.patchValue(val.data)
+            this.updateEvent.emit({
+              fieldType: "zone-wall",
+              field: val.data
+            })
           }
-          console.log(val);
         },
         error: (err: any) => {
           console.log(err);
@@ -178,6 +182,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       })
     }
   }
+
   deleteSameWalls() {
     const wallIds: string[] = this.wallsObj?.value?.reduce((acc: string[], obj: WallReadModel, index: number) => {
       if (obj.id && index != 0) acc.push(obj.id);

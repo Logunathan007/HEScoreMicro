@@ -624,7 +624,7 @@
                             for="percentageOfDucts"
                             class="text-danger fw-semibold position-absolute"
                           >
-                            Percentage of ducts is invalid
+                            Percentage of ducts is invalid {{ ductLocationItem.get('percentageOfDucts')?.errors | json }}
                           </label>
                         </div>
                       </div>
