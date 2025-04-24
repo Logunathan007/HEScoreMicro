@@ -195,70 +195,58 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     }
 
     heatingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      this.resetValuesAndValidations([knowHeatingEfficiency,heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
       switch (val) {
         case "Central gas furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Room (through-the-wall) gas furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Gas boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Propane (LPG) central furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Propane (LPG) wall furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
           this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(0.6), Validators.max(1)])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         case "Propane (LPG) boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Oil furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Oil boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
           this.setValidations([knowHeatingEfficiency])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Electric furnace":
           heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
-          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
         case "Electric heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
-          this.setValidations([knowHeatingEfficiency], [Validators.required, Validators.min(6), Validators.max(20)])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+          this.setValidations([knowHeatingEfficiency])
           break;
         case "Ground coupled heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
           this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(2), Validators.max(5)])
-          this.resetValuesAndValidations([heatingSystemEfficiencyUnit, knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         case "Minisplit (ductless) heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
           this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
           this.setValidations(heatingSystemEfficiencyUnit)
-          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemYearInstalled]);
           break;
         default: // "Electric baseboard heater" "Electric boiler" "Wood stove" "Pellet stove" "None"
           heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
-          this.resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
           break;
       }
       ductSystemsValidation()
@@ -267,6 +255,9 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     knowHeatingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
         this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(0.6), Validators.max(1)])
+        if(heatingSystemType.value == "Electric heat pump"){
+          this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
+        }
         if (heatingTracker.value?.efficiencyUnit) {
           this.setValidations(heatingSystemEfficiencyUnit)
         }
@@ -279,36 +270,31 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     })
 
     coolingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      this.resetValuesAndValidations([knowCoolingEfficiency,coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
       switch (val) {
         case "Central air conditioner":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
           this.setValidations(knowCoolingEfficiency)
-          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
           break;
         case "Room air conditioner":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: false })
           this.setValidations(knowCoolingEfficiency)
-          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
           break;
         case "Electric heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
           this.setValidations(knowCoolingEfficiency)
-          this.resetValuesAndValidations([coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
           break;
         case "Minisplit (ductless) heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
           this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
           this.setValidations([coolingSystemEfficiencyUnit])
-          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemYearInstalled])
           break;
         case "Ground coupled heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
           this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
-          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemYearInstalled])
           break;
         default: //"None" "Direct evaporative cooling"
           coolingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
-          this.resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled]);
           break;
       }
       ductSystemsValidation()

@@ -1,7 +1,8 @@
 export const AtticOrCeilingTypeOptions = [
-  { name: "Unconditioned Attic", value: "Unconditioned Attic" },
-  { name: "Cathedral Ceiling", value: "Cathedral Ceiling" },
-  { name: "Flat Roof", value: "Flat Roof" },
+  { id: 0, name: "Unconditioned Attic", value: "Unconditioned Attic" },
+  { id: 1, name: "Cathedral Ceiling", value: "Cathedral Ceiling" },
+  { id: 2, name: "Flat Roof", value: "Flat Roof" },
+  { id: 3, name: "Below Other Unit", value: "Below Other Unit" },
 ]
 
 export const RoofConstructionOptions = [

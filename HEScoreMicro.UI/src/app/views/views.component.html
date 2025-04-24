@@ -33,6 +33,7 @@
         [input]="building.zoneRoof"
         (update)="updateBuilding($event)"
         [buildingId]="buildingId"
+        [buildingType]="buildingType"
         (move)="move($event)"
         *ngSwitchCase="1"
       ></app-zone-roof>
@@ -40,6 +41,7 @@
         [input]="building.zoneFloor"
         (update)="updateBuilding($event)"
         [buildingId]="buildingId"
+        [buildingType]="buildingType"
         (move)="move($event)"
         *ngSwitchCase="2"
       ></app-zone-floor>
@@ -68,6 +70,7 @@
         [input]="building.waterHeater"
         (update)="updateBuilding($event)"
         [buildingId]="buildingId"
+        [hasBoiler]="hasBoiler"
         (move)="move($event)"
         *ngSwitchCase="6"
       ></app-water-heating-system>

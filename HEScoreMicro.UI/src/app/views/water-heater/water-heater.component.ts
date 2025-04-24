@@ -1,6 +1,6 @@
 import { WaterHeaterTypeOptions } from '../../shared/lookups/water-heater.lookup';
 import { UnitOptions, Year1998Options } from '../../shared/lookups/common.lookup';
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { WaterHeaterReadModel } from "../../shared/models/water-heater/water-heater.model";
@@ -24,9 +24,10 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<WaterHeaterReadModel>> = new EventEmitter();
   @Input('input') waterHeaterReadModel!: WaterHeaterReadModel;
+  @Input('hasBoiler') hasBoiler!: boolean;
   booleanOptions = BooleanOptions
   unitOptions = UnitOptions
-  waterHeaterTypeOptions = WaterHeaterTypeOptions
+  waterHeaterTypeOptions: any;
   year1998Options = Year1998Options
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
@@ -50,6 +51,11 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   //variable declarations
   variableDeclaration() {
     this.waterHeaterForm = this.waterHeaterInput();
+    if (this.hasBoiler) {
+      this.waterHeaterTypeOptions = WaterHeaterTypeOptions
+    } else {
+      this.waterHeaterTypeOptions = WaterHeaterTypeOptions.filter(obj => (obj.id !== 9 && obj.id !== 10))
+    }
   }
 
   waterHeaterInput(): FormGroup {

@@ -1,5 +1,5 @@
 import { FoundationService } from '../../shared/services/zone-floor/foundation.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { ZoneFloorReadModel } from '../../shared/models/zone-floor/zone-floor.read.model';
@@ -19,15 +19,16 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
   styleUrl: './zone-floor.component.scss',
   standalone: false
 })
-export class ZoneFloorComponent extends Unsubscriber implements OnInit {
+export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChanges {
   //variable initializations
   zoneFloorForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
+  @Input('buildingType') buildingType!: number | null;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneFloorReadModel>> = new EventEmitter();
   @Input('input') zoneFloorReadModel!: ZoneFloorReadModel;
   booleanOptions = BooleanOptions
-  foundationTypeOptions = FoundationTypeOptions
+  foundationTypeOptions: any;
   removeNullIdProperties = removeNullIdProperties
   setValidations = setValidations
   resetValuesAndValidations = resetValuesAndValidations
@@ -50,6 +51,16 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit {
   ngOnInit(): void {
     this.variableDeclaration();
     this.getData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const buildingTypeChange: SimpleChange | undefined = changes['buildingType'];
+    if (buildingTypeChange) {
+      if (buildingTypeChange.currentValue == 0)
+        this.foundationTypeOptions = FoundationTypeOptions.filter(obj => obj.id != 5)
+      else if (buildingTypeChange.currentValue == 1)
+        this.foundationTypeOptions = FoundationTypeOptions
+    }
   }
 
   //variable declarations

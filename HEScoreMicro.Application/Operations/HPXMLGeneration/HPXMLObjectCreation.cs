@@ -1172,6 +1172,30 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             if (dultFlag)
             {
+                // if common distribution system then sharing the distribution system
+                if (id.StartsWith("system-1"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-1"));
+                    if (ds != null)
+                    {
+                        hs.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                if (id.StartsWith("system-2"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-2"));
+                    if (ds != null)
+                    {
+                        hs.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                // else create new distribution system
                 hs.DistributionSystem = new DistributionSystem
                 {
                     IdRef = id + "-distribution-1"
@@ -1232,6 +1256,30 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             if (cs.CoolingSystemType == "central air conditioner")
             {
+                // if common distribution system then sharing the distribution system
+                if (id.StartsWith("system-1"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-1"));
+                    if (ds != null)
+                    {
+                        cs.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                if (id.StartsWith("system-2"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-2"));
+                    if (ds != null)
+                    {
+                        cs.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                // else create new distribution system
                 cs.DistributionSystem = new DistributionSystem
                 {
                     IdRef = id + "-distribution-1"
@@ -1269,7 +1317,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             if (!system.HeatingSystemType.EndsWith("heat pump") && system.CoolingSystemType.EndsWith("heat pump"))
             {
                 hp.FractionHeatLoadServed = 0;
-                if(system.PercentAreaServed != null)
+                if (system.PercentAreaServed != null)
                     hp.FractionCoolLoadServed = (system.PercentAreaServed / 100);
             }
             hp.AnnualCoolingEfficiency = system.CoolingSystemEfficiencyValue != null && system.CoolingSystemType.EndsWith("heat pump") ? new AnnualCoolingEfficiency()
@@ -1324,6 +1372,30 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             if (hp.HeatPumpType != "mini-split")
             {
+                // if common distribution system then sharing the distribution system
+                if (id.StartsWith("system-1"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-1"));
+                    if (ds != null) 
+                    {
+                        hp.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                if (id.StartsWith("system-2"))
+                {
+                    var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-2"));
+                    if (ds != null)
+                    {
+                        hp.DistributionSystem = new DistributionSystem
+                        {
+                            IdRef = ds.SystemIdentifier.Id
+                        };
+                    }
+                }
+                // else create new distribution system
                 hp.DistributionSystem = new DistributionSystem
                 {
                     IdRef = id + "-distribution-1"
@@ -1336,16 +1408,16 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         }
         public void GenerateDistributionSystemObject(SystemsDTO system, List<HVACDistribution> distributionSystems, string id)
         {
-            if (id.StartsWith("system-1"))
-            {
-                if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-1")))
-                    return;
-            }
-            if (id.StartsWith("system-2"))
-            {
-                if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-2")))
-                    return;
-            }
+            /*            if (id.StartsWith("system-1"))
+                        {
+                            if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-1")))
+                                return;
+                        }
+                        if (id.StartsWith("system-2"))
+                        {
+                            if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-2")))
+                                return;
+                        }*/
             HVACDistribution hVACDistribution = new HVACDistribution
             {
                 SystemIdentifier = new SystemIdentifier

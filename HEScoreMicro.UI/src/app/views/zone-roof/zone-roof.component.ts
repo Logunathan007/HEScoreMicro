@@ -1,5 +1,5 @@
 import { RoofAtticService } from '../../shared/services/zone-roof/roof-attic.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { Result } from '../../shared/models/common/result.model';
 import { ZoneRoofReadModel } from '../../shared/models/zone-roof/zone-roof.read.model';
 import { takeUntil } from 'rxjs';
@@ -20,10 +20,11 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
   standalone: false
 })
 
-export class ZoneRoofComponent extends Unsubscriber implements OnInit {
+export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges {
   //variable initializations
   zoneRoofForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
+  @Input('buildingType') buildingType!: number | null;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneRoofReadModel>> = new EventEmitter();
   @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
@@ -32,7 +33,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   resetValuesAndValidations = resetValuesAndValidations
   resetValues = resetValues
   booleanOptions = BooleanOptions
-  atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions
+  atticOrCeilingTypeOptions:any;
   roofConstructionOptions = RoofConstructionOptions
   roofExteriorFinishOptions = RoofExteriorFinishOptions
   roofColorOptions = RoofColorOptions
@@ -59,6 +60,16 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit {
   ngOnInit(): void {
     this.variableDeclaration();
     this.getData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const buildingTypeChange: SimpleChange | undefined = changes['buildingType'];
+    if(buildingTypeChange){
+      if(buildingTypeChange.currentValue == 0)
+        this.atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions.filter(obj=> obj.id != 3)
+      else if(buildingTypeChange.currentValue == 1)
+        this.atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions
+    }
   }
 
   //variable declarations

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Unsubscriber } from '../shared/modules/unsubscribe/unsubscribe.component.';
 import { takeUntil } from 'rxjs';
-import { ActivatedRoute, NavigationEnd, Event, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BuildingService } from '../shared/services/building/building.service';
 import { BuildingReadModel } from '../shared/models/building/building.model';
 import { Result } from '../shared/models/common/result.model';
@@ -17,8 +17,10 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   //variable initializations
   navs!: string[]
   selectedIndex!: number;
-  buildingId!: string;
   building!: BuildingReadModel;
+  buildingId!: string;
+  buildingType!: number | null;
+  hasBoiler: boolean = false;
 
   constructor(
     public route: ActivatedRoute, public buildingService: BuildingService, public router: Router
@@ -34,7 +36,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
 
   //variable declarations
   variableDeclaration() {
-    this.navs = ["About", "Roof", "Floor", "Wall", "Window", "HVAC", "Heater", "PVSystem", "Summary"]
+    this.navs = ["About", "Roof", "Floor", "Wall", "Window", "HVAC", "DHW", "PVSystem", "Summary"]
     this.selectedIndex = 0;
   }
 
@@ -43,7 +45,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
       this.buildingId = params.get('id') ?? ""
       if (!this.buildingId) {
         let res = alert('Building is not selected');
-        console.log("Building",res);
+        console.log("Building", res);
       }
     })
   }
@@ -53,12 +55,40 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
       next: (val: Result<BuildingReadModel>) => {
         if (val.failed == false) {
           this.building = val.data as BuildingReadModel
+          this.setBuildingType(this.building?.address?.dwellingUnitType)
+          this.checkForBoiler();
         }
       },
       error: (err: any) => {
         console.log(err);
       }
     })
+  }
+
+  //Single-Family Detached 0
+  //Townhouse/Rowhouse/Duplex 1
+  setBuildingType(type: string | undefined) {
+    switch (type) {
+      case "Single-Family Detached":
+        this.buildingType = 0;
+        break;
+      case "Townhouse/Rowhouse/Duplex":
+        this.buildingType = 1;
+        break;
+      default:
+        this.buildingType = null;
+        break;
+    }
+  }
+
+  checkForBoiler() {
+    let flag = false;
+    this.building?.heatingCoolingSystem?.systems?.forEach(obj => {
+      if (obj.heatingSystemType?.endsWith("boiler")) {
+        flag = true;
+      }
+    })
+    this.hasBoiler = flag;
   }
 
   updateBuilding(data: EmitterModel<any>) {
@@ -80,6 +110,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         break;
       case "heating-cooling-system":
         this.building.heatingCoolingSystem = data.field
+        this.checkForBoiler();
         break;
       case "pv-system":
         this.building.pvSystem = data.field
@@ -93,6 +124,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   move(event: boolean | number) {
     window.scrollTo({ top: 0, behavior: 'instant' });
     if (typeof event === 'boolean') {
+      // true for forward, false for backward
       if (event) {
         if (this.selectedIndex == this.navs.length) return;
         this.selectedIndex++;
@@ -101,6 +133,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         this.selectedIndex--;
       }
     } else if (typeof event === 'number') {
+      // move to that index
       this.selectedIndex = event
     }
   }
