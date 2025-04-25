@@ -28,13 +28,13 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
   @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
-  removeNullIdProperties = removeNullIdProperties
+
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
   glazingTypeOptions = EmptyOptions
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
   resetValues = resetValues
   windowAreaAverageValidator = windowAreaAverageValidator
 
@@ -117,14 +117,14 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
 
     knowWindowSpecification.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
-        this.setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
-        this.resetValuesAndValidations([panes, frameMaterial, glazingType])
+        setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
+        setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
+        resetValuesAndValidations([panes, frameMaterial, glazingType])
       } else if (val == false) {
-        this.resetValuesAndValidations([uFactor, shgc])
-        this.setValidations([panes, frameMaterial, glazingType])
+        resetValuesAndValidations([uFactor, shgc])
+        setValidations([panes, frameMaterial, glazingType])
       } else {
-        this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
+        resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
       }
     })
     panes.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {

@@ -27,7 +27,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWallReadModel>> = new EventEmitter();
   @Input('input') zoneWallReadModel!: ZoneWallReadModel;
-  removeNullIdProperties = removeNullIdProperties
+
   resetValues = resetValues;
   booleanOptions = BooleanOptions
   wallConstructionOptions = WallConstructionOptions

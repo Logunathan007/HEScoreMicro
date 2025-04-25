@@ -21,6 +21,12 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   buildingId!: string;
   buildingType!: number | null;
   hasBoiler: boolean = false;
+  roofType1: string | null | undefined;
+  roofType2: string | null | undefined;
+  floorType1: string | null | undefined;
+  floorType2: string | null | undefined;
+  footPrint: number | null | undefined;
+  totalRoofArea: number | null | undefined;
 
   constructor(
     public route: ActivatedRoute, public buildingService: BuildingService, public router: Router
@@ -57,6 +63,9 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
           this.building = val.data as BuildingReadModel
           this.setBuildingType(this.building?.address?.dwellingUnitType)
           this.checkForBoiler();
+          this.checkFoundationType();
+          this.checkAtticCellingChanges();
+          this.checkFootPrintArea();
         }
       },
       error: (err: any) => {
@@ -91,16 +100,39 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
     this.hasBoiler = flag;
   }
 
+  checkAtticCellingChanges() {
+    this.roofType1 = this.building?.zoneRoof?.roofAttics?.at(0)?.atticOrCeilingType
+    this.roofType2 = this.building?.zoneRoof?.roofAttics?.at(1)?.atticOrCeilingType
+    this.totalRoofArea = this.building?.zoneRoof?.roofAttics
+      .reduce((sum: number, item: any) => {
+        return sum + (((item?.atticOrCeilingType == "Unconditioned Attic") ? item?.atticFloorArea : item?.roofArea) ?? 0)
+      }, 0);
+  }
+
+  checkFoundationType() {
+    this.floorType1 = this.building?.zoneFloor?.foundations?.at(0)?.foundationType
+    this.floorType2 = this.building?.zoneFloor?.foundations?.at(1)?.foundationType
+  }
+
+  checkFootPrintArea() {
+    let noOfFloor: number = this.building.about.storiesAboveGroundLevel as number
+    let condArea: number = this.building.about.totalConditionedFloorArea as number
+    this.footPrint = condArea / noOfFloor;
+  }
+
   updateBuilding(data: EmitterModel<any>) {
     switch (data.fieldType) {
       case "about":
         this.building.about = data.field
+        this.checkFootPrintArea()
         break;
       case "zone-roof":
         this.building.zoneRoof = data.field
+        this.checkAtticCellingChanges();
         break;
       case "zone-floor":
         this.building.zoneFloor = data.field
+        this.checkFoundationType();
         break;
       case "zone-wall":
         this.building.zoneWall = data.field

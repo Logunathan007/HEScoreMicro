@@ -50,7 +50,7 @@ export function windowAreaAverageValidator(group: AbstractControl): ValidationEr
 }
 
 //Reset Controls
-export function resetValuesAndValidations(controls:AbstractControl | AbstractControl[]){
+export function resetValuesAndValidations(controls: AbstractControl | AbstractControl[]) {
   const updateControl = (ctrl: AbstractControl) => {
     ctrl.reset();
     ctrl.clearValidators();
@@ -64,7 +64,7 @@ export function resetValuesAndValidations(controls:AbstractControl | AbstractCon
   }
 }
 
-export function resetValues(controls:AbstractControl | AbstractControl[]){
+export function resetValues(controls: AbstractControl | AbstractControl[]) {
   const updateControl = (ctrl: AbstractControl) => {
     ctrl.reset();
   };
@@ -74,4 +74,16 @@ export function resetValues(controls:AbstractControl | AbstractControl[]){
   } else {
     updateControl(controls);
   }
+}
+
+export function isValidRoofArea(totalArea: number, footPrintArea: number): [boolean, number, number] {
+  let start = Math.round(footPrintArea - (footPrintArea / 20)) + 1;
+  let end = Math.round((footPrintArea * 2) + (footPrintArea / 2)) - 1;
+  return [totalArea >= start && totalArea <= end, start, end];
+}
+
+export function isValidFoundationArea(totalArea: number, footPrintArea: number, roofArea: number) {
+  let start = Math.round(footPrintArea - (footPrintArea / 20)) + 1;
+  let end = Math.round(roofArea + (roofArea / 20)) - 1;
+  return [totalArea >= start && totalArea <= end, start, end];
 }

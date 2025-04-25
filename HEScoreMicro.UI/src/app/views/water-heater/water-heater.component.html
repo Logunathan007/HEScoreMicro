@@ -30,7 +30,7 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="waterHeaterControl['waterHeaterType'].value">
+        <ng-container *ngIf="waterHeaterControl['waterHeaterType'].value && !waterHeaterControl['waterHeaterType'].value?.startsWith('Boiler with')">
           <div
             class="col-md-6"
             *ngIf="

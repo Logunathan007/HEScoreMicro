@@ -10,6 +10,8 @@ using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using HEScoreMicro.Application.HPXMLClasses.Systems;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using ServiceReference1;
 
 namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 {
@@ -271,54 +273,61 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     },
                 };
                 // Veted attic
-                if (type == "Unconditioned Attic")
+                switch (type)
                 {
-                    attic.AtticType = new AtticType { Attic = new AtticTypes() };
-                    if (zoneRoofDTO.KneeWallPresent == true)
-                    {
-                        attic.AttachedToWall = new AttachedToWall()
+                    case "Unconditioned Attic":
+                        attic.AtticType = new AtticType { Attic = new AtticTypes() };
+                        if (zoneRoofDTO.KneeWallPresent == true)
                         {
-                            IdRef = id + "-wall-1",
+                            attic.AttachedToWall = new AttachedToWall()
+                            {
+                                IdRef = id + "-wall-1",
+                            };
+                            this.GenerateAtticWallObject(zoneRoofDTO, walls, attic.AttachedToWall.IdRef);
+                        }
+                        attic.AttachedToRoof = new AttachedToRoof()
+                        {
+                            IdRef = id + "-roof-1",
                         };
-                        this.GenerateAtticWallObject(zoneRoofDTO, walls, attic.AttachedToWall.IdRef, 0);
-                    }
-                    attic.AttachedToRoof = new AttachedToRoof()
-                    {
-                        IdRef = id + "-roof-1",
-                    };
-                    this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef, 0);
-
-                    attic.AttachedToFloor = new AttachedToFloor()
-                    {
-                        IdRef = id + "-floor-1",
-                    };
-                    this.GenerateAtticFloorObject(zoneRoofDTO, floors, attic.AttachedToFloor.IdRef, 0);
+                        this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef);
+                        attic.AttachedToFloor = new AttachedToFloor()
+                        {
+                            IdRef = id + "-floor-1",
+                        };
+                        this.GenerateAtticFloorObject(zoneRoofDTO, floors, attic.AttachedToFloor.IdRef);
+                        break;
+                    case "Cathedral Ceiling":
+                        attic.AtticType = new AtticType { CathedralCeiling = new CathedralCeiling() };
+                        attic.AttachedToRoof = new AttachedToRoof()
+                        {
+                            IdRef = id + "-roof-1",
+                        };
+                        this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef);
+                        break;
+                    case "Flat Roof":
+                        attic.AtticType = new AtticType { FlatRoof = new FlatRoof() };
+                        attic.AttachedToRoof = new AttachedToRoof()
+                        {
+                            IdRef = id + "-roof-1",
+                        };
+                        this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef);
+                        break;
+                    // TODO For bellow other unit hpxml generating not clealy mentiond in documentaiont need to clarigy
+                    case "Below Other Unit":
+                        attic.AtticType = new AtticType { BelowApartment = new BelowApartment() };
+                        attic.AttachedToFloor = new AttachedToFloor()
+                        {
+                            IdRef = id + "-floor-1",
+                        };
+                        this.GenerateAtticFloorObject(zoneRoofDTO, floors, attic.AttachedToFloor.IdRef);
+                        break;
                 }
-                else if (type == "Cathedral Ceiling")
-                {
-                    attic.AtticType = new AtticType { CathedralCeiling = new CathedralCeiling() };
 
-                    attic.AttachedToRoof = new AttachedToRoof()
-                    {
-                        IdRef = id + "-roof-1",
-                    };
-                    this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef, 1);
-                }
-                else if (type == "Flat Roof")
-                {
-                    attic.AtticType = new AtticType { FlatRoof = new FlatRoof() };
-
-                    attic.AttachedToRoof = new AttachedToRoof()
-                    {
-                        IdRef = id + "-roof-1",
-                    };
-                    this.GenerateAtticRoofObject(zoneRoofDTO, roofs, skylights, attic.AttachedToRoof.IdRef, 2);
-                }
                 attics.Add(attic);
                 i++;
             }
         }
-        public void GenerateAtticRoofObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Roof> roofs, List<Skylight> skylights, string idref, int type)
+        public void GenerateAtticRoofObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Roof> roofs, List<Skylight> skylights, string idref)
         {
             Roof roof = new Roof
             {
@@ -413,7 +422,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             roof.Area = roofAtticDTO.RoofArea;
             roof.Insulation.AssemblyEffectiveRValue = roofAtticDTO.RoofInsulation;
 
-
             // Roof Skylights
             if (roofAtticDTO.SkylightsPresent == true)
             {
@@ -421,7 +429,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             roofs.Add(roof);
         }
-        public void GenerateAtticFloorObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Floor> floors, string idref, int type)
+        public void GenerateAtticFloorObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Floor> floors, string idref)
         {
             Floor floor = new Floor()
             {
@@ -429,8 +437,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 {
                     Id = idref,
                 },
-                Area = roofAtticDTO.AtticFloorArea,
-                Insulation = new Insulation()
+                Area = roofAtticDTO.AtticFloorArea ?? roofAtticDTO.RoofArea,
+                Insulation = (roofAtticDTO.AtticFloorInsulation == null) ? null : new Insulation()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
@@ -441,7 +449,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             floors.Add(floor);
         }
-        public void GenerateAtticWallObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Wall> walls, string idref, int type)
+        public void GenerateAtticWallObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Wall> walls, string idref)
         {
             if (roofAtticDTO.KneeWallPresent == true)
             {
@@ -643,34 +651,49 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     },
                     FoundationType = GetFoundationType(zoneFloor.FoundationType),
                 };
-                if (zoneFloor.FoundationType == "Slab-on-grade foundation")
+                switch (zoneFloor.FoundationType)
                 {
-                    foundation.AttachedToSlab = new AttachedToSlab()
-                    {
-                        IdRef = id + "-slab-1"
-                    };
-                    this.GenerateSlabObject(zoneFloor, slabs, foundation.AttachedToSlab.IdRef);
-                }
-                else if (zoneFloor.FoundationType == "Belly and Wing")
-                {
-                    foundation.AttachedToFloor = new AttachedToFloor()
-                    {
-                        IdRef = id + "-floor-1"
-                    };
-                    this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
-                }
-                else
-                {
-                    foundation.AttachedToFoundationWall = new AttachedToFoundationWall()
-                    {
-                        IdRef = id + "-foundation-wall-1"
-                    };
-                    this.GenerateFoundationWallObject(zoneFloor, foundationWalls, foundation.AttachedToFoundationWall.IdRef);
-                    foundation.AttachedToFloor = new AttachedToFloor()
-                    {
-                        IdRef = id + "-floor-1"
-                    };
-                    this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
+                    case "Slab-on-grade foundation":
+                        foundation.AttachedToSlab = new AttachedToSlab()
+                        {
+                            IdRef = id + "-slab-1"
+                        };
+                        this.GenerateSlabObject(zoneFloor, slabs, foundation.AttachedToSlab.IdRef);
+                        break;
+                    case "Belly and Wing":
+                        foundation.AttachedToFloor = new AttachedToFloor()
+                        {
+                            IdRef = id + "-floor-1"
+                        };
+                        this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
+                        break;
+                    case "Above Other Unit":            // TODO For Above other unit hpxml generating not clealy mentiond in documentaiont need to clarigy
+
+                        foundation.AttachedToFloor = new AttachedToFloor()
+                        {
+                            IdRef = id + "-floor-1"
+                        };
+                        this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
+                        break;
+                    case "Conditioned Basement": // TODO Where i need to place foundation area
+                        foundation.AttachedToFoundationWall = new AttachedToFoundationWall()
+                        {
+                            IdRef = id + "-foundation-wall-1"
+                        };
+                        this.GenerateFoundationWallObject(zoneFloor, foundationWalls, foundation.AttachedToFoundationWall.IdRef);
+                        break;
+                    default:
+                        foundation.AttachedToFoundationWall = new AttachedToFoundationWall()
+                        {
+                            IdRef = id + "-foundation-wall-1"
+                        };
+                        this.GenerateFoundationWallObject(zoneFloor, foundationWalls, foundation.AttachedToFoundationWall.IdRef);
+                        foundation.AttachedToFloor = new AttachedToFloor()
+                        {
+                            IdRef = id + "-floor-1"
+                        };
+                        this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
+                        break;
                 }
                 foundations.Add(foundation);
                 i++;
@@ -728,7 +751,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     Id = idref
                 },
                 Area = zoneFloor.FoundationArea,
-                Insulation = new Insulation()
+                Insulation = (zoneFloor.FloorInsulationLevel == null) ? null : new Insulation()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
@@ -1030,7 +1053,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         Type = "solar screens"
                     };
                 }
-
                 windows.Add(window);
                 i++;
             }
@@ -1376,7 +1398,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 if (id.StartsWith("system-1"))
                 {
                     var ds = distributionSystems.FirstOrDefault(obj => obj.SystemIdentifier.Id.StartsWith("system-1"));
-                    if (ds != null) 
+                    if (ds != null)
                     {
                         hp.DistributionSystem = new DistributionSystem
                         {
@@ -1408,16 +1430,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         }
         public void GenerateDistributionSystemObject(SystemsDTO system, List<HVACDistribution> distributionSystems, string id)
         {
-            /*            if (id.StartsWith("system-1"))
-                        {
-                            if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-1")))
-                                return;
-                        }
-                        if (id.StartsWith("system-2"))
-                        {
-                            if (distributionSystems.Any(obj => obj.SystemIdentifier.Id.StartsWith("system-2")))
-                                return;
-                        }*/
             HVACDistribution hVACDistribution = new HVACDistribution
             {
                 SystemIdentifier = new SystemIdentifier
@@ -1525,6 +1537,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     wh.WaterHeatingSystem.WaterHeaterType = "heat pump water heater";
                     wh.WaterHeatingSystem.FuelType = "electricity";
                     break;
+                case "Boiler with indirect tank":
+                    wh.WaterHeatingSystem.WaterHeaterType = "space-heating boiler with storage tank";
+                    break;
+                case "Boiler with tankless coil":
+                    wh.WaterHeatingSystem.WaterHeaterType = "space-heating boiler with tankless coil";
+                    break;
             }
             wh.WaterHeatingSystem.ModelYear = waterHeater.YearOfManufacture;
             if (waterHeater.KnowWaterHeaterEnergyFactor == true || wh.WaterHeatingSystem.ModelYear == null)
@@ -1597,6 +1615,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 default:
                     return "manufactured home";
             }
+            return "";
         }
         public FoundationType GetFoundationType(string foundationType)
         {
@@ -1633,6 +1652,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 case "Belly and Wing":
                     type.BellyAndWing = new BellyAndWing();
                     break;
+                case "Above Other Unit":
+                    type.AboveApartment = new AboveApartment();
+                    break;
             }
             return type;
         }
@@ -1651,7 +1673,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             // TODO need to be add
             switch (ductLocation)
             {
-                case "Conditioned space Under slab":
+                case "Conditioned space":
+                    return "living space";
+                case "Under slab":
                     return "under slab";
                 case "Exterior wall":
                     return "exterior wall";
@@ -1659,6 +1683,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     return "outside";
                 case "Unconditioned Basement":
                     return "basement - unconditioned";
+                case "Unconditioned Attic":
+                    return "attic - unconditioned";
+                case "Unvented Crawlspace / Unconditioned Garage":
+                    return "garage";
+                case "Vented Crawlspace":
+                    return "crawlspace - vented";
                 default:
                     return null;
             }

@@ -44,10 +44,15 @@ export const EERCoolingEfficiencyUnitOptions = [
 ]
 
 export const DuctLocationOptions = [
-  { name: "Conditioned space Under slab", value: "Conditioned space Under slab" },
-  { name: "Exterior wall", value: "Exterior wall" },
-  { name: "Outside", value: "Outside" },
-  { name: "Unconditioned Basement", value: "Unconditioned Basement" },
+  { id: 0, name: "Conditioned space", value: "Conditioned space" },
+  { id: 1, name: "Under slab", value: "Under slab" },
+  { id: 2, name: "Exterior wall", value: "Exterior wall" },
+  { id: 3, name: "Outside", value: "Outside" },
+  //this values are added dynamically
+  // { id: 4, name: "Unconditioned Basement", value: "Unconditioned Basement" },
+  // { id: 5, name: "Unconditioned Attic", value: "Unconditioned Attic" },
+  // { id: 6, name: "Unvented Crawlspace / Unconditioned Garage", value: "Unvented Crawlspace / Unconditioned Garage" },
+  // { id: 7, name: "Vented Crawlspace", value: "Vented Crawlspace" },
 ]
 
 export const SystemCountOptions = [

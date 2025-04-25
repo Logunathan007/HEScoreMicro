@@ -1,6 +1,6 @@
 import { SystemsService } from '../../shared/services/heating-cooling-system/systems.service';
 import { DuctLocationService } from '../../shared/services/heating-cooling-system/duct-location.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { HeatingCoolingSystemReadModel } from '../../shared/models/heating-cooling-system/heating-cooling-system.model';
@@ -21,26 +21,31 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
   templateUrl: './heating-cooling-system.component.html',
   styleUrl: './heating-cooling-system.component.scss'
 })
-export class HeatingCoolingSystemComponent extends Unsubscriber implements OnInit {
+export class HeatingCoolingSystemComponent extends Unsubscriber implements OnInit, OnDestroy {
   //variable initializations
   heatingCoolingSystemForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
+  @Input('roofType1') roofType1: string | null | undefined;
+  @Input('roofType2') roofType2: string | null | undefined;
+  @Input('floorType1') floorType1: string | null | undefined;
+  @Input('floorType2') floorType2: string | null | undefined;
+  @Input('input') heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
+
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<HeatingCoolingSystemReadModel>> = new EventEmitter();
-  @Input('input') heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
-  removeNullIdProperties = removeNullIdProperties
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
+
   booleanOptions = BooleanOptions
   heatingSystemTypeOptions = HeatingSystemTypeOptions
   coolingSystemTypeOptions = CoolingSystemTypeOptions
   seerCoolingEfficiencyUnitOptions = SEERCoolingEfficiencyUnitOptions
   eerCoolingEfficiencyUnitOptions = EERCoolingEfficiencyUnitOptions
-  ductLocationOptions = DuctLocationOptions
   systemCountOptions = SystemCountOptions
   ductLocationCountOptions = DuctLocationCountOptions
   heatingEfficiencyUnitOptions = HeatingEfficiencyUnitOptions
   year1998Options = Year1998Options
+  ductLocationOptions:any
 
   get heatingCoolingSystemControl() {
     return this.heatingCoolingSystemForm.controls;
@@ -64,14 +69,33 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   }
 
   ngOnInit(): void {
-
     this.variableDeclaration();
+    this.addDuctLocations();
     this.getData();
   }
 
   //variable declarations
   variableDeclaration() {
     this.heatingCoolingSystemForm = this.heatingCoolingSystemInputs()
+  }
+
+  addDuctLocations() {
+    this.ductLocationOptions = [...DuctLocationOptions]
+    var foundations = ["Unconditioned Basement",
+      "Unvented Crawlspace / Unconditioned Garage",
+      "Vented Crawlspace"]
+    if (this.roofType1 == "Unconditioned Attic" || this.roofType2 == "Unconditioned Attic") {
+      this.ductLocationOptions.push({ id: 4, name: "Unconditioned Attic", value: "Unconditioned Attic" })
+    }
+    let index = 5;
+    foundations.forEach(ele => {
+      if (this.floorType1 === ele) {
+        this.ductLocationOptions.push({ id: index++, name: ele, value: ele })
+      }
+      else if (this.floorType2 == ele) {
+        this.ductLocationOptions.push({ id: index++, name: ele, value: ele })
+      }
+    })
   }
 
   heatingCoolingSystemInputs(): FormGroup {
@@ -98,9 +122,9 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       systems.controls.forEach((control: AbstractControl) => {
         const percentAreaServed = control.get('percentAreaServed') as AbstractControl
         if (val > 1) {
-          this.setValidations(percentAreaServed, [Validators.required, Validators.min(0), Validators.max(100)]);
+          setValidations(percentAreaServed, [Validators.required, Validators.min(0), Validators.max(100)]);
         } else {
-          this.resetValuesAndValidations(percentAreaServed);
+          resetValuesAndValidations(percentAreaServed);
         }
       })
     })
@@ -183,67 +207,67 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       }
       return null;
     }
-    this.setValidations(coolingSystemType, [Validators.required, coolingSystemTypeValidation])
-    this.setValidations(heatingSystemType, [Validators.required, heatingSystemTypeValidation])
+    setValidations(coolingSystemType, [Validators.required, coolingSystemTypeValidation])
+    setValidations(heatingSystemType, [Validators.required, heatingSystemTypeValidation])
 
     const ductSystemsValidation = () => {
       if (heatingTracker.value?.ducts || coolingTracker.value?.ducts) {
-        this.setValidations([ductLeakageTestPerformed, ductLocationCount])
+        setValidations([ductLeakageTestPerformed, ductLocationCount])
       } else {
-        this.resetValuesAndValidations([ductLeakageTestPerformed, ductLocationCount])
+        resetValuesAndValidations([ductLeakageTestPerformed, ductLocationCount])
       }
     }
 
     heatingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
-      this.resetValuesAndValidations([knowHeatingEfficiency,heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
+      resetValuesAndValidations([knowHeatingEfficiency, heatingSystemEfficiencyUnit, heatingSystemEfficiencyValue, heatingSystemYearInstalled]);
       switch (val) {
         case "Central gas furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Room (through-the-wall) gas furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Gas boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Propane (LPG) central furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Propane (LPG) wall furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
-          this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(0.6), Validators.max(1)])
+          setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(0.6), Validators.max(1)])
           break;
         case "Propane (LPG) boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Oil furnace":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: true })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Oil boiler":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: false, ducts: false })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Electric furnace":
           heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
           break;
         case "Electric heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
-          this.setValidations([knowHeatingEfficiency])
+          setValidations([knowHeatingEfficiency])
           break;
         case "Ground coupled heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
-          this.setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(2), Validators.max(5)])
+          setValidations([heatingSystemEfficiencyValue], [Validators.required, Validators.min(2), Validators.max(5)])
           break;
         case "Minisplit (ductless) heat pump":
           heatingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
-          this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
-          this.setValidations(heatingSystemEfficiencyUnit)
+          setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
+          setValidations(heatingSystemEfficiencyUnit)
           break;
         default: // "Electric baseboard heater" "Electric boiler" "Wood stove" "Pellet stove" "None"
           heatingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
@@ -254,44 +278,44 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
 
     knowHeatingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(0.6), Validators.max(1)])
-        if(heatingSystemType.value == "Electric heat pump"){
-          this.setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
+        setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(0.6), Validators.max(1)])
+        if (heatingSystemType.value == "Electric heat pump") {
+          setValidations(heatingSystemEfficiencyValue, [Validators.required, Validators.min(6), Validators.max(20)])
         }
         if (heatingTracker.value?.efficiencyUnit) {
-          this.setValidations(heatingSystemEfficiencyUnit)
+          setValidations(heatingSystemEfficiencyUnit)
         }
-        this.resetValuesAndValidations(heatingSystemYearInstalled)
+        resetValuesAndValidations(heatingSystemYearInstalled)
       } else if (val == false) {
-        this.resetValuesAndValidations([heatingSystemEfficiencyValue, heatingSystemEfficiencyUnit])
-        this.setValidations(heatingSystemYearInstalled)
+        resetValuesAndValidations([heatingSystemEfficiencyValue, heatingSystemEfficiencyUnit])
+        setValidations(heatingSystemYearInstalled)
       }
       // if give else wrong validation occur
     })
 
     coolingSystemType?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
-      this.resetValuesAndValidations([knowCoolingEfficiency,coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
+      resetValuesAndValidations([knowCoolingEfficiency, coolingSystemEfficiencyUnit, coolingSystemEfficiencyValue, coolingSystemYearInstalled])
       switch (val) {
         case "Central air conditioner":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
-          this.setValidations(knowCoolingEfficiency)
+          setValidations(knowCoolingEfficiency)
           break;
         case "Room air conditioner":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: false })
-          this.setValidations(knowCoolingEfficiency)
+          setValidations(knowCoolingEfficiency)
           break;
         case "Electric heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: true, efficiencyUnit: true, ducts: true })
-          this.setValidations(knowCoolingEfficiency)
+          setValidations(knowCoolingEfficiency)
           break;
         case "Minisplit (ductless) heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: true, ducts: false })
-          this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
-          this.setValidations([coolingSystemEfficiencyUnit])
+          setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
+          setValidations([coolingSystemEfficiencyUnit])
           break;
         case "Ground coupled heat pump":
           coolingTracker.setValue({ efficiencyValue: true, efficiencyOptions: false, efficiencyUnit: false, ducts: true })
-          this.setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
+          setValidations([coolingSystemEfficiencyValue], [Validators.required, Validators.min(8), Validators.max(40)])
           break;
         default: //"None" "Direct evaporative cooling"
           coolingTracker.setValue({ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false })
@@ -302,14 +326,14 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
 
     knowCoolingEfficiency?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(coolingSystemEfficiencyValue, [Validators.required, Validators.min(8), Validators.max(40)])
+        setValidations(coolingSystemEfficiencyValue, [Validators.required, Validators.min(8), Validators.max(40)])
         if (coolingTracker.value?.efficiencyUnit) {
-          this.setValidations(coolingSystemEfficiencyUnit)
+          setValidations(coolingSystemEfficiencyUnit)
         }
-        this.resetValuesAndValidations(coolingSystemYearInstalled)
+        resetValuesAndValidations(coolingSystemYearInstalled)
       } else if (val == false) {
-        this.setValidations(coolingSystemYearInstalled)
-        this.resetValuesAndValidations([coolingSystemEfficiencyValue, coolingSystemEfficiencyUnit])
+        setValidations(coolingSystemYearInstalled)
+        resetValuesAndValidations([coolingSystemEfficiencyValue, coolingSystemEfficiencyUnit])
       }
       // if give else wrong validation occur
     })
@@ -328,10 +352,10 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
         ductLocations.controls.forEach((control: AbstractControl) => {
           var percent = control.get('percentageOfDucts') as AbstractControl;
           if (val > 1) {
-            this.setValidations(percent, [Validators.required, Validators.min(0), Validators.max(100)]);
+            setValidations(percent, [Validators.required, Validators.min(0), Validators.max(100)]);
           }
           else if (val) {
-            this.resetValuesAndValidations(percent);
+            resetValuesAndValidations(percent);
           }
         })
       }
@@ -339,11 +363,11 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
 
     ductLeakageTestPerformed?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(ductLeakageTestValue, [Validators.required, Validators.min(0), Validators.max(1000)])
-        this.resetValuesAndValidations(ductAreProfessionallySealed)
+        setValidations(ductLeakageTestValue, [Validators.required, Validators.min(0), Validators.max(1000)])
+        resetValuesAndValidations(ductAreProfessionallySealed)
       } else if (val == false) {
-        this.setValidations(ductAreProfessionallySealed)
-        this.resetValuesAndValidations(ductLeakageTestValue)
+        setValidations(ductAreProfessionallySealed)
+        resetValuesAndValidations(ductLeakageTestValue)
       }
     })
     return systems;
@@ -474,4 +498,9 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     this.move.emit(true);
   }
 
+  // ngOnDestroy() {
+  //   debugger
+  //   this.ductLocationOptions = []
+  // }
 }
+

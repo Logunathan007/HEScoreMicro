@@ -29,8 +29,8 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
   manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
 
   @Output() myEvent = new EventEmitter<any>();
 
@@ -78,9 +78,9 @@ export class AboutComponent extends Unsubscriber implements OnInit {
     const airLeakageRate = about.get('airLeakageRate') as AbstractControl
     blowerDoorTestConducted?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations(airLeakageRate, [Validators.required, Validators.min(0), Validators.max(25000)])
+        setValidations(airLeakageRate, [Validators.required, Validators.min(0), Validators.max(25000)])
       } else {
-        this.resetValuesAndValidations(airLeakageRate)
+        resetValuesAndValidations(airLeakageRate)
       }
     })
     return about;

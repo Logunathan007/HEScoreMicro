@@ -66,6 +66,7 @@
                 </div>
               </div>
             </div>
+            @if (roofAtticItem.get('atticOrCeilingType')?.value !== "Below Other Unit") {
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Construction </label>
@@ -122,6 +123,7 @@
                 </div>
               </div>
             </div>
+            }
             <div class="col-md-6">
               <div class="input-box">
                 <label class="required" for="roofArea">
@@ -129,14 +131,17 @@
                     roofAtticItem.get("atticOrCeilingType")?.value ==
                     "Cathedral Ceiling"
                       ? "Cathedral Ceiling "
-                      : "Roof "
+                      : roofAtticItem.get("atticOrCeilingType")?.value ==
+                        "Below Other Unit"
+                      ? "Ceiling"
+                      : "Roof"
                   }}
                   Area
                 </label>
                 <input
                   formControlName="roofArea"
                   type="number"
-                  id="roofArea"
+                  id="roofArea" (input)="oncheck()"
                   [placeholder]="
                     roofAtticItem.get('atticOrCeilingType')?.value ==
                     'Cathedral Ceiling'
@@ -160,13 +165,17 @@
                       roofAtticItem.get("atticOrCeilingType")?.value ==
                       "Cathedral Ceiling"
                         ? "Cathedral Ceiling "
-                        : "Roof "
+                        : roofAtticItem.get("atticOrCeilingType")?.value ==
+                          "Below Other Unit"
+                        ? "Ceiling"
+                        : "Roof"
                     }}
                     Area is invalid
                   </label>
                 </div>
               </div>
             </div>
+            @if (roofAtticItem.get('atticOrCeilingType')?.value !== "Below Other Unit") {
             <div class="col-md-6">
               <div class="input-box">
                 <label class="required" for="roofInsulation">
@@ -519,6 +528,7 @@
                 </div>
               </ng-container>
             </ng-container>
+            }
             <ng-container
               *ngIf="
                 roofAtticItem.get('atticOrCeilingType')?.value ==

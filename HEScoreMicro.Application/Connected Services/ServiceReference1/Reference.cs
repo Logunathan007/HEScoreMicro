@@ -16,198 +16,198 @@ namespace ServiceReference1
     public interface st_api_handlerPort
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_recommendations", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_recommendations", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_recommendationsResponse> retrieve_recommendationsAsync(ServiceReference1.retrieve_recommendationsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#validate_inputs", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#validate_inputs", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.validate_inputsResponse> validate_inputsAsync(ServiceReference1.validate_inputsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#validate_hpxml", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#validate_hpxml", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.validate_hpxmlResponse> validate_hpxmlAsync(ServiceReference1.validate_hpxmlRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_building_status", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_building_status", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_building_statusResponse> get_building_statusAsync(ServiceReference1.get_building_statusRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_session_token", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_session_token", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_session_tokenResponse> get_session_tokenAsync(ServiceReference1.get_session_tokenRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#destroy_session_token", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#destroy_session_token", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.destroy_session_tokenResponse> destroy_session_tokenAsync(ServiceReference1.destroy_session_tokenRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#building_ca_id", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#building_ca_id", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.building_ca_idResponse> building_ca_idAsync(ServiceReference1.building_ca_idRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#archive_buildings_by_id", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#archive_buildings_by_id", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.archive_buildings_by_idResponse> archive_buildings_by_idAsync(ServiceReference1.archive_buildings_by_idRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#assign_parent", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#assign_parent", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.assign_parentResponse> assign_parentAsync(ServiceReference1.assign_parentRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#update_geolocation", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#update_geolocation", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.update_geolocationResponse> update_geolocationAsync(ServiceReference1.update_geolocationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#batch_update", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#batch_update", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.batch_updateResponse> batch_updateAsync(ServiceReference1.batch_updateRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_hpwes", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_hpwes", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_hpwesResponse> retrieve_hpwesAsync(ServiceReference1.retrieve_hpwesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#submit_hpwes", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#submit_hpwes", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.submit_hpwesResponse> submit_hpwesAsync(ServiceReference1.submit_hpwesRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#delete_buildings_by_id", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#delete_buildings_by_id", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.delete_buildings_by_idResponse> delete_buildings_by_idAsync(ServiceReference1.delete_buildings_by_idRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_id", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_id", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_buildings_by_idResponse> retrieve_buildings_by_idAsync(ServiceReference1.retrieve_buildings_by_idRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_assessor", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_assessor", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_buildings_by_assessorResponse> retrieve_buildings_by_assessorAsync(ServiceReference1.retrieve_buildings_by_assessorRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_partner", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_partner", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_buildings_by_partnerResponse> retrieve_buildings_by_partnerAsync(ServiceReference1.retrieve_buildings_by_partnerRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_mentor", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_mentor", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_buildings_by_mentorResponse> retrieve_buildings_by_mentorAsync(ServiceReference1.retrieve_buildings_by_mentorRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_quality_as" +
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_buildings_by_quality_as" +
             "surance_provider", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_buildings_by_quality_assurance_providerResponse> retrieve_buildings_by_quality_assurance_providerAsync(ServiceReference1.retrieve_buildings_by_quality_assurance_providerRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_buildings_with_same_location" +
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_buildings_with_same_location" +
             "", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_buildings_with_same_locationResponse> get_buildings_with_same_locationAsync(ServiceReference1.get_buildings_with_same_locationRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_building_info", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_building_info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_building_infoResponse> get_building_infoAsync(ServiceReference1.get_building_infoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#submit_inputs", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#submit_inputs", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.submit_inputsResponse> submit_inputsAsync(ServiceReference1.submit_inputsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#submit_hpxml_inputs", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#submit_hpxml_inputs", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.submit_hpxml_inputsResponse> submit_hpxml_inputsAsync(ServiceReference1.submit_hpxml_inputsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#copy_building", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#copy_building", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.copy_buildingResponse> copy_buildingAsync(ServiceReference1.copy_buildingRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#csv_batch_import", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#csv_batch_import", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.csv_batch_importResponse> csv_batch_importAsync(ServiceReference1.csv_batch_importRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#csv_batch_list", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#csv_batch_list", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.csv_batch_listResponse> csv_batch_listAsync(ServiceReference1.csv_batch_listRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#csv_batch_import_status", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#csv_batch_import_status", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.csv_batch_import_statusResponse> csv_batch_import_statusAsync(ServiceReference1.csv_batch_import_statusRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#submit_address", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#submit_address", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.submit_addressResponse> submit_addressAsync(ServiceReference1.submit_addressRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_results", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_results", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_resultsResponse> retrieve_resultsAsync(ServiceReference1.retrieve_resultsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#generate_label", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#generate_label", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.generate_labelResponse> generate_labelAsync(ServiceReference1.generate_labelRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#generate_custom_label", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#generate_custom_label", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.generate_custom_labelResponse> generate_custom_labelAsync(ServiceReference1.generate_custom_labelRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#label_regenerate", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#label_regenerate", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.label_regenerateResponse> label_regenerateAsync(ServiceReference1.label_regenerateRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#upload_label", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#upload_label", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.upload_labelResponse> upload_labelAsync(ServiceReference1.upload_labelRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_label_results", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_label_results", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_label_resultsResponse> retrieve_label_resultsAsync(ServiceReference1.retrieve_label_resultsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_inputs", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_inputs", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_inputsResponse> retrieve_inputsAsync(ServiceReference1.retrieve_inputsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#retrieve_extended_results", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#retrieve_extended_results", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.retrieve_extended_resultsResponse> retrieve_extended_resultsAsync(ServiceReference1.retrieve_extended_resultsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#export_label_results", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#export_label_results", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.export_label_resultsResponse> export_label_resultsAsync(ServiceReference1.export_label_resultsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#export_partner_label_results", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#export_partner_label_results", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.export_partner_label_resultsResponse> export_partner_label_resultsAsync(ServiceReference1.export_partner_label_resultsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#export_label_recommendations", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#export_label_recommendations", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.export_label_recommendationsResponse> export_label_recommendationsAsync(ServiceReference1.export_label_recommendationsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#export_partner_label_recommendat" +
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#export_partner_label_recommendat" +
             "ions", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.export_partner_label_recommendationsResponse> export_partner_label_recommendationsAsync(ServiceReference1.export_partner_label_recommendationsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_users_with_sim_access", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_users_with_sim_access", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_users_with_sim_accessResponse> get_users_with_sim_accessAsync(ServiceReference1.get_users_with_sim_accessRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#pass_trainee", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#pass_trainee", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.pass_traineeResponse> pass_traineeAsync(ServiceReference1.pass_traineeRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#fail_trainee", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#fail_trainee", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.fail_traineeResponse> fail_traineeAsync(ServiceReference1.fail_traineeRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_user_info", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_user_info", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_user_infoResponse> get_user_infoAsync(ServiceReference1.get_user_infoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#user_exists", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#user_exists", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.user_existsResponse> user_existsAsync(ServiceReference1.user_existsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#get_user_list", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#get_user_list", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.get_user_listResponse> get_user_listAsync(ServiceReference1.get_user_listRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#cancel_batch_import", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#cancel_batch_import", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.cancel_batch_importResponse> cancel_batch_importAsync(ServiceReference1.cancel_batch_importRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="https://sandbeta.hesapi.labworks.org/st_api/serve#find_an_assessor", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="https://sandbox.hesapi.labworks.org/st_api/serve#find_an_assessor", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         System.Threading.Tasks.Task<ServiceReference1.find_an_assessorResponse> find_an_assessorAsync(ServiceReference1.find_an_assessorRequest request);
     }
@@ -17202,7 +17202,7 @@ namespace ServiceReference1
         {
             if ((endpointConfiguration == EndpointConfiguration.st_api_handlerPort))
             {
-                return new System.ServiceModel.EndpointAddress("https://sandbeta.hesapi.labworks.org/st_api/serve");
+                return new System.ServiceModel.EndpointAddress("https://sandbox.hesapi.labworks.org/st_api/serve");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

@@ -68,7 +68,15 @@
             </div>
             <div class="col-md-6">
               <div class="input-box">
-                <label class="required" for="foundationArea"> Foundation Area </label>
+                <label class="required" for="foundationArea">
+                  {{
+                    foundationItem.get("foundationType")?.value ===
+                    "Above Other Unit"
+                      ? "Floor"
+                      : "Foundation"
+                  }}
+                  Area
+                </label>
                 <input
                   formControlName="foundationArea"
                   type="number"
@@ -87,14 +95,24 @@
                     for="foundationArea"
                     class="text-danger fw-semibold position-absolute"
                   >
-                    Foundation Area is invalid
+                  {{
+                    foundationItem.get("foundationType")?.value ===
+                    "Above Other Unit"
+                      ? "Floor"
+                      : "Foundation"
+                  }} Area is invalid
                   </label>
                 </div>
               </div>
             </div>
-            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.slab">
+            <div
+              class="col-md-6"
+              *ngIf="foundationItem.get('tracker')?.value?.slab"
+            >
               <div class="input-box">
-                <label class="required" for="slabInsulationLevel"> Slab Insulation Level </label>
+                <label class="required" for="slabInsulationLevel">
+                  Slab Insulation Level
+                </label>
                 <input
                   formControlName="slabInsulationLevel"
                   type="number"
@@ -118,7 +136,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.floor">
+            <div
+              class="col-md-6"
+              *ngIf="foundationItem.get('tracker')?.value?.floor"
+            >
               <div class="input-box">
                 <label class="required" for="floorInsulationLevel">
                   Floor Insulation Level
@@ -146,7 +167,10 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.wall">
+            <div
+              class="col-md-6"
+              *ngIf="foundationItem.get('tracker')?.value?.wall"
+            >
               <div class="input-box">
                 <label class="required" for="foundationwallsInsulationLevel">
                   Foundationwalls Insulation Level

@@ -29,8 +29,8 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   unitOptions = UnitOptions
   waterHeaterTypeOptions: any;
   year1998Options = Year1998Options
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
 
   get waterHeaterControl() {
     return this.waterHeaterForm.controls;
@@ -74,28 +74,25 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
     const energyValue = waterHeater.get('energyValue') as AbstractControl
     const yearOfManufacture = waterHeater.get('yearOfManufacture') as AbstractControl
     waterHeaterType.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      resetValuesAndValidations([unit, energyValue, knowWaterHeaterEnergyFactor, yearOfManufacture])
       if (val.endsWith("Storage")) {
-        this.setValidations(knowWaterHeaterEnergyFactor)
-        this.resetValuesAndValidations([unit, energyValue])
-      } else if (val) {
-        this.setValidations(unit)
-        this.setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
-        this.resetValuesAndValidations([knowWaterHeaterEnergyFactor, yearOfManufacture])
-      } else {
-        this.resetValuesAndValidations([unit, energyValue, knowWaterHeaterEnergyFactor, yearOfManufacture])
+        setValidations(knowWaterHeaterEnergyFactor)
+      } else if (val && !val.startsWith("Boiler with")) {
+        setValidations(unit)
+        setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
       }
     })
     knowWaterHeaterEnergyFactor.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: boolean) => {
       if (val == true) {
-        this.setValidations(unit)
-        this.setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
-        this.resetValuesAndValidations(yearOfManufacture)
+        setValidations(unit)
+        setValidations(energyValue, this.energyValueValidation(waterHeaterType?.value))
+        resetValuesAndValidations(yearOfManufacture)
       }
       else if (val == false) {
-        this.setValidations(yearOfManufacture)
-        this.resetValuesAndValidations([unit, energyValue])
+        setValidations(yearOfManufacture)
+        resetValuesAndValidations([unit, energyValue])
       } else {
-        this.resetValuesAndValidations([yearOfManufacture])
+        resetValuesAndValidations([yearOfManufacture])
       }
     })
     return waterHeater;

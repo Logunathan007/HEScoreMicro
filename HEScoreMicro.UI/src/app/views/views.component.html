@@ -30,10 +30,11 @@
         *ngSwitchCase="0"
       ></app-about>
       <app-zone-roof
-        [input]="building.zoneRoof"
         (update)="updateBuilding($event)"
+        [input]="building.zoneRoof"
         [buildingId]="buildingId"
         [buildingType]="buildingType"
+        [footPrint]="footPrint"
         (move)="move($event)"
         *ngSwitchCase="1"
       ></app-zone-roof>
@@ -44,6 +45,8 @@
         [buildingType]="buildingType"
         (move)="move($event)"
         *ngSwitchCase="2"
+        [footPrint]="footPrint"
+        [totalRoofArea]="totalRoofArea"
       ></app-zone-floor>
       <app-zone-wall
         [input]="building.zoneWall"
@@ -65,6 +68,10 @@
         [buildingId]="buildingId"
         (move)="move($event)"
         *ngSwitchCase="5"
+        [roofType1]="roofType1"
+        [roofType2]="roofType2"
+        [floorType1]="floorType1"
+        [floorType2]="floorType2"
       ></app-heating-cooling-system>
       <app-water-heating-system
         [input]="building.waterHeater"

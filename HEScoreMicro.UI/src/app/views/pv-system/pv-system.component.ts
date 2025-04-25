@@ -28,8 +28,8 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   anglePanelsAreTiltedOptions = AnglePanelsAreTiltedOptions
   orientationOptions = OrientationOptions
   year2000Options = Year2000Options
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
 
   get pVSystemControl() {
     return this.pVSystemForm.controls;
@@ -73,20 +73,20 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
     const dcCapacity = pvSystem.get("dcCapacity") as AbstractControl // 50 - 20000
     hasPhotovoltaic?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
-        this.setValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity],)
+        setValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity],)
       } else {
-        this.resetValuesAndValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity])
+        resetValuesAndValidations([yearInstalled, directionPanelsFace, anglePanelsAreTilted, knowSystemCapacity])
       }
     })
     knowSystemCapacity?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val == true) {
-        this.setValidations(dcCapacity, [Validators.required, Validators.min(50), Validators.max(20000)])
-        this.resetValuesAndValidations(numberOfPanels)
+        setValidations(dcCapacity, [Validators.required, Validators.min(50), Validators.max(20000)])
+        resetValuesAndValidations(numberOfPanels)
       } else if (val == false) {
-        this.setValidations(numberOfPanels, [Validators.required, Validators.min(1), Validators.max(100)])
-        this.resetValuesAndValidations(dcCapacity)
+        setValidations(numberOfPanels, [Validators.required, Validators.min(1), Validators.max(100)])
+        resetValuesAndValidations(dcCapacity)
       } else {
-        this.resetValuesAndValidations([dcCapacity, numberOfPanels])
+        resetValuesAndValidations([dcCapacity, numberOfPanels])
       }
     })
     return pvSystem;

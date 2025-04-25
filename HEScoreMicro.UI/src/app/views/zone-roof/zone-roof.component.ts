@@ -10,7 +10,7 @@ import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.service';
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
-import { resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { isValidRoofArea, resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
@@ -20,20 +20,22 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
   standalone: false
 })
 
-export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges {
+export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges {
   //variable initializations
   zoneRoofForm!: FormGroup | any;
+  @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('buildingType') buildingType!: number | null;
+  @Input('footPrint') footPrint: number | null | undefined | any;
+
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneRoofReadModel>> = new EventEmitter();
-  @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
-  removeNullIdProperties = removeNullIdProperties
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
+
+
+
   resetValues = resetValues
   booleanOptions = BooleanOptions
-  atticOrCeilingTypeOptions:any;
+  atticOrCeilingTypeOptions: any;
   roofConstructionOptions = RoofConstructionOptions
   roofExteriorFinishOptions = RoofExteriorFinishOptions
   roofColorOptions = RoofColorOptions
@@ -64,10 +66,10 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
 
   ngOnChanges(changes: SimpleChanges): void {
     const buildingTypeChange: SimpleChange | undefined = changes['buildingType'];
-    if(buildingTypeChange){
-      if(buildingTypeChange.currentValue == 0)
-        this.atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions.filter(obj=> obj.id != 3)
-      else if(buildingTypeChange.currentValue == 1)
+    if (buildingTypeChange) {
+      if (buildingTypeChange.currentValue == 0)
+        this.atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions.filter(obj => obj.id != 3)
+      else if (buildingTypeChange.currentValue == 1)
         this.atticOrCeilingTypeOptions = AtticOrCeilingTypeOptions
     }
   }
@@ -108,13 +110,13 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
     var found = this.fb.group({
       id: [null],
       atticOrCeilingType: [null, [Validators.required]], //ng-select
-      construction: [null, [Validators.required]], //ng-select
-      exteriorFinish: [null, [Validators.required]],//ng-select
+      construction: [null,], //ng-select
+      exteriorFinish: [null,],//ng-select
       roofArea: [null, [Validators.required]],
-      roofInsulation: [null, [Validators.required]],
-      roofColor: [null, [Validators.required]],//ng-select
+      roofInsulation: [null,],
+      roofColor: [null,],//ng-select
       absorptance: [null], //0-1
-      skylightsPresent: [null, [Validators.required]], //ng-select
+      skylightsPresent: [null,], //ng-select
       skylightArea: [null],
       solarScreen: [null],//ng-select
       knowSkylightSpecification: [null],//ng-select
@@ -133,6 +135,9 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
       kneeWallInsulation: [null],
       buildingId: [this.buildingId],
     })
+    const construction = found.get('construction') as AbstractControl
+    const exteriorFinish = found.get('exteriorFinish') as AbstractControl
+    const roofInsulation = found.get('roofInsulation') as AbstractControl
     const atticOrCeilingType = found.get('atticOrCeilingType') as AbstractControl
     const roofColor = found.get('roofColor') as AbstractControl
     const absorptance = found.get('absorptance') as AbstractControl
@@ -154,37 +159,39 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
     const glazingTypeOptions = found.get('glazingTypeOptions') as AbstractControl
 
     atticOrCeilingType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
-      if (val == "Unconditioned Attic") {
-        this.setValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+      if (val == "Below Other Unit") {
+        resetValuesAndValidations([construction, exteriorFinish, roofInsulation, roofColor, skylightsPresent])
       } else {
-        this.resetValuesAndValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+        setValidations([construction, exteriorFinish, roofInsulation, roofColor, skylightsPresent])
+      }
+      if (val == "Unconditioned Attic") {
+        setValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+      } else {
+        resetValuesAndValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
       }
     })
     roofColor.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val == "Cool Color") {
-        this.setValidations(absorptance, [Validators.required, Validators.min(0), Validators.max(1)])
+        setValidations(absorptance, [Validators.required, Validators.min(0), Validators.max(1)])
       } else {
-        this.resetValuesAndValidations(absorptance)
+        resetValuesAndValidations(absorptance)
       }
     })
     skylightsPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
-        this.setValidations(solarScreen)
-        this.setValidations(skylightArea, [Validators.required, Validators.min(1), Validators.max(300)])
+        setValidations([solarScreen, knowSkylightSpecification])
+        setValidations(skylightArea, [Validators.required, Validators.min(1), Validators.max(300)])
       } else {
-        this.resetValuesAndValidations([solarScreen, skylightArea])
+        resetValuesAndValidations([solarScreen, skylightArea, knowSkylightSpecification])
       }
     })
     knowSkylightSpecification.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
       if (val) {
-        this.setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
-        this.setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
-        this.resetValuesAndValidations([panes, frameMaterial, glazingType])
+        setValidations(uFactor, [Validators.required, Validators.min(0.1), Validators.max(5)])
+        setValidations(shgc, [Validators.required, Validators.min(0), Validators.max(0.99)])
       } else if (val == false) {
-        this.resetValuesAndValidations([uFactor, shgc])
-        this.setValidations([panes, frameMaterial, glazingType])
-      } else {
-        this.resetValuesAndValidations([panes, frameMaterial, glazingType, uFactor, shgc])
+        setValidations([panes, frameMaterial, glazingType])
       }
     })
     panes.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
@@ -238,9 +245,9 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
     })
     kneeWallPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
-        this.setValidations([kneeWallArea, kneeWallInsulation])
+        setValidations([kneeWallArea, kneeWallInsulation])
       } else {
-        this.resetValuesAndValidations([kneeWallArea, kneeWallInsulation])
+        resetValuesAndValidations([kneeWallArea, kneeWallInsulation])
       }
     })
     return found;
@@ -257,12 +264,27 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
     }
   }
 
+  validateAreas(): boolean {
+    let values = this.zoneRoofForm.value
+    let areaSum = values.roofAttics
+      .reduce((sum: number, item: any) => {
+        return sum + (((item?.atticOrCeilingType == "Unconditioned Attic") ? item?.atticFloorArea : item?.roofArea) ?? 0)
+      }, 0);
+    let res: any[] = isValidRoofArea(areaSum, this.footPrint);
+    if (!res[0]) {
+      alert(`Sum of area must be ${res[1]} - ${res[2]}, Current Area ${areaSum}`)
+      return false;
+    }
+    return true;
+  }
+
   onSave() {
     if (this.zoneRoofForm.invalid) {
       this.zoneRoofForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    if (!this.validateAreas()) return;
     this.zoneRoofReadModel = this.zoneRoofForm.value
     this.zoneRoofReadModel = removeNullIdProperties(this.zoneRoofReadModel);
     if (this.zoneRoofForm.value?.id) {
@@ -313,11 +335,12 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit,OnChanges 
       arr.removeAt(1);
     }
   }
-
   @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
     this.move.emit(true);
   }
-
+  oncheck() {
+    debugger
+  }
 }
 

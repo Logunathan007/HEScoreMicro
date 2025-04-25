@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs';
 import { FoundationTypeOptions } from '../../shared/lookups/zone-floor.lookups';
 import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 import { FoundationReadModel } from '../../shared/models/zone-floor/foundation.read.model';
-import { resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { isValidFoundationArea, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
@@ -24,14 +24,14 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
   zoneFloorForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('buildingType') buildingType!: number | null;
+  @Input('totalRoofArea') totalRoofArea!: number | null | undefined;
+  @Input('footPrint') footPrint: number | null | undefined;
+
+  @Input('input') zoneFloorReadModel!: ZoneFloorReadModel;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneFloorReadModel>> = new EventEmitter();
-  @Input('input') zoneFloorReadModel!: ZoneFloorReadModel;
   booleanOptions = BooleanOptions
   foundationTypeOptions: any;
-  removeNullIdProperties = removeNullIdProperties
-  setValidations = setValidations
-  resetValuesAndValidations = resetValuesAndValidations
 
   get zoneFloorControl() {
     return this.zoneFloorForm.controls;
@@ -113,40 +113,35 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     const floorInsulationLevel = found.get('floorInsulationLevel') as AbstractControl
     const foundationwallsInsulationLevel = found.get('foundationwallsInsulationLevel') as AbstractControl
 
-    const enableWallFloor = () => {
-      tracker.setValue({ wall: true, floor: true, slab: false })
-      this.setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
-      this.resetValuesAndValidations(slabInsulationLevel)
-    }
-
     foundationType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel, slabInsulationLevel])
       switch (foundationType.value) {
         case "Slab-on-grade foundation":
           tracker.setValue({ wall: false, floor: false, slab: true })
-          this.setValidations(slabInsulationLevel)
-          this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel])
+          setValidations(slabInsulationLevel)
           break;
         case "Unconditioned Basement":
-          enableWallFloor();
+          tracker.setValue({ wall: true, floor: true, slab: false })
+          setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
           break;
         case "Conditioned Basement":
           tracker.setValue({ wall: true, floor: false, slab: false })
-          this.setValidations(foundationwallsInsulationLevel)
-          this.resetValuesAndValidations([floorInsulationLevel, slabInsulationLevel])
+          setValidations(foundationwallsInsulationLevel)
           break;
         case "Unvented Crawlspace / Unconditioned Garage":
-          enableWallFloor();
+          tracker.setValue({ wall: true, floor: true, slab: false })
+          setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
           break;
         case "Vented Crawlspace":
-          enableWallFloor();
+          tracker.setValue({ wall: true, floor: true, slab: false })
+          setValidations([floorInsulationLevel, foundationwallsInsulationLevel])
           break;
-        case "Belly and Wing":
-          tracker.setValue({ wall: false, floor: true, slab: false })
-          this.setValidations(floorInsulationLevel)
-          this.resetValuesAndValidations([slabInsulationLevel, foundationwallsInsulationLevel])
-          break;
-        default:
-          this.resetValuesAndValidations([floorInsulationLevel, foundationwallsInsulationLevel, slabInsulationLevel])
+        // for sandbeta version
+        // case "Belly and Wing":
+        //   tracker.setValue({ wall: false, floor: true, slab: false })
+        //   setValidations(floorInsulationLevel)
+        //   break;
+        default: // "Above Other Unit"
           tracker.setValue({ wall: false, floor: false, slab: false })
       }
     })
@@ -163,12 +158,25 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
       this.zoneFloorForm.patchValue(this.zoneFloorReadModel)
     }
   }
+  validateArea(): boolean {
+    let values = this.zoneFloorForm.value;
+    let totalArea = values.foundations?.reduce((sum: number, item: any) => {
+      return sum + (item?.foundationArea ?? 0)
+    }, 0)
+    let res = isValidFoundationArea(totalArea, this.footPrint as number, this.totalRoofArea as number)
+    if (!res[0]) {
+      alert(`Sum of Foundation Area must be ${res[1]} - ${res[2]}, Current Area: ${totalArea}`)
+      return false;
+    }
+    return true
+  }
   onSave() {
     if (this.zoneFloorForm.invalid) {
       this.zoneFloorForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    if (!this.validateArea()) return;
     this.zoneFloorReadModel = this.zoneFloorForm.value
     this.zoneFloorReadModel = removeNullIdProperties(this.zoneFloorReadModel);
     if (this.zoneFloorForm.value?.id) {

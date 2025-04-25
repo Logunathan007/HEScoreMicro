@@ -22,7 +22,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   addressReadModel!: AddressReadModel;
   dwellingUnitTypeOptions = DwellingUnitTypeOptions
   assessmentType = AssessmentType
-  setValidations = setValidations
+
 
   get addressControl() {
     return this.addressForm.controls;
@@ -71,9 +71,9 @@ export class AddressComponent extends Unsubscriber implements OnInit {
 
     dwellingUnitType.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val:any)=>{
       if(val == "Multifamily Building Unit"){
-        this.setValidations(addressLine)
+        setValidations(addressLine)
       }else{
-        this.setValidations(addressLine,[])
+        setValidations(addressLine,[])
       }
     })
 
