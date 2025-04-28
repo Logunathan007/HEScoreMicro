@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ZoneWindowReadModel } from "../../shared/models/zone-window/zone-window.model";
-import { removeNullIdProperties } from "../../shared/modules/Transformers/TransormerFunction";
+import { removeNullIdProperties,getDirection } from "../../shared/modules/Transformers/TransormerFunction";
 import { BooleanOptions, EmptyOptions } from "../../shared/lookups/common.lookup";
 import { PaneOptions } from "../../shared/lookups/zone-roof.looup";
 import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from "../../shared/modules/Validators/validators.module";
@@ -13,8 +13,6 @@ import { takeUntil } from "rxjs";
 import { Result } from '../../shared/models/common/result.model';
 import { WindowReadModel } from '../../shared/models/zone-window/window.model';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
-import { ZoneRoofReadModel } from '../../shared/models/zone-roof/zone-roof.read.model';
-
 @Component({
   selector: 'app-zone-window',
   standalone: false,
@@ -28,15 +26,11 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
   @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
-
+  getDirection=getDirection
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
   glazingTypeOptions = EmptyOptions
-
-
-  resetValues = resetValues
-  windowAreaAverageValidator = windowAreaAverageValidator
 
   get zoneWindowControl() {
     return this.zoneWindowForm.controls;
@@ -67,10 +61,10 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     var zoneWindow = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      windowAreaFront: [null, [Validators.required, Validators.min(0)]],
-      windowAreaBack: [null, [Validators.required, Validators.min(0)]],
-      windowAreaLeft: [null, [Validators.required, Validators.min(0)]],
-      windowAreaRight: [null, [Validators.required, Validators.min(0)]],
+      windowAreaFront: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
+      windowAreaBack: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
+      windowAreaLeft: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
+      windowAreaRight: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
       windowsSame: [null, [Validators.required]],
       windows: this.fb.array([this.windowInputs()]),
     }, { validators: [windowAreaAverageValidator] })
@@ -139,9 +133,9 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
           frameMaterialOptions.setValue(FrameMaterialOptions.filter(obj => obj.id == 2))
           break;
         default:
-          this.resetValues([frameMaterialOptions])
+          resetValues([frameMaterialOptions])
       }
-      this.resetValues([frameMaterial, glazingType, glazingTypeOptions])
+      resetValues([frameMaterial, glazingType, glazingTypeOptions])
     })
     frameMaterial.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       switch (val) {
@@ -172,9 +166,9 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
           }
           break;
         default:
-          this.resetValues([glazingTypeOptions])
+          resetValues([glazingTypeOptions])
       }
-      this.resetValues(glazingType)
+      resetValues(glazingType)
     })
     return window;
   }

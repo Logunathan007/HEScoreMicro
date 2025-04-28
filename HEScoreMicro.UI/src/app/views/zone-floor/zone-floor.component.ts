@@ -99,7 +99,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     var found = this.fb.group({
       id: [null,],
       foundationType: [null, [Validators.required]],
-      foundationArea: [null, [Validators.required]],
+      foundationArea: [null, [Validators.required,Validators.min(1),Validators.max(25000)]],
       tracker: [{ wall: false, floor: false, slab: false }],
       slabInsulationLevel: [null,],
       floorInsulationLevel: [null,],
@@ -165,7 +165,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     }, 0)
     let res = isValidFoundationArea(totalArea, this.footPrint as number, this.totalRoofArea as number)
     if (!res[0]) {
-      alert(`Sum of Foundation Area must be ${res[1]} - ${res[2]}, Current Area: ${totalArea}`)
+      alert(`Error : Sum of Foundation Area must be ${res[1]} - ${res[2]}, Current Area: ${totalArea}`)
       return false;
     }
     return true

@@ -95,12 +95,14 @@
                     for="foundationArea"
                     class="text-danger fw-semibold position-absolute"
                   >
-                  {{
-                    foundationItem.get("foundationType")?.value ===
-                    "Above Other Unit"
-                      ? "Floor"
-                      : "Foundation"
-                  }} Area is invalid
+                    {{
+                      foundationItem.get("foundationType")?.value ===
+                      "Above Other Unit"
+                        ? "Floor"
+                        : "Foundation"
+                    }}
+                    Area is invalid
+                    {{ foundationItem.get("foundationArea")?.errors | json }}
                   </label>
                 </div>
               </div>

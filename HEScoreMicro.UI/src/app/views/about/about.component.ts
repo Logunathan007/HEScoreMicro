@@ -22,6 +22,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   aboutForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('input') aboutReadModel!: AboutReadModel | undefined;
+  @Input('buildingType') buildingType!: number | null;
 
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<AboutReadModel>> = new EventEmitter();
@@ -29,8 +30,6 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
   manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
-
-
 
   @Output() myEvent = new EventEmitter<any>();
 

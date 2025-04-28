@@ -41,11 +41,9 @@ export function windowAreaAverageValidator(group: AbstractControl): ValidationEr
   const left = group.get('windowAreaLeft')?.value || 0;
   const right = group.get('windowAreaRight')?.value || 0;
   const average = (front + back + left + right) / 4;
-
   if (average < 0 || average > 999) {
     return { avgOutOfRange: average };
   }
-
   return null;
 }
 
@@ -82,7 +80,13 @@ export function isValidRoofArea(totalArea: number, footPrintArea: number): [bool
   return [totalArea >= start && totalArea <= end, start, end];
 }
 
-export function isValidFoundationArea(totalArea: number, footPrintArea: number, roofArea: number) {
+export function isValidKneeWallArea(totalArea: number, footPrintArea: number): [boolean, number, number] {
+  let start = 1;
+  let end = Math.round(footPrintArea * 2 / 3) - 1;
+  return [totalArea >= start && totalArea <= end, start, end];
+}
+
+export function isValidFoundationArea(totalArea: number, footPrintArea: number, roofArea: number): [boolean, number, number] {
   let start = Math.round(footPrintArea - (footPrintArea / 20)) + 1;
   let end = Math.round(roofArea + (roofArea / 20)) - 1;
   return [totalArea >= start && totalArea <= end, start, end];

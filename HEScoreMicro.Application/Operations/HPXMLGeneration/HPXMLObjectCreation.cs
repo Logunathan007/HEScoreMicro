@@ -668,7 +668,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         this.GenerateFoundationFloorObject(zoneFloor, floors, foundation.AttachedToFloor.IdRef);
                         break;
                     case "Above Other Unit":            // TODO For Above other unit hpxml generating not clealy mentiond in documentaiont need to clarigy
-
                         foundation.AttachedToFloor = new AttachedToFloor()
                         {
                             IdRef = id + "-floor-1"
@@ -730,7 +729,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 {
                     Id = idref
                 },
-                //Area = zoneFloor.FoundationArea,
+                Area = zoneFloor.FoundationArea,
                 Insulation = new Insulation()
                 {
                     SystemIdentifier = new SystemIdentifier

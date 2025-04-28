@@ -10,7 +10,7 @@ import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.service';
 import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
-import { isValidRoofArea, resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
+import { isValidKneeWallArea, isValidRoofArea, resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
 
 @Component({
@@ -112,7 +112,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       atticOrCeilingType: [null, [Validators.required]], //ng-select
       construction: [null,], //ng-select
       exteriorFinish: [null,],//ng-select
-      roofArea: [null, [Validators.required]],
+      roofArea: [null, [Validators.required, Validators.min(1), Validators.max(25000)]],
       roofInsulation: [null,],
       roofColor: [null,],//ng-select
       absorptance: [null], //0-1
@@ -165,7 +165,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
         setValidations([construction, exteriorFinish, roofInsulation, roofColor, skylightsPresent])
       }
       if (val == "Unconditioned Attic") {
-        setValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+        setValidations(atticFloorArea, [Validators.required, Validators.min(1), Validators.max(25000)])
+        setValidations([atticFloorInsulation, kneeWallPresent])
       } else {
         resetValuesAndValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
       }
@@ -245,7 +246,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     })
     kneeWallPresent.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
       if (val) {
-        setValidations([kneeWallArea, kneeWallInsulation])
+        setValidations(kneeWallArea, [Validators.required, Validators.min(1), Validators.max(5000)])
+        setValidations(kneeWallInsulation)
       } else {
         resetValuesAndValidations([kneeWallArea, kneeWallInsulation])
       }
@@ -270,9 +272,18 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       .reduce((sum: number, item: any) => {
         return sum + (((item?.atticOrCeilingType == "Unconditioned Attic") ? item?.atticFloorArea : item?.roofArea) ?? 0)
       }, 0);
+    let kneeWallAreaSum = values.roofAttics
+      .reduce((sum: number, item: any) => {
+        return sum + (item?.kneeWallArea ?? 0)
+      }, 0);
     let res: any[] = isValidRoofArea(areaSum, this.footPrint);
+    let kneeWallRes: any[] = isValidKneeWallArea(kneeWallAreaSum, this.footPrint)
     if (!res[0]) {
-      alert(`Sum of area must be ${res[1]} - ${res[2]}, Current Area ${areaSum}`)
+      alert(`Error : Sum of area must be ${res[1]} - ${res[2]}, Current Area ${areaSum}`)
+      return false;
+    }
+    if(!kneeWallRes[0]){
+      alert(`Error : Sum of knee wall area must be ${kneeWallRes[1]} - ${kneeWallRes[2]}, Current Area ${kneeWallAreaSum}`)
       return false;
     }
     return true;

@@ -2,9 +2,19 @@
   <div class="container">
     <form [formGroup]="aboutForm">
       <div class="row">
+        <h5>
+          Building Type :
+          {{
+            buildingType == 0
+              ? "Single-Family Detached"
+              : "Townhouse/Rowhouse/Duplex"
+          }}
+        </h5>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="assessmentDate" class="required"> Assessment Date </label>
+            <label for="assessmentDate" class="required">
+              Assessment Date
+            </label>
             <input
               formControlName="assessmentDate"
               type="text"
@@ -50,14 +60,17 @@
                 for="yearBuilt"
                 class="text-danger fw-semibold position-absolute"
               >
-                Year Built is invalid {{ aboutControl['yearBuilt']?.errors | json }}
+                Year Built is invalid
+                {{ aboutControl["yearBuilt"]?.errors | json }}
               </label>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="input-box">
-            <label for="numberOfBedrooms" class="required"> Number Of Bedrooms </label>
+            <label for="numberOfBedrooms" class="required">
+              Number Of Bedrooms
+            </label>
             <input
               formControlName="numberOfBedrooms"
               type="text"
@@ -76,7 +89,8 @@
                 for="numberOfBedrooms"
                 class="text-danger fw-semibold position-absolute"
               >
-                Number Of Bedrooms is invalid {{ aboutControl['numberOfBedrooms']?.errors | json }}
+                Number Of Bedrooms is invalid
+                {{ aboutControl["numberOfBedrooms"]?.errors | json }}
               </label>
             </div>
           </div>
@@ -104,7 +118,8 @@
                 for="storiesAboveGroundLevel"
                 class="text-danger fw-semibold position-absolute"
               >
-                Stories Above Ground Level is invalid {{ aboutControl['storiesAboveGroundLevel']?.errors | json }}
+                Stories Above Ground Level is invalid
+                {{ aboutControl["storiesAboveGroundLevel"]?.errors | json }}
               </label>
             </div>
           </div>
@@ -132,7 +147,10 @@
                 for="interiorFloorToCeilingHeight"
                 class="text-danger fw-semibold position-absolute"
               >
-                Interior Floor To Ceiling Height is invalid {{ aboutControl['interiorFloorToCeilingHeight']?.errors | json }}
+                Interior Floor To Ceiling Height is invalid
+                {{
+                  aboutControl["interiorFloorToCeilingHeight"]?.errors | json
+                }}
               </label>
             </div>
           </div>
@@ -221,9 +239,14 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6" *ngIf="aboutControl['blowerDoorTestConducted'].value">
-          <div class="input-box" >
-            <label for="airLeakageRate" class="required"> Air Leakage Rate </label>
+        <div
+          class="col-md-6"
+          *ngIf="aboutControl['blowerDoorTestConducted'].value"
+        >
+          <div class="input-box">
+            <label for="airLeakageRate" class="required">
+              Air Leakage Rate
+            </label>
             <input
               formControlName="airLeakageRate"
               type="number"
@@ -242,7 +265,8 @@
                 for="airLeakageRate"
                 class="text-danger fw-semibold position-absolute"
               >
-                Air Leakage Rate is invalid {{ aboutControl['airLeakageRate']?.errors | json }}
+                Air Leakage Rate is invalid
+                {{ aboutControl["airLeakageRate"]?.errors | json }}
               </label>
             </div>
           </div>

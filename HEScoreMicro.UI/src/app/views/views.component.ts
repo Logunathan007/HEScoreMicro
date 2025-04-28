@@ -49,10 +49,6 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   getBuildingId() {
     this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.buildingId = params.get('id') ?? ""
-      if (!this.buildingId) {
-        let res = alert('Building is not selected');
-        console.log("Building", res);
-      }
     })
   }
 

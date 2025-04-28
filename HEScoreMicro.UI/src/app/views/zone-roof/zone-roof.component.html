@@ -170,7 +170,7 @@
                         ? "Ceiling"
                         : "Roof"
                     }}
-                    Area is invalid
+                    Area is invalid {{ roofAtticItem.get('roofArea')?.errors | json }}
                   </label>
                 </div>
               </div>
@@ -559,7 +559,7 @@
                       for="atticFloorArea"
                       class="text-danger fw-semibold position-absolute"
                     >
-                      Attic Floor Area is invalid
+                      Attic Floor Area is invalid {{ roofAtticItem.get('atticFloorArea')?.errors | json }}
                     </label>
                   </div>
                 </div>
@@ -645,7 +645,7 @@
                         for="kneeWallArea"
                         class="text-danger fw-semibold position-absolute"
                       >
-                        Knee Wall Area is invalid
+                        Knee Wall Area is invalid {{ roofAtticItem.get('kneeWallArea')?.errors | json }}
                       </label>
                     </div>
                   </div>

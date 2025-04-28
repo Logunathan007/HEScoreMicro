@@ -34,7 +34,7 @@
           *ngFor="let wallItem of wallsObj.controls; let wallIndex = index"
         >
           <ng-container [formGroupName]="wallIndex">
-            <h4 class="col-12 my-3">Wall {{ wallIndex + 1 }}</h4>
+            <h4 class="col-12 my-3">Wall : {{ getDirection(wallIndex) }}</h4>
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Construction</label>

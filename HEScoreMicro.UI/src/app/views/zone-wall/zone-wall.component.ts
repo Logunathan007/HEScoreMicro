@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZoneWallService } from '../../shared/services/zooe-wall/zooe-wall.service';
-import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
+import { removeNullIdProperties, getDirection } from '../../shared/modules/Transformers/TransormerFunction';
 import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { WallConstructionOptions, WallExteriorFinishOptions } from '../../shared/lookups/zone-wall.lookup';
 import { ZoneWallReadModel } from '../../shared/models/zone-wall/zone-wall.read.model';
@@ -27,8 +27,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWallReadModel>> = new EventEmitter();
   @Input('input') zoneWallReadModel!: ZoneWallReadModel;
-
-  resetValues = resetValues;
+  getDirection = getDirection
   booleanOptions = BooleanOptions
   wallConstructionOptions = WallConstructionOptions
   wallExteriorFinishOptions = WallExteriorFinishOptions
@@ -121,7 +120,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
           exteriorFinishOptions.setValue(null)
           break;
       }
-      this.resetValues(exteriorFinish)
+      resetValues(exteriorFinish)
     })
     return wall;
   }

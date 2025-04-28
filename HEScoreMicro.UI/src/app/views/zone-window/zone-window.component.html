@@ -24,7 +24,7 @@
               for="windowAreaFront"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Front is invalid
+              Window Area Front is invalid {{ zoneWindowForm.get('windowAreaFront')?.errors | json }}
             </label>
           </div>
         </div>
@@ -52,7 +52,7 @@
               for="windowAreaBack"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Back is invalid
+              Window Area Back is invalid {{ zoneWindowForm.get('windowAreaBack')?.errors | json }}
             </label>
           </div>
         </div>
@@ -80,7 +80,7 @@
               for="windowAreaLeft"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Left is invalid
+              Window Area Left is invalid {{ zoneWindowForm.get('windowAreaLeft')?.errors | json }}
             </label>
           </div>
         </div>
@@ -108,7 +108,7 @@
               for="windowAreaRight"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Right is invalid
+              Window Area Right is invalid {{ zoneWindowForm.get('windowAreaRight')?.errors | json }}
             </label>
           </div>
         </div>
@@ -157,7 +157,7 @@
           "
         >
           <ng-container [formGroupName]="windowIndex">
-            <h4 class="col-12 my-3">Window {{ windowIndex + 1 }}</h4>
+            <h4 class="col-12 my-3">Window : {{ getDirection(windowIndex) }}</h4>
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required">Solar Screen is present</label>
