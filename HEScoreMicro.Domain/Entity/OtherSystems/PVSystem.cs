@@ -1,5 +1,6 @@
-﻿
-namespace HEScoreMicro.Domain.Entity
+﻿using HEScoreMicro.Domain.Entity.Address;
+
+namespace HEScoreMicro.Domain.Entity.OtherSystems
 {
     public class PVSystemFields : IHasId, IHasBuildingId
     {

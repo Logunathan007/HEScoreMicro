@@ -1,6 +1,8 @@
-﻿namespace HEScoreMicro.Domain.Entity
+﻿using HEScoreMicro.Domain.Entity.Address;
+
+namespace HEScoreMicro.Domain.Entity.OtherSystems
 {
-    public class WaterHeaterFields:IHasId, IHasBuildingId
+    public class WaterHeaterFields : IHasId, IHasBuildingId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

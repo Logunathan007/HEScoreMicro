@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AboutService } from '../../shared/services/about/about.service';
 import { AboutReadModel } from '../../shared/models/about/about.read.model';
 import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.component.';
@@ -63,7 +63,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       numberOfBedrooms: [null, [Validators.required, Validators.min(1), Validators.max(10)]],
       storiesAboveGroundLevel: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
       interiorFloorToCeilingHeight: [null, [Validators.required, Validators.min(6), Validators.max(12)]],
-      totalConditionedFloorArea: [null, [Validators.required]],
+      totalConditionedFloorArea: [null,],
       directionFacedByFrontOfHome: [null, [Validators.required]],
       blowerDoorTestConducted: [null, [Validators.required]],
       airLeakageRate: [null,],// 0-25000
@@ -75,6 +75,24 @@ export class AboutComponent extends Unsubscriber implements OnInit {
     })
     const blowerDoorTestConducted = about.get('blowerDoorTestConducted') as AbstractControl
     const airLeakageRate = about.get('airLeakageRate') as AbstractControl
+    const storiesAboveGroundLevel = about.get('storiesAboveGroundLevel') as AbstractControl
+    const totalConditionedFloorArea = about.get('totalConditionedFloorArea') as AbstractControl
+
+    const footPrintValidator = (control: AbstractControl): ValidationErrors | null => {
+      let val = control.value / (storiesAboveGroundLevel.value ?? 1)
+      if (val < 250) {
+        return { min: { min: 250 * (storiesAboveGroundLevel.value ?? 1) } }
+      } else if (val > 25000) {
+        return { max: { max: 25000 * (storiesAboveGroundLevel.value ?? 1) } }
+      }
+      return null;
+    }
+    setValidations(totalConditionedFloorArea, [Validators.required, footPrintValidator])
+
+    storiesAboveGroundLevel?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
+      totalConditionedFloorArea.updateValueAndValidity();
+    });
+
     blowerDoorTestConducted?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       if (val) {
         setValidations(airLeakageRate, [Validators.required, Validators.min(0), Validators.max(25000)])
@@ -124,7 +142,7 @@ export class AboutComponent extends Unsubscriber implements OnInit {
         delete this.aboutReadModel.id;
         this.aboutService.create(this.aboutReadModel).pipe(takeUntil(this.destroy$)).subscribe({
           next: (val: Result<AboutReadModel>) => {
-            if (val?.failed == false) {
+            if (val?.failed === false) {
               this.patchToForm(val.data)
               this.updateEvent.emit({
                 fieldType: "about",

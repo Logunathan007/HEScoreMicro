@@ -2,7 +2,7 @@
 using HEScoreMicro.Application.Operations;
 using HEScoreMicro.Application.Operations.HPXMLGeneration;
 using HEScoreMicro.Application.Reply;
-using HEScoreMicro.Domain.Entity;
+using HEScoreMicro.Domain.Entity.Address;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HEScoreMicro.Service.Controllers

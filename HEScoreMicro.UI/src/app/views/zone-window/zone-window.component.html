@@ -1,7 +1,10 @@
 <div class="container">
   <form [formGroup]="zoneWindowForm">
     <div class="row">
-      <div class="col-md-6">
+      <div
+        class="col-md-6"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(0)"
+      >
         <div class="input-box">
           <label class="required" for="windowAreaFront">
             Window Area Front
@@ -24,12 +27,16 @@
               for="windowAreaFront"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Front is invalid {{ zoneWindowForm.get('windowAreaFront')?.errors | json }}
+              Window Area Front is invalid
+              {{ zoneWindowForm.get("windowAreaFront")?.errors | json }}
             </label>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div
+        class="col-md-6"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(1)"
+      >
         <div class="input-box">
           <label class="required" for="windowAreaBack">
             Window Area Back
@@ -52,40 +59,16 @@
               for="windowAreaBack"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Back is invalid {{ zoneWindowForm.get('windowAreaBack')?.errors | json }}
+              Window Area Back is invalid
+              {{ zoneWindowForm.get("windowAreaBack")?.errors | json }}
             </label>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="input-box">
-          <label class="required" for="windowAreaLeft">
-            Window Area Left
-          </label>
-          <input
-            formControlName="windowAreaLeft"
-            type="number"
-            id="windowAreaLeft"
-            placeholder="Window Area Left"
-          />
-          <div
-            class="errormsg"
-            *ngIf="
-              (zoneWindowForm.get('windowAreaLeft')?.touched ||
-                zoneWindowForm.get('windowAreaLeft')?.dirty) &&
-              zoneWindowForm.get('windowAreaLeft')?.invalid
-            "
-          >
-            <label
-              for="windowAreaLeft"
-              class="text-danger fw-semibold position-absolute"
-            >
-              Window Area Left is invalid {{ zoneWindowForm.get('windowAreaLeft')?.errors | json }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
+      <div
+        class="col-md-6"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(2)"
+      >
         <div class="input-box">
           <label class="required" for="windowAreaRight">
             Window Area Right
@@ -108,7 +91,40 @@
               for="windowAreaRight"
               class="text-danger fw-semibold position-absolute"
             >
-              Window Area Right is invalid {{ zoneWindowForm.get('windowAreaRight')?.errors | json }}
+              Window Area Right is invalid
+              {{ zoneWindowForm.get("windowAreaRight")?.errors | json }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-md-6"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(3)"
+      >
+        <div class="input-box">
+          <label class="required" for="windowAreaLeft">
+            Window Area Left
+          </label>
+          <input
+            formControlName="windowAreaLeft"
+            type="number"
+            id="windowAreaLeft"
+            placeholder="Window Area Left"
+          />
+          <div
+            class="errormsg"
+            *ngIf="
+              (zoneWindowForm.get('windowAreaLeft')?.touched ||
+                zoneWindowForm.get('windowAreaLeft')?.dirty) &&
+              zoneWindowForm.get('windowAreaLeft')?.invalid
+            "
+          >
+            <label
+              for="windowAreaLeft"
+              class="text-danger fw-semibold position-absolute"
+            >
+              Window Area Left is invalid
+              {{ zoneWindowForm.get("windowAreaLeft")?.errors | json }}
             </label>
           </div>
         </div>
@@ -118,10 +134,11 @@
         *ngIf="zoneWindowForm.errors?.avgOutOfRange && zoneWindowForm.touched"
       >
         <label class="text-danger fw-semibold position-absolute"
-          >Average window area must be between 0 and 999 Current Average is {{zoneWindowForm.errors?.avgOutOfRange}}</label
+          >Average window area must be between 0 and 999 Current Average is
+          {{ zoneWindowForm.errors?.avgOutOfRange }}</label
         >
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" *ngIf="buildingType == 0">
         <div class="select-box">
           <label class="required"> Windows are same type </label>
           <ng-select
@@ -157,7 +174,20 @@
           "
         >
           <ng-container [formGroupName]="windowIndex">
-            <h4 class="col-12 my-3">Window : {{ getDirection(windowIndex) }}</h4>
+            <h4 class="col-12 my-3">
+              Window
+              {{
+                zoneWindowForm.get("windowsSame")?.value === false ||
+                buildingType == 1
+                  ? " : " +
+                    getDirection(
+                      buildingType == 1
+                        ? windowsAvailable?.at(windowIndex)
+                        : windowIndex
+                    )
+                  : ""
+              }}
+            </h4>
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required">Solar Screen is present</label>
@@ -364,10 +394,13 @@
             </ng-container>
           </ng-container>
         </ng-container>
+        <ng-container *ngIf="!windowsObj?.controls?.length">
+          <h4 class="py-4 mt-3">No exterior wall found ...</h4>
+        </ng-container>
       </ng-container>
     </div>
     <div class="d-flex justify-content-end gap-3 mt-4">
-      <button type="button" class="bg-primary btn-style" (click)="onSave()">
+      <button type="button" class="bg-primary btn-style" (click)="onSave()" >
         {{ this.zoneWindowForm.value?.id ? "Update" : "Save" }}
       </button>
       <button type="button" class="bg-secondary btn-style" (click)="goNext()">

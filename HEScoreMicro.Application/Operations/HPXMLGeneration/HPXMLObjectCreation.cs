@@ -10,8 +10,12 @@ using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
 using HEScoreMicro.Application.HPXMLClasses.Systems;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ServiceReference1;
+using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
+using HEScoreMicro.Domain.Entity.ZoneFloors;
+using HEScoreMicro.Domain.Entity.OtherSystems;
+using HEScoreMicro.Domain.Entity.Address;
+using HEScoreMicro.Domain.Entity.ZoneWindows;
+using HEScoreMicro.Domain.Entity.ZoneWalls;
 
 namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 {
@@ -35,14 +39,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             // Inside Enclosure
             //
             List<Floor> floors = new List<Floor>();
-            List<Wall> walls = new List<Wall>();
+            List<WallHPXML> walls = new List<WallHPXML>();
             List<Attic> attics = new List<Attic>();
             List<Roof> roofs = new List<Roof>();
             List<Skylight> skylights = new List<Skylight>();
-            List<Foundation> foundations = new List<Foundation>();
+            List<FoundationHPXML> foundations = new List<FoundationHPXML>();
             List<Slab> slabs = new List<Slab>();
             List<FoundationWall> foundationWalls = new List<FoundationWall>();
-            List<Window> windows = new List<Window>();
+            List<WindowHPXML> windows = new List<WindowHPXML>();
 
             if (building.Failed)
             {
@@ -61,7 +65,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 };
             }
 
-
             if (building.Data.ZoneRoof != null)
                 this.GenerateAtticsObject(building.Data.ZoneRoof, attics, floors, walls, roofs, skylights);
 
@@ -69,10 +72,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 this.GenerateFoundationFloorsObject(building.Data.ZoneFloor, floors, foundations, slabs, foundationWalls);
 
             if (building.Data.ZoneWall != null)
-                this.GenerateZoneWallsObject(building.Data.ZoneWall, walls, building.Data.Address.DwellingUnitType);
+                this.GenerateZoneWallsObject(building.Data.ZoneWall, walls);
 
             if (building.Data.ZoneWindow != null)
-                this.GenerateZoneWindowObject(building.Data.ZoneWindow, windows, building.Data.ZoneWall.ExteriorWallSame);
+                this.GenerateZoneWindowObject(building.Data.ZoneWindow, windows, walls, building.Data.Address.DwellingUnitType);
 
             HVAC hvac = null;
             if (building.Data.HeatingCoolingSystem != null)
@@ -94,7 +97,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     SoftwareProgramUsed = "Inspection Depot",
                     SoftwareProgramVersion = "2.0"
                 },
-                Building = new Building()
+                Building = new BuildingHPXML()
                 {
                     BuildingID = new BuildingID()
                     {
@@ -218,9 +221,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         }
 
         // Get Object Type response =========================================================================
-        public Address GenerateAddressObject(Domain.Entity.AddressDTO addressDTO)
+        public AddressHPXML GenerateAddressObject(AddressDTO addressDTO)
         {
-            return new Address()
+            return new AddressHPXML()
             {
                 Address1 = addressDTO.StreetAddress,
                 Address2 = addressDTO.AddressLine,
@@ -231,7 +234,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
         }
 
-        public AirInfiltration GenerateAirInfiltrationObject(Domain.Entity.AboutDTO aboutDTO)
+        public AirInfiltration GenerateAirInfiltrationObject(AboutDTO aboutDTO)
         {
             return new AirInfiltration()
             {
@@ -258,7 +261,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 } : null,
             };
         }
-        public void GenerateAtticsObject(Domain.Entity.ZoneRoofAttics.ZoneRoofDTO zoneRoofDTOs, List<Attic> attics, List<Floor> floors, List<Wall> walls, List<Roof> roofs, List<Skylight> skylights)
+        public void GenerateAtticsObject(ZoneRoofDTO zoneRoofDTOs, List<Attic> attics, List<Floor> floors, List<WallHPXML> walls, List<Roof> roofs, List<Skylight> skylights)
         {
             int i = 1;
             foreach (var zoneRoofDTO in zoneRoofDTOs.RoofAttics)
@@ -327,7 +330,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 i++;
             }
         }
-        public void GenerateAtticRoofObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Roof> roofs, List<Skylight> skylights, string idref)
+        public void GenerateAtticRoofObject(RoofAtticDTO roofAtticDTO, List<Roof> roofs, List<Skylight> skylights, string idref)
         {
             Roof roof = new Roof
             {
@@ -429,7 +432,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             roofs.Add(roof);
         }
-        public void GenerateAtticFloorObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Floor> floors, string idref)
+        public void GenerateAtticFloorObject(RoofAtticDTO roofAtticDTO, List<Floor> floors, string idref)
         {
             Floor floor = new Floor()
             {
@@ -449,11 +452,11 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             floors.Add(floor);
         }
-        public void GenerateAtticWallObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Wall> walls, string idref)
+        public void GenerateAtticWallObject(RoofAtticDTO roofAtticDTO, List<WallHPXML> walls, string idref)
         {
             if (roofAtticDTO.KneeWallPresent == true)
             {
-                Wall wall = new Wall()
+                WallHPXML wall = new WallHPXML()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
@@ -479,7 +482,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 walls.Add(wall);
             }
         }
-        public void GenerateSkylightObject(Domain.Entity.ZoneRoofAttics.RoofAtticDTO roofAtticDTO, List<Skylight> skylights, string idref)
+        public void GenerateSkylightObject(RoofAtticDTO roofAtticDTO, List<Skylight> skylights, string idref)
         {
             var id = idref + "-skylight-1";
             Skylight skylight = new Skylight
@@ -636,14 +639,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             skylights.Add(skylight);
         }
-        public void GenerateFoundationFloorsObject(Domain.Entity.ZoneFloorDTO zoneFloorDTO, List<Floor> floors, List<Foundation> foundations, List<Slab> slabs, List<FoundationWall> foundationWalls)
+        public void GenerateFoundationFloorsObject(ZoneFloorDTO zoneFloorDTO, List<Floor> floors, List<FoundationHPXML> foundations, List<Slab> slabs, List<FoundationWall> foundationWalls)
         {
             int i = 1;
             foreach (var zoneFloor in zoneFloorDTO.Foundations)
             {
-
                 var id = "foundation-" + i;
-                Foundation foundation = new Foundation()
+                FoundationHPXML foundation = new FoundationHPXML()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
@@ -698,7 +700,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 i++;
             }
         }
-        public void GenerateSlabObject(Domain.Entity.FoundationDTO zoneFloor, List<Slab> slabs, string idref)
+        public void GenerateSlabObject(FoundationDTO zoneFloor, List<Slab> slabs, string idref)
         {
             Slab slab = new Slab()
             {
@@ -721,7 +723,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             slabs.Add(slab);
         }
-        public void GenerateFoundationWallObject(Domain.Entity.FoundationDTO zoneFloor, List<FoundationWall> foundationWalls, string idref)
+        public void GenerateFoundationWallObject(FoundationDTO zoneFloor, List<FoundationWall> foundationWalls, string idref)
         {
             FoundationWall foundationWall = new FoundationWall()
             {
@@ -741,7 +743,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             foundationWalls.Add(foundationWall);
         }
-        public void GenerateFoundationFloorObject(Domain.Entity.FoundationDTO zoneFloor, List<Floor> floors, string idref)
+        public void GenerateFoundationFloorObject(FoundationDTO zoneFloor, List<Floor> floors, string idref)
         {
             Floor floor = new Floor()
             {
@@ -761,20 +763,20 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             };
             floors.Add(floor);
         }
-        public void GenerateZoneWallsObject(Domain.Entity.ZoneWalls.ZoneWallDTO zoneWallDTO, List<Wall> walls, string buildingType)
+        public void GenerateZoneWallsObject(ZoneWallDTO zoneWallDTO, List<WallHPXML> walls)
         {
             int i = 1;
             foreach (var zoneWall in zoneWallDTO.Walls)
             {
                 var id = "wall-" + i;
 
-                Wall wall = new Wall()
+                WallHPXML wall = new WallHPXML()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
                         Id = id
                     },
-                    Insulation = new Insulation()
+                    Insulation = (zoneWall.AdjacentTo == "Other Unit") ? null : new Insulation()
                     {
                         SystemIdentifier = new SystemIdentifier
                         {
@@ -783,12 +785,17 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         AssemblyEffectiveRValue = zoneWall.WallInsulationLevel,
                     },
                     InteriorAdjacentTo = "living space",
-                    ExteriorAdjacentTo = this.GetExteriorAdjacentTo(buildingType),
+                    ExteriorAdjacentTo = this.GetExteriorAdjacentTo(zoneWall.AdjacentTo),
 
                     // TODO Need to clarify
                     Area = zoneWallDTO.Walls.Count > 1 ? 20 : null
                 };
-
+                if (zoneWall.AdjacentTo != "Outside")
+                {
+                    walls.Add(wall);
+                    i++;
+                    continue;
+                }
                 // For Wall Type
                 if (zoneWall.Construction == "Wood Frame")
                 {
@@ -891,7 +898,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 i++;
             }
         }
-        public void GenerateZoneWindowObject(Domain.Entity.ZoneWindows.ZoneWindowDTO zoneWindowDTO, List<Window> windows, bool? singleWall)
+        public void GenerateZoneWindowObject(ZoneWindowDTO zoneWindowDTO, List<WindowHPXML> windows, List<WallHPXML> walls, string type)
         {
             int i = 1;
             var listWindowArea = new List<double?>()
@@ -899,21 +906,37 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaBack,
                 zoneWindowDTO.WindowAreaRight,zoneWindowDTO.WindowAreaLeft
             };
+            listWindowArea.Sort();
+            listWindowArea.Reverse();
+            List<string> exteriorWallIds = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.SystemIdentifier.Id).ToList(); ;
+            int exteriorWallCount = exteriorWallIds.Count;
+            int windowCount = zoneWindowDTO.Windows.Count;
             foreach (var zoneWindow in zoneWindowDTO.Windows)
             {
                 var id = "window-" + i;
-                Window window = new Window()
+                WindowHPXML window = new WindowHPXML()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
                         Id = id
                     },
                     Area = listWindowArea[i - 1],
-                    AttachedToWall = new AttachedToWall()
-                    {
-                        IdRef = singleWall == true ? "wall-1" : "wall-" + i
-                    },
                 };
+                if (type == "Single-Family Detached")
+                {
+                    window.AttachedToWall = new AttachedToWall()
+                    {
+                        IdRef = exteriorWallCount == 1 ? "wall-1" : "wall-" + i
+                    };
+                }
+                else if (type == "Townhouse/Rowhouse/Duplex")
+                {
+                    window.AttachedToWall = new AttachedToWall()
+                    {
+                        IdRef = exteriorWallIds[i - 1]
+                    };
+                }
+
                 if (zoneWindow.KnowWindowSpecification == true)
                 {
                     window.SHGC = zoneWindow.SHGC;
@@ -1112,7 +1135,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     hs.HeatingSystemFuel = "natural gas";
                     dultFlag = true;
                     break;
-                case "Room(through - the - wall) gas furnace": //wall_furnace
+                case "Room (through-the-wall) gas furnace": //wall_furnace
                     hs.HeatingSystemType.WallFurnace = new WallFurnace();
                     hs.HeatingSystemFuel = "natural gas";
                     break;
@@ -1120,16 +1143,16 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     hs.HeatingSystemType.Boiler = new Boiler();
                     hs.HeatingSystemFuel = "natural gas";
                     break;
-                case "Propane(LPG) central furnace": //central_furnace
+                case "Propane (LPG) central furnace": //central_furnace
                     hs.HeatingSystemType.Furnace = new Furnace();
                     hs.HeatingSystemFuel = "propane";
                     dultFlag = true;
                     break;
-                case "Propane(LPG) wall furnace": //wall_furnace
+                case "Propane (LPG) wall furnace": //wall_furnace
                     hs.HeatingSystemType.WallFurnace = new WallFurnace();
                     hs.HeatingSystemFuel = "propane";
                     break;
-                case "Propane(LPG) boiler": //boiler
+                case "Propane (LPG) boiler": //boiler
                     hs.HeatingSystemType.Boiler = new Boiler();
                     hs.HeatingSystemFuel = "propane";
                     break;
@@ -1273,7 +1296,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             else
             {
                 cs.YearInstalled = system.CoolingSystemYearInstalled;
-
             }
             if (cs.CoolingSystemType == "central air conditioner")
             {
@@ -1482,7 +1504,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             return ducts;
         }
-        public WaterHeating GenerateWaterHeater(Domain.Entity.WaterHeaterDTO waterHeater)
+        public WaterHeating GenerateWaterHeater(WaterHeaterDTO waterHeater)
         {
             if (waterHeater == null)
             {
@@ -1557,7 +1579,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             return wh;
         }
-        public Photovoltaics GeneratePhotovoltaics(Domain.Entity.PVSystemDTO pvSystem)
+        public Photovoltaics GeneratePhotovoltaics(PVSystemDTO pvSystem)
         {
             if (pvSystem == null || pvSystem.HasPhotovoltaic == false)
             {
@@ -1566,7 +1588,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             var pv = new Photovoltaics()
             {
-                PVSystem = new PVSystem()
+                PVSystem = new PVSystemHPXML()
                 {
                     SystemIdentifier = new SystemIdentifier
                     {
@@ -1589,7 +1611,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         }
 
         // Condtioned based Selection ======================================================================
-        public string GetEventType(Domain.Entity.AddressDTO addressDTO)
+        public string GetEventType(AddressDTO addressDTO)
         {
             switch (addressDTO.AssessmentType)
             {
@@ -1598,7 +1620,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 case "preconstruction":
                     return "preconstruction";
                 default:
-                    return "initial";
+                    return "audit";
             }
         }
         public string GetResidentialFacilityType(string? dwellingUnitType)
@@ -1614,7 +1636,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 default:
                     return "manufactured home";
             }
-            return "";
         }
         public FoundationType GetFoundationType(string foundationType)
         {
@@ -1657,14 +1678,22 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             }
             return type;
         }
-        public string GetExteriorAdjacentTo(string buildingType)
+        public string GetExteriorAdjacentTo(string wallType)
         {
-            switch (buildingType)
+            switch (wallType)
             {
-                case "apartment unit":
-                    return "other housing unit";
-                default:
+                case "Outside":
                     return "outside";
+                case "Other Unit":
+                    return "other housing unit";
+                case "Other Heated Space":
+                    return "other heated space";
+                case "Other Non-Freezing Space":
+                    return "other multifamily buffer space";
+                case "Other Multi - Family Buffer Space":
+                    return "other non-freezing space";
+                default:
+                    return "";
             }
         }
         public string GetDuctLocation(string ductLocation)

@@ -129,7 +129,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
       this.waterHeaterReadModel = this.waterHeaterForm.value
       this.waterHeaterService.update(this.waterHeaterReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<WaterHeaterReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.waterHeaterForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "water-heater",
@@ -146,7 +146,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
       delete this.waterHeaterReadModel.id;
       this.waterHeaterService.create(this.waterHeaterReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<WaterHeaterReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.waterHeaterForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "water-heater",

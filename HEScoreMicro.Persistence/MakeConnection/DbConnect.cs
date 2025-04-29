@@ -1,5 +1,7 @@
-﻿using HEScoreMicro.Domain.Entity;
+﻿using HEScoreMicro.Domain.Entity.Address;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+using HEScoreMicro.Domain.Entity.OtherSystems;
+using HEScoreMicro.Domain.Entity.ZoneFloors;
 using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
 using HEScoreMicro.Domain.Entity.ZoneWalls;
 using HEScoreMicro.Domain.Entity.ZoneWindows;

@@ -50,7 +50,7 @@ export function removeAllIdProperties(obj: any): any {
   return obj;
 }
 
-export function getDirection(index: number): string {
+export function getDirection(index: number | null | undefined): string {
   switch (index) {
     case 0:
       return "Front"

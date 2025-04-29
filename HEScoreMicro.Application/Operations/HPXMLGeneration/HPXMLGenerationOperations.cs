@@ -1,7 +1,7 @@
 ﻿
 using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.Reply;
-using HEScoreMicro.Domain.Entity;
+using HEScoreMicro.Domain.Entity.Address;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ServiceReference1;

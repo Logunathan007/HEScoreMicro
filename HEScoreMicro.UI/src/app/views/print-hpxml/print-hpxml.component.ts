@@ -80,7 +80,7 @@ export class PrintHpxmlComponent extends Unsubscriber implements OnInit {
     if(this.buildingId){
       this.hpxmlGenerationService.getHpxmlString(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next:(res:Result<string>)=>{
-          if(res.failed == false){
+          if(res.failed === false){
             this.hpxmlString = res?.data;
             this.formatXml();
           }

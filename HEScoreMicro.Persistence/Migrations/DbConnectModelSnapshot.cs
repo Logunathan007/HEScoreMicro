@@ -484,6 +484,9 @@ namespace HEScoreMicro.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AdjacentTo")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("BuildingId")
                         .HasColumnType("uuid");
 

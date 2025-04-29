@@ -9,6 +9,6 @@ export const DwellingUnitTypeOptions = [
 export const AssessmentType = [
   { name: 'Test', value: 'Test' },
   // need to add validation logic
-  // { name: 'Initial', value: 'Initial' },
-  // { name: 'Preconstruction', value: 'Preconstruction' },
+  { name: 'Initial', value: 'Initial' },
+  { name: 'Preconstruction', value: 'Preconstruction' },
 ]

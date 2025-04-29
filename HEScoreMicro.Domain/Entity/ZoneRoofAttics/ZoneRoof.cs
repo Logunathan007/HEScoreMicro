@@ -1,4 +1,6 @@
 ﻿
+using HEScoreMicro.Domain.Entity.Address;
+
 namespace HEScoreMicro.Domain.Entity.ZoneRoofAttics
 {
     public class ZoneRoofFields : IHasBuildingId,IHasId

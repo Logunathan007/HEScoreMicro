@@ -6,6 +6,9 @@ import { BuildingService } from '../shared/services/building/building.service';
 import { BuildingReadModel } from '../shared/models/building/building.model';
 import { Result } from '../shared/models/common/result.model';
 import { EmitterModel } from '../shared/models/common/emitter.model';
+import { WallReadModel } from '../shared/models/zone-wall/wall.read.model';
+import { WindowService } from '../shared/services/zone-window/window.service';
+import { WindowReadModel } from '../shared/models/zone-window/window.model';
 
 @Component({
   selector: 'app-views',
@@ -27,9 +30,11 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   floorType2: string | null | undefined;
   footPrint: number | null | undefined;
   totalRoofArea: number | null | undefined;
+  windowsAvailable: number[] | null = null //0->Front,1->Back,2->Right,3->Left
 
   constructor(
-    public route: ActivatedRoute, public buildingService: BuildingService, public router: Router
+    public route: ActivatedRoute, public buildingService: BuildingService, public router: Router,
+    private windowService: WindowService,
   ) {
     super()
   }
@@ -55,13 +60,17 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   getBuildingData() {
     this.buildingService.getById(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: Result<BuildingReadModel>) => {
-        if (val.failed == false) {
+        if (val.failed === false) {
           this.building = val.data as BuildingReadModel
           this.setBuildingType(this.building?.address?.dwellingUnitType)
           this.checkForBoiler();
           this.checkFoundationType();
           this.checkAtticCellingChanges();
           this.checkFootPrintArea();
+          if (this.buildingType == 1) {
+            this.windowsAvailable = []
+            this.checkWallsAvailability();
+          }
         }
       },
       error: (err: any) => {
@@ -111,9 +120,28 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   }
 
   checkFootPrintArea() {
-    let noOfFloor: number = this.building.about.storiesAboveGroundLevel as number
-    let condArea: number = this.building.about.totalConditionedFloorArea as number
+    let noOfFloor: number = this.building?.about?.storiesAboveGroundLevel as number
+    let condArea: number = this.building?.about?.totalConditionedFloorArea as number
     this.footPrint = condArea / noOfFloor;
+  }
+
+  checkWallsAvailability() {
+    this.building?.zoneWall?.walls?.forEach((val: WallReadModel, index: number) => {
+      if (val.adjacentTo == "Outside") this.windowsAvailable?.push(index);
+    })
+    if (this.windowsAvailable?.length != this.building.zoneWindow.windows?.length) {
+      const ids = this.building?.zoneWindow?.windows?.map(w => w?.id).filter(id => !!id) as string[];
+      if (ids.length) {
+        this.windowService.bulkDelete(ids).pipe(takeUntil(this.destroy$)).subscribe({
+          next: (val: Result<WindowReadModel>) => {
+            if (val?.failed === false) {
+              this.building.zoneWindow.windows=[];
+            }
+          },
+          error: (err: any) => console.log(err)
+        })
+      }
+    }
   }
 
   updateBuilding(data: EmitterModel<any>) {
@@ -132,6 +160,10 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         break;
       case "zone-wall":
         this.building.zoneWall = data.field
+        if (this.buildingType === 1) {
+          this.windowsAvailable = []
+          this.checkWallsAvailability()
+        }
         break;
       case "zone-window":
         this.building.zoneWindow = data.field

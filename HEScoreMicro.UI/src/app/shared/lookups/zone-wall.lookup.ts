@@ -16,3 +16,11 @@ export const WallExteriorFinishOptions = [
   { id: 4, name: "Brick Veneer", value: "Brick Veneer" },
   { id: 5, name: "None", value: "None" },
 ]
+
+export const AdjacentToOptions = [
+  { name: "Outside", value: "Outside" },
+  { name: "Other Unit", value: "Other Unit" },
+  { name: "Other Heated Space", value: "Other Heated Space" },
+  { name: "Other Non-Freezing Space Other Multi-Family Buffer Space", value: "Other Non-Freezing Space Other Multi-Family Buffer Space" },
+  { name: "Other Multi-Family Buffer Space", value: "Other Multi-Family Buffer Space" },
+]

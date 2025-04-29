@@ -6,9 +6,9 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneFloors
     public class Foundations
     {
         [XmlElement("Foundation")]
-        public List<Foundation> Foundation { get; set; }
+        public List<FoundationHPXML> Foundation { get; set; }
     }
-    public class Foundation
+    public class FoundationHPXML
     {
         [XmlElement("SystemIdentifier")]
         public SystemIdentifier SystemIdentifier { get; set; }

@@ -27,10 +27,10 @@ namespace HEScoreMicro.Application.HPXMLClasses.Systems
     }
     public class Photovoltaics
     {
-        [XmlElement]
-        public PVSystem? PVSystem { get; set; }
+        [XmlElement("PVSystem")]
+        public PVSystemHPXML? PVSystem { get; set; }
     }
-    public class PVSystem
+    public class PVSystemHPXML
     {
         public SystemIdentifier SystemIdentifier { get; set; }
         public string? ArrayOrientation { get; set; }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HEScoreMicro.Application.CrudOperations;
-using HEScoreMicro.Domain.Entity;
+using HEScoreMicro.Domain.Entity.OtherSystems;
 using HEScoreMicro.Persistence.MakeConnection;
 
 namespace HEScoreMicro.Application.Operations

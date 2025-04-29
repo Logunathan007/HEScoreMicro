@@ -22,8 +22,6 @@ export class AddressComponent extends Unsubscriber implements OnInit {
   addressReadModel!: AddressReadModel;
   dwellingUnitTypeOptions = DwellingUnitTypeOptions
   assessmentType = AssessmentType
-
-
   get addressControl() {
     return this.addressForm.controls;
   }
@@ -83,7 +81,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
     if (this.buildingId) {
       this.addressService.getByBuildingId(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AddressReadModel>) => {
-          if (val?.failed == false)
+          if (val?.failed === false)
             this.addressForm.patchValue(val.data)
           console.log(val);
         },
@@ -116,7 +114,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
       delete this.addressReadModel.id;
       this.addressService.create(this.addressReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<AddressReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.addressForm.patchValue(val.data)
             this.buildingId = val.data?.buildingId
           }

@@ -34,8 +34,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<HeatingCoolingSystemReadModel>> = new EventEmitter();
 
-
-
   booleanOptions = BooleanOptions
   heatingSystemTypeOptions = HeatingSystemTypeOptions
   coolingSystemTypeOptions = CoolingSystemTypeOptions
@@ -417,7 +415,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     if (this.heatingCoolingSystemForm.value?.id) {
       this.heatingCoolingSystemService.update(this.heatingCoolingSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<HeatingCoolingSystemReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.heatingCoolingSystemForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "heating-cooling-system",
@@ -432,7 +430,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     } else {
       this.heatingCoolingSystemService.create(this.heatingCoolingSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<HeatingCoolingSystemReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.heatingCoolingSystemForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "heating-cooling-system",
@@ -453,7 +451,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     if (id) {
       this.systemsService.delete(id).pipe(takeUntil(this.destroy$)).subscribe({
         next: (res: Result<SystemsReadModel>) => {
-          if (res.failed == false) {
+          if (res.failed === false) {
             this.systemsObj.removeAt(1);
           }
         },
@@ -476,7 +474,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     if (ids.length) {
       this.ductLocationService?.bulkDelete(ids).pipe(takeUntil(this.destroy$)).subscribe({
         next: (res: Result<DuctLocationReadModel>) => {
-          if (res.failed == false) {
+          if (res.failed === false) {
             while (val < arr.length) {
               arr.removeAt(arr.length - 1);
             }

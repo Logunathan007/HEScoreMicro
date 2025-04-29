@@ -31,8 +31,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneRoofReadModel>> = new EventEmitter();
 
-
-
   resetValues = resetValues
   booleanOptions = BooleanOptions
   atticOrCeilingTypeOptions: any;
@@ -278,11 +276,11 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       }, 0);
     let res: any[] = isValidRoofArea(areaSum, this.footPrint);
     let kneeWallRes: any[] = isValidKneeWallArea(kneeWallAreaSum, this.footPrint)
-    if (!res[0]) {
+    if (areaSum != 0 && !res[0]) {
       alert(`Error : Sum of area must be ${res[1]} - ${res[2]}, Current Area ${areaSum}`)
       return false;
     }
-    if(!kneeWallRes[0]){
+    if (kneeWallAreaSum != 0 && !kneeWallRes[0]) {
       alert(`Error : Sum of knee wall area must be ${kneeWallRes[1]} - ${kneeWallRes[2]}, Current Area ${kneeWallAreaSum}`)
       return false;
     }
@@ -301,7 +299,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     if (this.zoneRoofForm.value?.id) {
       this.zoneRoofService.update(this.zoneRoofReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneRoofReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             this.zoneRoofForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-roof",
@@ -316,7 +314,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     } else {
       this.zoneRoofService.create(this.zoneRoofReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneRoofReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.zoneRoofForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-roof",
@@ -336,7 +334,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     if (id) {
       this.roofAtticService.delete(id).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<RoofAtticReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             arr.removeAt(1);
           }
         },
@@ -349,9 +347,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   goNext() {
     this.move.emit(true);
-  }
-  oncheck() {
-    debugger
   }
 }
 

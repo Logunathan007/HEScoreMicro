@@ -108,7 +108,7 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       this.pVSystemReadModel = this.pVSystemForm.value
       this.pVSystemService.update(this.pVSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<PVSystemReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.pVSystemForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "pv-system",
@@ -125,7 +125,7 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       delete this.pVSystemReadModel.id;
       this.pVSystemService.create(this.pVSystemReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<PVSystemReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.pVSystemForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "pv-system",

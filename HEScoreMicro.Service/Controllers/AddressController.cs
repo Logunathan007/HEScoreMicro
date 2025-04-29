@@ -1,7 +1,7 @@
 ﻿using GenericController.Application.Mapper.Reply;
 using HEScoreMicro.Application.Operations;
 using HEScoreMicro.Application.Reply;
-using HEScoreMicro.Domain.Entity;
+using HEScoreMicro.Domain.Entity.Address;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

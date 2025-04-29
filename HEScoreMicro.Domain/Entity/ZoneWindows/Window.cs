@@ -1,4 +1,6 @@
-﻿namespace HEScoreMicro.Domain.Entity.ZoneWindows
+﻿using HEScoreMicro.Domain.Entity.Address;
+
+namespace HEScoreMicro.Domain.Entity.ZoneWindows
 {
     public class WindowFields : IHasBuildingId,IHasId
     {

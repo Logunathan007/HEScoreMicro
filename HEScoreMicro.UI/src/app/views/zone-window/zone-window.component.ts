@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ZoneWindowReadModel } from "../../shared/models/zone-window/zone-window.model";
-import { removeNullIdProperties,getDirection } from "../../shared/modules/Transformers/TransormerFunction";
+import { removeNullIdProperties, getDirection } from "../../shared/modules/Transformers/TransormerFunction";
 import { BooleanOptions, EmptyOptions } from "../../shared/lookups/common.lookup";
 import { PaneOptions } from "../../shared/lookups/zone-roof.looup";
 import { resetValues, resetValuesAndValidations, setValidations, windowAreaAverageValidator } from "../../shared/modules/Validators/validators.module";
@@ -23,10 +23,13 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWindowForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
+  @Input('buildingType') buildingType!: number | null;
+  @Input('windowsAvailable') windowsAvailable: number[] | null = [];
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
   @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
-  getDirection=getDirection
+
+  getDirection = getDirection
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
@@ -61,27 +64,59 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     var zoneWindow = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      windowAreaFront: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
-      windowAreaBack: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
-      windowAreaLeft: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
-      windowAreaRight: [null, [Validators.required, Validators.min(0),Validators.max(999)]],
-      windowsSame: [null, [Validators.required]],
-      windows: this.fb.array([this.windowInputs()]),
+      windowAreaFront: [null,],
+      windowAreaBack: [null,],
+      windowAreaLeft: [null,],
+      windowAreaRight: [null,],
+      windowsSame: [null,],
+      windows: this.fb.array([]),
     }, { validators: [windowAreaAverageValidator] })
     const windowsSame = zoneWindow.get("windowsSame") as AbstractControl
-    windowsSame?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (val: any) => {
-        if (val == false) {
-          while (this.windowsObj.length < 4)
-            this.windowsObj.push(this.windowInputs())
-        } else {
-          this.deleteWindows()
+    const windowAreaFront = zoneWindow.get("windowAreaFront") as AbstractControl
+    const windowAreaBack = zoneWindow.get("windowAreaBack") as AbstractControl
+    const windowAreaLeft = zoneWindow.get("windowAreaLeft") as AbstractControl
+    const windowAreaRight = zoneWindow.get("windowAreaRight") as AbstractControl
+    const windows = zoneWindow.get("windows") as FormArray
+    if (this.buildingType == 0) {
+      setValidations(windowsSame);
+      setValidations([windowAreaFront, windowAreaBack, windowAreaLeft, windowAreaRight], [Validators.required, Validators.min(0), Validators.max(999)])
+      windows.push(this.windowInputs())
+      windowsSame?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
+        next: (val: any) => {
+          if (val == false) {
+            while (windows.length < 4)
+              windows.push(this.windowInputs())
+          } else {
+            this.deleteWindows()
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
         }
-      },
-      error: (err: any) => {
-        console.log(err);
+      })
+    } else {
+      if (this.windowsAvailable?.length) {
+        let ind = 0;
+        while (windows.length < this.windowsAvailable?.length) {
+          windows.push(this.windowInputs());
+          switch (this.windowsAvailable[ind]) {
+            case 0:
+              setValidations(windowAreaFront, [Validators.required, Validators.min(0), Validators.max(999)])
+              break;
+            case 1:
+              setValidations(windowAreaBack, [Validators.required, Validators.min(0), Validators.max(999)])
+              break;
+            case 2:
+              setValidations(windowAreaRight, [Validators.required, Validators.min(0), Validators.max(999)])
+              break;
+            case 3:
+              setValidations(windowAreaLeft, [Validators.required, Validators.min(0), Validators.max(999)])
+              break;
+          }
+          ind++;
+        }
       }
-    })
+    }
     return zoneWindow;
   }
 
@@ -175,10 +210,8 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
 
   getData() {
     if (this.zoneWindowReadModel) {
-      if (this.zoneWindowReadModel?.windowsSame == false) {
-        while (this.windowsObj.length < 4) {
-          this.windowsObj.push(this.windowInputs())
-        }
+      while (this.windowsObj.length < this.zoneWindowReadModel.windows.length) {
+        this.windowsObj.push(this.windowInputs())
       }
       this.zoneWindowForm.patchValue(this.zoneWindowReadModel)
     }
@@ -195,7 +228,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     if (this.zoneWindowForm.value?.id) {
       this.zoneWindowService.update(this.zoneWindowReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWindowReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             this.zoneWindowForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-window",
@@ -210,7 +243,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     } else {
       this.zoneWindowService.create(this.zoneWindowReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWindowReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.zoneWindowForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-window",
@@ -234,7 +267,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
     if (windowIds.length) {
       this.windowService.bulkDelete(windowIds).subscribe({
         next: (val: Result<WindowReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             while (this.windowsObj.length > 1) {
               this.windowsObj.removeAt(this.windowsObj.length - 1);
             }

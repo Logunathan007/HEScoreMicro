@@ -1,4 +1,6 @@
-﻿namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
+﻿using HEScoreMicro.Domain.Entity.Address;
+
+namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
 {
     public class DuctLocationFields : IHasId, IHasBuildingId
     {

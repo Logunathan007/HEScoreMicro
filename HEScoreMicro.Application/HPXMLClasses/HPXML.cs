@@ -14,7 +14,8 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public string SchemaVersion { get; set; } = "4.0";
         public XMLTransactionHeaderInformation XMLTransactionHeaderInformation { get; set; }
         public SoftwareInfo SoftwareInfo { get; set; }
-        public Building Building { get; set; }
+        [XmlElement("Building")]
+        public BuildingHPXML Building { get; set; }
     }
 
     public class XMLTransactionHeaderInformation
@@ -31,7 +32,7 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public string SoftwareProgramVersion { get; set; }
     }
 
-    public class Building
+    public class BuildingHPXML
     {
         [XmlElement("BuildingID")]
         public BuildingID BuildingID { get; set; }
@@ -51,7 +52,8 @@ namespace HEScoreMicro.Application.HPXMLClasses
     {
         [XmlElement("SiteID")]
         public SiteID SiteID { get; set; }
-        public Address Address { get; set; }
+        [XmlElement("Address")]
+        public AddressHPXML Address { get; set; }
     }
 
     public class SiteID
@@ -60,7 +62,7 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public string Id { get; set; }
     }
 
-    public class Address
+    public class AddressHPXML
     {
         public string AddressType { get; set; } = "street";
         public string Address1 { get; set; }

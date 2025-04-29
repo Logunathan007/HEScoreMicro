@@ -1,5 +1,7 @@
 ﻿
 
+using HEScoreMicro.Domain.Entity.Address;
+
 namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
 {
     public class SystemsFields : IHasId, IHasBuildingId

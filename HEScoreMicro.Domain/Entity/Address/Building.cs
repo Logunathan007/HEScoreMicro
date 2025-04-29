@@ -1,10 +1,11 @@
-﻿
-using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+﻿using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+using HEScoreMicro.Domain.Entity.OtherSystems;
+using HEScoreMicro.Domain.Entity.ZoneFloors;
 using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
 using HEScoreMicro.Domain.Entity.ZoneWalls;
 using HEScoreMicro.Domain.Entity.ZoneWindows;
 
-namespace HEScoreMicro.Domain.Entity
+namespace HEScoreMicro.Domain.Entity.Address
 {
     public class BuildingFields : IHasId, IHasBuildingId
     {
@@ -12,7 +13,7 @@ namespace HEScoreMicro.Domain.Entity
         public int? Number { get; set; }
         public Guid BuildingId { get; set; } = Guid.Empty;
     }
-    
+
     public class Building : BuildingFields
     {
         public Address Address { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace HEScoreMicro.Domain.Entity
+﻿using HEScoreMicro.Domain.Entity.Address;
+
+namespace HEScoreMicro.Domain.Entity.ZoneFloors
 {
     public class ZoneFloorFields : IHasBuildingId, IHasId
     {

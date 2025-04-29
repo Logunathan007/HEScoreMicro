@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HEScoreMicro.Persistence.Migrations
 {
     [DbContext(typeof(DbConnect))]
-    [Migration("20250421132629_updated-table-3")]
-    partial class updatedtable3
+    [Migration("20250428114031_mig-1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -486,6 +486,9 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("AdjacentTo")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("BuildingId")
                         .HasColumnType("uuid");

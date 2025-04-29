@@ -5,10 +5,10 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneWalls
 {
     public class Windows
     {
-        [XmlElement]
-        public List<Window> Window { get; set; }
+        [XmlElement("Window")]
+        public List<WindowHPXML> Window { get; set; }
     }
-    public class Window
+    public class WindowHPXML
     {
         public SystemIdentifier SystemIdentifier { get; set; }
         public double? Area { get; set; }

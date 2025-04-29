@@ -40,7 +40,7 @@ export class SummaryComponent extends Unsubscriber implements OnInit, OnChanges 
     if (!this.buildingId) return
     this.hpxmlGenerationService.validateInputs(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
-        if (val?.failed == false) {
+        if (val?.failed === false) {
           this.validationData = JSON.parse(val?.homeJson);
           this.validationStatus = true;
         } else {
@@ -61,8 +61,11 @@ export class SummaryComponent extends Unsubscriber implements OnInit, OnChanges 
     this.PDFResponse = null;
     this.hpxmlGenerationService.generatePDF(this.buildingId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (val: any) => {
-        if (val?.failed == false) {
+        if (val?.failed === false) {
           this.PDFResponse = val?.data;
+          if(val?.data[0]?.link){
+            window.open(val?.data[0]?.link)
+          }
         }
         this.PDFLoader = false;
         console.log(val);

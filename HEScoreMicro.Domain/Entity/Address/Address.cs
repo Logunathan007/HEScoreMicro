@@ -1,7 +1,6 @@
-﻿
-namespace HEScoreMicro.Domain.Entity
+﻿namespace HEScoreMicro.Domain.Entity.Address
 {
-    public class AddressFields : IHasId,IHasBuildingId
+    public class AddressFields : IHasId, IHasBuildingId
     {
         public Guid Id { get; set; }
         public string? DwellingUnitType { get; set; }

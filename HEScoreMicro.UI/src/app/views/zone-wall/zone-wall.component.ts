@@ -1,3 +1,4 @@
+import { AdjacentToOptions } from './../../shared/lookups/zone-wall.lookup';
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +11,7 @@ import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.compo
 import { takeUntil } from 'rxjs';
 import { Result } from '../../shared/models/common/result.model';
 import { WallService } from '../../shared/services/zooe-wall/wall.service';
-import { resetValues } from '../../shared/modules/Validators/validators.module';
+import { resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
 import { WallReadModel } from '../../shared/models/zone-wall/wall.read.model';
 
@@ -24,6 +25,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   //variable initializations
   zoneWallForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
+  @Input('buildingType') buildingType!: number | null;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWallReadModel>> = new EventEmitter();
   @Input('input') zoneWallReadModel!: ZoneWallReadModel;
@@ -31,6 +33,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   wallConstructionOptions = WallConstructionOptions
   wallExteriorFinishOptions = WallExteriorFinishOptions
+  adjacentToOptions = AdjacentToOptions
 
   get zoneWallControl() {
     return this.zoneWallForm.controls;
@@ -61,22 +64,31 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     var zoneWall = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      exteriorWallSame: [null, [Validators.required]],
+      exteriorWallSame: [null,],
       walls: this.fb.array([this.wallInputs()]),
     })
-    zoneWall.get('exteriorWallSame')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
-      next: (val: any) => {
-        if (val == false) {
-          while (this.wallsObj.length < 4)
-            this.wallsObj.push(this.wallInputs())
-        } else {
-          this.deleteSameWalls();
+    const exteriorWallSame = zoneWall.get('exteriorWallSame') as AbstractControl;
+    const walls = zoneWall.get('walls') as FormArray;
+
+    if (this.buildingType === 0) {
+      setValidations(exteriorWallSame);
+      zoneWall.get('exteriorWallSame')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
+        next: (val: any) => {
+          if (val == false) {
+            while (walls.length < 4)
+              walls.push(this.wallInputs())
+          } else {
+            this.deleteSameWalls();
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
         }
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    })
+      })
+    } else {
+      while (walls.length < 4)
+        walls.push(this.wallInputs())
+    }
     return zoneWall;
   }
 
@@ -84,15 +96,25 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     var wall = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
+      adjacentTo: ["Outside", [Validators.required]],
       construction: [null, [Validators.required]],
       exteriorFinish: [null, [Validators.required]],
       exteriorFinishOptions: [null],
       wallInsulationLevel: [null, [Validators.required]],
     })
+    let adjacentTo = wall.get('adjacentTo') as AbstractControl;
     let construction = wall.get('construction') as AbstractControl;
     let exteriorFinish = wall.get('exteriorFinish') as AbstractControl;
     let exteriorFinishOptions = wall.get('exteriorFinishOptions') as AbstractControl;
-
+    let wallInsulationLevel = wall.get('wallInsulationLevel') as AbstractControl;
+    adjacentTo.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val) => {
+      resetValuesAndValidations([construction, exteriorFinish, wallInsulationLevel,])
+      if (val == "Outside") {
+        setValidations([construction, exteriorFinish, wallInsulationLevel])
+      } else if (val && val !== "Other Unit") {
+        setValidations([wallInsulationLevel])
+      }
+    })
     construction.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val) => {
       switch (val) {
         case "Wood Frame":
@@ -127,15 +149,8 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
 
   getData() {
     if (this.zoneWallReadModel) {
-      if (this.zoneWallReadModel?.exteriorWallSame == false) {
-        while (this.wallsObj.length < 4) {
-          this.wallsObj.push(this.wallInputs())
-        }
-      } else {
-        if (this.wallsObj.length != 1) {
-          this.wallsObj.clear();
-          this.wallsObj.push(this.wallInputs())
-        }
+      while (this.wallsObj.length < this.zoneWallReadModel.walls.length) {
+        this.wallsObj.push(this.wallInputs())
       }
       this.zoneWallForm.patchValue(this.zoneWallReadModel)
     }
@@ -152,7 +167,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     if (this.zoneWallForm.value?.id) {
       this.zoneWallService.update(this.zoneWallReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWallReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.zoneWallForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-wall",
@@ -167,7 +182,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     } else {
       this.zoneWallService.create(this.zoneWallReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneWallReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.zoneWallForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-wall",
@@ -190,7 +205,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     if (wallIds.length) {
       this.wallService.bulkDelete(wallIds).subscribe({
         next: (val: Result<WallReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             while (this.wallsObj.length > 1) {
               this.wallsObj.removeAt(this.wallsObj.length - 1);
             }

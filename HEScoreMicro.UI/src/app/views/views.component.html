@@ -51,15 +51,18 @@
       ></app-zone-floor>
       <app-zone-wall
         [input]="building.zoneWall"
-        (update)="updateBuilding($event)"
         [buildingId]="buildingId"
+        [buildingType]="buildingType"
+        (update)="updateBuilding($event)"
         (move)="move($event)"
         *ngSwitchCase="3"
       ></app-zone-wall>
       <app-zone-window
         [input]="building.zoneWindow"
-        (update)="updateBuilding($event)"
         [buildingId]="buildingId"
+        [buildingType]="buildingType"
+        [windowsAvailable]="windowsAvailable"
+        (update)="updateBuilding($event)"
         (move)="move($event)"
         *ngSwitchCase="4"
       ></app-zone-window>

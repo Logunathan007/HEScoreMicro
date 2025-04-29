@@ -195,7 +195,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     } else {
       this.zoneFloorService.create(this.zoneFloorReadModel).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<ZoneFloorReadModel>) => {
-          if (val?.failed == false) {
+          if (val?.failed === false) {
             this.zoneFloorForm.patchValue(val.data)
             this.updateEvent.emit({
               fieldType: "zone-floor",
@@ -215,7 +215,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     if (id) {
       this.foundationService.delete(id).pipe(takeUntil(this.destroy$)).subscribe({
         next: (val: Result<FoundationReadModel>) => {
-          if (val.failed == false) {
+          if (val.failed === false) {
             arr.removeAt(1);
           }
         },

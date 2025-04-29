@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HEScoreMicro.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedtable : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace HEScoreMicro.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     AssessmentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Comments = table.Column<string>(type: "text", nullable: false),
+                    Comments = table.Column<string>(type: "text", nullable: true),
                     YearBuilt = table.Column<int>(type: "integer", nullable: false),
                     NumberOfBedrooms = table.Column<int>(type: "integer", nullable: false),
                     StoriesAboveGroundLevel = table.Column<int>(type: "integer", nullable: false),
@@ -234,7 +234,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     HeatingCoolingSystemId = table.Column<Guid>(type: "uuid", nullable: true),
                     BuildingId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PercentAreaServed = table.Column<double>(type: "double precision", nullable: false),
+                    PercentAreaServed = table.Column<double>(type: "double precision", nullable: true),
                     HeatingSystemType = table.Column<string>(type: "text", nullable: true),
                     KnowHeatingEfficiency = table.Column<bool>(type: "boolean", nullable: true),
                     HeatingSystemEfficiencyUnit = table.Column<string>(type: "text", nullable: true),
@@ -343,6 +343,7 @@ namespace HEScoreMicro.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ZoneWallId = table.Column<Guid>(type: "uuid", nullable: false),
                     BuildingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    AdjacentTo = table.Column<string>(type: "text", nullable: true),
                     Construction = table.Column<string>(type: "text", nullable: true),
                     ExteriorFinish = table.Column<string>(type: "text", nullable: true),
                     WallInsulationLevel = table.Column<int>(type: "integer", nullable: true)

@@ -1,5 +1,4 @@
-﻿
-namespace HEScoreMicro.Domain.Entity
+﻿namespace HEScoreMicro.Domain.Entity.Address
 {
     public class AboutFields : IHasId, IHasBuildingId
     {

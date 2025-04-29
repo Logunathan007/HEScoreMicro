@@ -5,10 +5,10 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneRoofs
 {
     public class Walls
     {
-        [XmlElement]
-        public List<Wall> Wall { get; set; }
+        [XmlElement("Wall")]
+        public List<WallHPXML> Wall { get; set; }
     }
-    public class Wall
+    public class WallHPXML
     {
         public SystemIdentifier SystemIdentifier { get; set; }
         public string? ExteriorAdjacentTo {  get; set; }
