@@ -3,6 +3,7 @@ using System;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HEScoreMicro.Persistence.Migrations
 {
     [DbContext(typeof(DbConnect))]
-    partial class DbConnectModelSnapshot : ModelSnapshot
+    [Migration("20250429105723_mig-2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,8 +146,8 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<Guid>("BuildingId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CompletionDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("CompletionDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("ContractorBusinessName")
                         .HasColumnType("text");
@@ -152,16 +155,12 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.Property<int?>("ContractorZipCode")
                         .HasColumnType("integer");
 
-                    b.Property<bool?>("EnergyStarPresent")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("StartDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId")
-                        .IsUnique();
+                    b.HasIndex("BuildingId");
 
                     b.ToTable("EnergyStar");
                 });
@@ -662,8 +661,8 @@ namespace HEScoreMicro.Persistence.Migrations
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.EnergyStars.EnergyStar", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Address.Building", "Building")
-                        .WithOne("EnergyStar")
-                        .HasForeignKey("HEScoreMicro.Domain.Entity.EnergyStars.EnergyStar", "BuildingId")
+                        .WithMany()
+                        .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -855,9 +854,6 @@ namespace HEScoreMicro.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("EnergyStar")
                         .IsRequired();
 
                     b.Navigation("HeatingCoolingSystem")

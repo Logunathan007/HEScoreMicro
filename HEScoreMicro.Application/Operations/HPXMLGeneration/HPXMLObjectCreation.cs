@@ -16,6 +16,7 @@ using HEScoreMicro.Domain.Entity.OtherSystems;
 using HEScoreMicro.Domain.Entity.Address;
 using HEScoreMicro.Domain.Entity.ZoneWindows;
 using HEScoreMicro.Domain.Entity.ZoneWalls;
+using HEScoreMicro.Application.HPXMLClasses.EnergyStars;
 
 namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 {
@@ -181,9 +182,40 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                             WaterHeating = this.GenerateWaterHeater(building.Data.WaterHeater),
                             Photovoltaics = this.GeneratePhotovoltaics(building.Data.PVSystem),
                             HVAC = hvac
+                        },
+                        GreenBuildingVerifications = (building.Data.EnergyStar?.EnergyStarPresent == true) ? new GreenBuildingVerifications() : null
+                    }
+                },
+                Contractor = (building.Data.EnergyStar?.ContractorBusinessName != null) ? new Contractor()
+                {
+                    ContractorDetails = new ContractorDetails
+                    {
+                        SystemIdentifier = new SystemIdentifier
+                        {
+                            Id = "contractor-1"
+                        },
+                        BusinessInfo = new BusinessInfo
+                        {
+                            SystemIdentifier = new SystemIdentifier
+                            {
+                                Id = "contractor-1-businessinfo-1"
+                            },
+                            BusinessName = building.Data.EnergyStar.ContractorBusinessName,
+                            extension = (building.Data.EnergyStar?.ContractorZipCode != null) ? new BusinessInfoextension
+                            {
+                                ZipCode = building.Data.EnergyStar?.ContractorZipCode?.ToString("D5")
+                            } : null
                         }
                     }
-                }
+                } : null,
+                Project = new Project()
+                {
+                    ProjectDetails = new ProjectDetails
+                    {
+                        StartDate = building.Data?.EnergyStar?.StartDate?.ToString("yyyy-MM-dd"),
+                        CompleteDateActual = building.Data?.EnergyStar?.CompletionDate?.ToString("yyyy-MM-dd"),
+                    },
+                },
             };
             return new ResponseDTO<HPXML>
             {

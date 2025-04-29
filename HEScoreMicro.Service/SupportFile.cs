@@ -25,6 +25,7 @@ namespace HEScoreMicro.Service
             service.AddScoped(typeof(IHeatingCoolingSystemOperations), typeof(HeatingCoolingSystemOperations));
             service.AddScoped(typeof(IHPXMLGenerationOperations), typeof(HPXMLGenerationOperations));
             service.AddScoped(typeof(IHPXMLObjectCreation), typeof(HPXMLObjectCreation));
+            service.AddScoped(typeof(IEnergyStarOperations), typeof(EnergyStarOperations));
             service.AddScoped(typeof(st_api_handlerPortClient), typeof(st_api_handlerPortClient));
 
             //Keyed Services

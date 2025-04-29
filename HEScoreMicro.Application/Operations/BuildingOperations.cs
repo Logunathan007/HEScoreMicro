@@ -46,6 +46,7 @@ namespace HEScoreMicro.Application.Operations
                     .ThenInclude(obj=>obj.DuctLocations)
                 .Include(obj=>obj.WaterHeater)
                 .Include(obj=>obj.PVSystem)
+                .Include(obj=>obj.EnergyStar)
                 .FirstOrDefaultAsync(obj => obj.Id == Id);
             if (entities == null)
             {

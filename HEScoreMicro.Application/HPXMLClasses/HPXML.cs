@@ -1,4 +1,5 @@
 ﻿
+using HEScoreMicro.Application.HPXMLClasses.EnergyStars;
 using HEScoreMicro.Application.HPXMLClasses.Systems;
 using HEScoreMicro.Application.HPXMLClasses.ZoneFloors;
 using HEScoreMicro.Application.HPXMLClasses.ZoneRoofs;
@@ -14,8 +15,10 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public string SchemaVersion { get; set; } = "4.0";
         public XMLTransactionHeaderInformation XMLTransactionHeaderInformation { get; set; }
         public SoftwareInfo SoftwareInfo { get; set; }
+        public Contractor Contractor { get; set; }
         [XmlElement("Building")]
         public BuildingHPXML Building { get; set; }
+        public Project Project { get; set; }
     }
 
     public class XMLTransactionHeaderInformation
@@ -81,9 +84,22 @@ namespace HEScoreMicro.Application.HPXMLClasses
     public class BuildingDetails
     {
         public BuildingSummary BuildingSummary { get; set; }
+        public GreenBuildingVerifications GreenBuildingVerifications { get; set; }
         public Enclosure Enclosure { get; set; }
         [XmlElement("Systems")]
         public HpxmlSystems Systems { get; set; }
+    }
+    public class GreenBuildingVerifications
+    {
+        public GreenBuildingVerification GreenBuildingVerification { get; set; } = new GreenBuildingVerification { };
+    }
+    public class GreenBuildingVerification
+    {
+        public SystemIdentifier SystemIdentifier { get; set; } = new SystemIdentifier
+        {
+            Id = "EnergyStart-1"
+        };
+        public string? Type { get; set; } = "Home Performance with ENERGY STAR";
     }
 
     public class BuildingSummary
@@ -97,8 +113,8 @@ namespace HEScoreMicro.Application.HPXMLClasses
     {
         public int YearBuilt { get; set; }
         public string ResidentialFacilityType { get; set; }
-        public int? NumberofUnitsInBuilding { get; set; }   
-        public double NumberofConditionedFloorsAboveGrade { get; set; }
+        public int? NumberofUnitsInBuilding { get; set; }
+        public double? NumberofConditionedFloorsAboveGrade { get; set; }
         public double? AverageCeilingHeight { get; set; }
         public int NumberofBedrooms { get; set; }
         public double? ConditionedFloorArea { get; set; }

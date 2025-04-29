@@ -19,6 +19,7 @@ import { ZoneWindowComponent } from './zone-window/zone-window.component';
 import { PVSystemComponent } from './pv-system/pv-system.component';
 import { WaterHeaterComponent } from './water-heater/water-heater.component';
 import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-cooling-system.component';
+import { EnergyStarComponent } from './energy-star/energy-star.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-
     ZoneWindowComponent,
     PVSystemComponent,
     WaterHeaterComponent,
-    HeatingCoolingSystemComponent
+    HeatingCoolingSystemComponent,
+    EnergyStarComponent,
   ],
   imports: [
     CommonModule,

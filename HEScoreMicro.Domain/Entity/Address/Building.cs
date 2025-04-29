@@ -1,4 +1,5 @@
-﻿using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
+﻿using HEScoreMicro.Domain.Entity.EnergyStars;
+using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 using HEScoreMicro.Domain.Entity.OtherSystems;
 using HEScoreMicro.Domain.Entity.ZoneFloors;
 using HEScoreMicro.Domain.Entity.ZoneRoofAttics;
@@ -25,6 +26,7 @@ namespace HEScoreMicro.Domain.Entity.Address
         public HeatingCoolingSystem HeatingCoolingSystem { get; set; }
         public WaterHeater WaterHeater { get; set; }
         public PVSystem PVSystem { get; set; }
+        public EnergyStar EnergyStar { get; set; }
     }
 
     public class BuildingDTO : BuildingFields
@@ -38,5 +40,6 @@ namespace HEScoreMicro.Domain.Entity.Address
         public HeatingCoolingSystemDTO HeatingCoolingSystem { get; set; }
         public WaterHeaterDTO WaterHeater { get; set; }
         public PVSystemDTO PVSystem { get; set; }
+        public EnergyStarDTO EnergyStar { get; set; }
     }
 }

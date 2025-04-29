@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HEScoreMicro.Domain.Entity.Address;
+using HEScoreMicro.Domain.Entity.EnergyStars;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 using HEScoreMicro.Domain.Entity.OtherSystems;
 using HEScoreMicro.Domain.Entity.ZoneFloors;
@@ -29,6 +30,7 @@ namespace HEScoreMicro.Application.MaperConfig
             CreateMap<DuctLocation, DuctLocationDTO>().ReverseMap();
             CreateMap<Systems, SystemsDTO>().ReverseMap();
             CreateMap<HeatingCoolingSystem, HeatingCoolingSystemDTO>().ReverseMap();
+            CreateMap<EnergyStar, EnergyStarDTO>().ReverseMap();
         }
     }
 }

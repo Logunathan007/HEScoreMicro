@@ -47,7 +47,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
 
   //variable declarations
   variableDeclaration() {
-    this.navs = ["About", "Roof", "Floor", "Wall", "Window", "HVAC", "DHW", "PVSystem", "Summary"]
+    this.navs = ["About", "Roof", "Floor", "Wall", "Window", "HVAC", "DHW", "PVSystem", "Star", "Summary"]
     this.selectedIndex = 0;
   }
 
@@ -135,7 +135,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         this.windowService.bulkDelete(ids).pipe(takeUntil(this.destroy$)).subscribe({
           next: (val: Result<WindowReadModel>) => {
             if (val?.failed === false) {
-              this.building.zoneWindow.windows=[];
+              this.building.zoneWindow.windows = [];
             }
           },
           error: (err: any) => console.log(err)
@@ -177,6 +177,9 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         break;
       case "water-heater":
         this.building.waterHeater = data.field
+        break;
+      case "energy-star":
+        this.building.energyStar = data.field
         break;
     }
   }

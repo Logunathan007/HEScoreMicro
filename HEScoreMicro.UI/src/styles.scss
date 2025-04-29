@@ -34,7 +34,7 @@
 .cursor-pointer {
   cursor: pointer;
 }
-.h-fit{
+.h-fit {
   height: fit-content;
 }
 .errormsg {
@@ -90,7 +90,7 @@
     background-color: rgba(255, 0, 0, 0.05);
   }
 }
-.parentLoader{
+.parentLoader {
   position: relative;
   .loader {
     width: 35px;
@@ -107,7 +107,7 @@ label {
     &::after {
       position: absolute;
       content: "*";
-      top: 0px;
+      bottom: -8px;
       font-size: 20px;
       color: red;
       padding-left: 3px;

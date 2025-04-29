@@ -1,4 +1,5 @@
 ﻿using HEScoreMicro.Domain.Entity.Address;
+using HEScoreMicro.Domain.Entity.EnergyStars;
 using HEScoreMicro.Domain.Entity.HeatingCoolingSystems;
 using HEScoreMicro.Domain.Entity.OtherSystems;
 using HEScoreMicro.Domain.Entity.ZoneFloors;
@@ -27,5 +28,6 @@ namespace HEScoreMicro.Persistence.MakeConnection
         public DbSet<DuctLocation> DuctLocation { get; set; }
         public DbSet<HeatingCoolingSystem> HeatingCoolingSystem { get; set; }
         public DbSet<Systems> Systems { get; set; }
+        public DbSet<EnergyStar> EnergyStar { get; set; }
     }
 }
