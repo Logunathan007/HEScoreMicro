@@ -11,6 +11,16 @@ export const RoofConstructionOptions = [
   { name: "Roof with Rigid Foam Sheathing", value: "Roof with Rigid Foam Sheathing" },
 ]
 
+export const RoofInsulationOptions = [
+  { name: "R-0", value: 0 }, { name: "R-3", value: 3 }, { name: "R-7", value: 7 }, { name: "R-11", value: 11 }, { name: "R-13", value: 13 }, { name: "R-15", value: 15 }, { name: "R-19", value: 19 }, { name: "R-21", value: 21 }, { name: "R-25", value: 25 }, { name: "R-27", value: 27 }, { name: "R-30", value: 30 }
+]
+export const AtticFloorInsulationOptions = [
+  { name: "R-0", value: 0 }, { name: "R-3", value: 3 }, { name: "R-6", value: 6 }, { name: "R-9", value: 9 }, { name: "R-11", value: 11 }, { name: "R-13", value: 13 }, { name: "R-15", value: 15 }, { name: "R-19", value: 19 }, { name: "R-21", value: 21 }, { name: "R-25", value: 25 }, { name: "R-30", value: 30 }, { name: "R-35", value: 35 }, { name: "R-38", value: 38 }, { name: "R-44", value: 44 }, { name: "R-49", value: 49 }, { name: "R-55", value: 55 }, { name: "R-60", value: 60 }
+]
+export const KneeWallInsulationOptions = [
+  { name: "R-0", value: 0 }, { name: "R-3", value: 3 }, { name: "R-7", value: 7 }, { name: "R-11", value: 11 }, { name: "R-13", value: 13 }, { name: "R-15", value: 15 }, { name: "R-19", value: 19 }, { name: "R-21", value: 21 }
+]
+
 export const RoofExteriorFinishOptions = [
   { name: "Composition Shingles or Metal", value: "Composition Shingles or Metal" },
   { name: "Wood Shakes", value: "Wood Shakes" },

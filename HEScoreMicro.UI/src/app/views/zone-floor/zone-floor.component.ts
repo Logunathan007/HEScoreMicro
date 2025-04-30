@@ -7,7 +7,7 @@ import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { ZoneFloorService } from '../../shared/services/zone-floor/zone-floor.service';
 import { Result } from '../../shared/models/common/result.model';
 import { takeUntil } from 'rxjs';
-import { FoundationTypeOptions } from '../../shared/lookups/zone-floor.lookups';
+import { FoundationFloorInsulationOptions, FoundationSlabInsulationOptions, FoundationTypeOptions, FoundationWallInsulationOptions } from '../../shared/lookups/zone-floor.lookups';
 import { removeNullIdProperties } from '../../shared/modules/Transformers/TransormerFunction';
 import { FoundationReadModel } from '../../shared/models/zone-floor/foundation.read.model';
 import { isValidFoundationArea, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
@@ -32,6 +32,9 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
   updateEvent: EventEmitter<EmitterModel<ZoneFloorReadModel>> = new EventEmitter();
   booleanOptions = BooleanOptions
   foundationTypeOptions: any;
+  foundationSlabInsulationOptions = FoundationSlabInsulationOptions
+  foundationFloorInsulationOptions = FoundationFloorInsulationOptions
+  foundationWallInsulationOptions = FoundationWallInsulationOptions
 
   get zoneFloorControl() {
     return this.zoneFloorForm.controls;

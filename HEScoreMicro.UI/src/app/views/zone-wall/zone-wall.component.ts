@@ -1,5 +1,5 @@
+import { WallInsulationOptions } from './../../shared/lookups/support';
 import { AdjacentToOptions } from './../../shared/lookups/zone-wall.lookup';
-
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZoneWallService } from '../../shared/services/zooe-wall/zooe-wall.service';
@@ -100,12 +100,14 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       exteriorFinish: [null, [Validators.required]],
       exteriorFinishOptions: [null],
       wallInsulationLevel: [null, [Validators.required]],
+      wallInsulationOptions: [null]
     })
     let adjacentTo = wall.get('adjacentTo') as AbstractControl;
     let construction = wall.get('construction') as AbstractControl;
     let exteriorFinish = wall.get('exteriorFinish') as AbstractControl;
     let exteriorFinishOptions = wall.get('exteriorFinishOptions') as AbstractControl;
     let wallInsulationLevel = wall.get('wallInsulationLevel') as AbstractControl;
+    let wallInsulationOptions = wall.get('wallInsulationOptions') as AbstractControl;
     adjacentTo.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val) => {
       resetValuesAndValidations([construction, exteriorFinish, wallInsulationLevel,])
       if (val == "Outside") {
@@ -117,31 +119,39 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
     construction.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val) => {
       switch (val) {
         case "Wood Frame":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => ([1, 3, 7, 11, 13, 15, 19, 21]).includes(obj.value)))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
           break;
         case "Wood Frame with rigid foam sheathing":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => ([1, 3, 7, 11, 13, 15, 19, 21]).includes(obj.value)))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
           break;
         case "Wood Frame with Optimum Value Engineering (OVE)":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => obj.value >= 19))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
           break;
         case "Structural Brick":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => ([1, 5, 10]).includes(obj.value)))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 5))
           break;
         case "Concrete Block or Stone":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => ([1, 3, 6]).includes(obj.value)))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 1 || obj.id == 4 || obj.id == 5))
           break;
         case "Straw Bale":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => obj.value == 0))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id == 1))
           break;
         case "Steel Frame":
+          wallInsulationOptions.setValue(WallInsulationOptions.filter(obj => ([1, 3, 7, 11, 13, 15, 19, 21]).includes(obj.value)))
           exteriorFinishOptions.setValue(WallExteriorFinishOptions.filter(obj => obj.id != 5))
           break;
         default:
+          wallInsulationOptions.setValue(null)
           exteriorFinishOptions.setValue(null)
           break;
       }
-      resetValues(exteriorFinish)
+      resetValues([exteriorFinish, wallInsulationLevel, exteriorFinish])
     })
     return wall;
   }

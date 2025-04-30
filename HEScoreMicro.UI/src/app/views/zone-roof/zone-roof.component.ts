@@ -1,3 +1,4 @@
+import { AtticFloorInsulationOptions, KneeWallInsulationOptions } from './../../shared/lookups/zone-roof.looup';
 import { RoofAtticService } from '../../shared/services/zone-roof/roof-attic.service';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { Result } from '../../shared/models/common/result.model';
@@ -8,7 +9,7 @@ import { Unsubscriber } from '../../shared/modules/unsubscribe/unsubscribe.compo
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BooleanOptions } from '../../shared/lookups/common.lookup';
 import { ZoneRoofService } from '../../shared/services/zone-roof/zone-roof.service';
-import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions } from '../../shared/lookups/zone-roof.looup';
+import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, PaneOptions, RoofColorOptions, RoofConstructionOptions, RoofExteriorFinishOptions, RoofInsulationOptions } from '../../shared/lookups/zone-roof.looup';
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
 import { isValidKneeWallArea, isValidRoofArea, resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
@@ -40,6 +41,8 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   paneOptions = PaneOptions
   frameMaterialOptions = FrameMaterialOptions
   glazingTypeOptions = GlazingTypeOptions
+  kneeWallInsulationOptions = KneeWallInsulationOptions
+  atticFloorInsulationOptions = AtticFloorInsulationOptions
 
   get zoneRoofControl() {
     return this.zoneRoofForm.controls;
@@ -112,6 +115,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       exteriorFinish: [null,],//ng-select
       roofArea: [null, [Validators.required, Validators.min(1), Validators.max(25000)]],
       roofInsulation: [null,],
+      roofInsulationOptions: [null],
       roofColor: [null,],//ng-select
       absorptance: [null], //0-1
       skylightsPresent: [null,], //ng-select
@@ -135,6 +139,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     const construction = found.get('construction') as AbstractControl
     const exteriorFinish = found.get('exteriorFinish') as AbstractControl
     const roofInsulation = found.get('roofInsulation') as AbstractControl
+    const roofInsulationOptions = found.get('roofInsulationOptions') as AbstractControl
     const atticOrCeilingType = found.get('atticOrCeilingType') as AbstractControl
     const roofColor = found.get('roofColor') as AbstractControl
     const absorptance = found.get('absorptance') as AbstractControl
@@ -166,6 +171,20 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
         setValidations([atticFloorInsulation, kneeWallPresent])
       } else {
         resetValuesAndValidations([atticFloorArea, atticFloorInsulation, kneeWallPresent])
+      }
+    })
+    construction.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {
+      resetValues([exteriorFinish, roofInsulation, roofInsulationOptions])
+      switch (val) {
+        case "Standard Roof":
+          roofInsulationOptions.setValue(RoofInsulationOptions)
+          break;
+        case "Roof with Radiant Barrier":
+          roofInsulationOptions.setValue(RoofInsulationOptions.filter(obj => obj.value == 0))
+          break;
+        case "Roof with Rigid Foam Sheathing":
+          roofInsulationOptions.setValue(RoofInsulationOptions.filter(obj => ([0, 3, 7, 11, 15, 19, 21]).includes(obj.value)))
+          break;
       }
     })
     roofColor.valueChanges?.pipe(takeUntil(this.destroy$)).subscribe((val: string) => {

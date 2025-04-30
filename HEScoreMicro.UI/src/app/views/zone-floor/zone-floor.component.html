@@ -111,16 +111,19 @@
               class="col-md-6"
               *ngIf="foundationItem.get('tracker')?.value?.slab"
             >
-              <div class="input-box">
-                <label class="required" for="slabInsulationLevel">
-                  Slab Insulation Level
-                </label>
-                <input
-                  formControlName="slabInsulationLevel"
-                  type="number"
-                  id="slabInsulationLevel"
+              <div class="select-box">
+                <label class="required"> Slab Insulation Level </label>
+                <ng-select
+                  [items]="foundationSlabInsulationOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
                   placeholder="Slab Insulation Level"
-                />
+                  id="slabInsulationLevel"
+                  formControlName="slabInsulationLevel"
+                >
+                </ng-select>
                 <div
                   class="errormsg"
                   *ngIf="
@@ -129,10 +132,7 @@
                     foundationItem.get('slabInsulationLevel')?.invalid
                   "
                 >
-                  <label
-                    for="slabInsulationLevel"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  <label class="text-danger fw-semibold position-absolute">
                     Slab Insulation Level is invalid
                   </label>
                 </div>
@@ -142,16 +142,19 @@
               class="col-md-6"
               *ngIf="foundationItem.get('tracker')?.value?.floor"
             >
-              <div class="input-box">
-                <label class="required" for="floorInsulationLevel">
-                  Floor Insulation Level
-                </label>
-                <input
-                  formControlName="floorInsulationLevel"
-                  type="number"
-                  id="floorInsulationLevel"
+              <div class="select-box">
+                <label class="required"> Floor Insulation Level </label>
+                <ng-select
+                  [items]="foundationFloorInsulationOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
                   placeholder="Floor Insulation Level"
-                />
+                  id="floorInsulationLevel"
+                  formControlName="floorInsulationLevel"
+                >
+                </ng-select>
                 <div
                   class="errormsg"
                   *ngIf="
@@ -160,10 +163,7 @@
                     foundationItem.get('floorInsulationLevel')?.invalid
                   "
                 >
-                  <label
-                    for="floorInsulationLevel"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  <label class="text-danger fw-semibold position-absolute">
                     Floor Insulation Level is invalid
                   </label>
                 </div>
@@ -173,16 +173,21 @@
               class="col-md-6"
               *ngIf="foundationItem.get('tracker')?.value?.wall"
             >
-              <div class="input-box">
-                <label class="required" for="foundationwallsInsulationLevel">
-                  Foundationwalls Insulation Level
+              <div class="select-box">
+                <label class="required">
+                  Foundationwall Insulation Level
                 </label>
-                <input
-                  formControlName="foundationwallsInsulationLevel"
-                  type="number"
+                <ng-select
+                  [items]="foundationWallInsulationOptions"
+                  bindLabel="name"
+                  [clearable]="true"
+                  [closeOnSelect]="true"
+                  bindValue="value"
+                  placeholder="Foundationwall Insulation Level"
                   id="foundationwallsInsulationLevel"
-                  placeholder="Foundationwalls Insulation Level"
-                />
+                  formControlName="foundationwallsInsulationLevel"
+                >
+                </ng-select>
                 <div
                   class="errormsg"
                   *ngIf="
@@ -194,11 +199,8 @@
                       ?.invalid
                   "
                 >
-                  <label
-                    for="foundationwallsInsulationLevel"
-                    class="text-danger fw-semibold position-absolute"
-                  >
-                    Foundationwalls Insulation Level is invalid
+                  <label class="text-danger fw-semibold position-absolute">
+                    Foundationwall Insulation Level is invalid
                   </label>
                 </div>
               </div>

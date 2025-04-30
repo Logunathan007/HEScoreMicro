@@ -137,16 +137,19 @@
                 </div>
               </ng-container>
               <div class="col-md-6">
-                <div class="input-box">
-                  <label class="required" for="wallInsulationLevel">
-                    Wall Insulation Level
-                  </label>
-                  <input
-                    formControlName="wallInsulationLevel"
-                    type="number"
-                    id="wallInsulationLevel"
+                <div class="select-box">
+                  <label class="required"> Wall Insulation Level</label>
+                  <ng-select
+                    [items]="wallItem.get('wallInsulationOptions')?.value"
+                    bindLabel="name"
+                    [clearable]="true"
+                    [closeOnSelect]="true"
+                    bindValue="value"
                     placeholder="Wall Insulation Level"
-                  />
+                    id="wallInsulationLevel"
+                    formControlName="wallInsulationLevel"
+                  >
+                  </ng-select>
                   <div
                     class="errormsg"
                     *ngIf="
@@ -155,10 +158,7 @@
                       wallItem.get('wallInsulationLevel')?.invalid
                     "
                   >
-                    <label
-                      for="wallInsulationLevel"
-                      class="text-danger fw-semibold position-absolute"
-                    >
+                    <label class="text-danger fw-semibold position-absolute">
                       Wall Insulation Level is invalid
                     </label>
                   </div>
@@ -168,7 +168,6 @@
           </ng-container>
         </ng-container>
       </ng-container>
-
     </div>
     <div class="d-flex justify-content-end gap-3 mt-4">
       <button type="button" class="bg-primary btn-style" (click)="onSave()">
