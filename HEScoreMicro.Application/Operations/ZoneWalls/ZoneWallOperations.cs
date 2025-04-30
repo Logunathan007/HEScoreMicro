@@ -16,16 +16,5 @@ namespace HEScoreMicro.Application.Operations.ZoneWalls
         DbConnect _context, IMapper _mapper
         ) : CrudOperations<ZoneWall, ZoneWallDTO>(_context, _context.ZoneWall, _mapper), IZoneWallOperations
     {
-        public override async Task<ResponseDTO<ZoneWallDTO>> GetByBuidlgingId(Guid Id)
-        {
-            var entities = await _context.ZoneWall.AsNoTracking().Include(x => x.Walls)
-                .FirstOrDefaultAsync(obj => obj.BuildingId == Id);
-            if (entities == null)
-            {
-                return new ResponseDTO<ZoneWallDTO> { Failed = true, Message = $"ZoneWall not found" };
-            }
-            var entityDTO = _mapper.Map<ZoneWallDTO>(entities);
-            return new ResponseDTO<ZoneWallDTO> { Failed = false, Message = $"ZoneWall Fetched", Data = entityDTO };
-        }
     }
 }

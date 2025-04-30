@@ -3,10 +3,9 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.ZoneWalls
 {
-    public class WallFields : IHasBuildingId, IHasId
+    public class WallFields :  IHasId
     {
         public Guid Id { get; set; }
-        public Guid BuildingId { get; set; }
         public string? AdjacentTo { get; set; }
         public string? Construction { get; set; }
         public string? ExteriorFinish { get; set; }
@@ -17,7 +16,6 @@ namespace HEScoreMicro.Domain.Entity.ZoneWalls
         // Navigation properties
         public ZoneWall ZoneWall { get; set; }
         public Guid ZoneWallId { get; set; }
-        public Building Building { get; set; }
     }
     public class WallDTO : WallFields
     {

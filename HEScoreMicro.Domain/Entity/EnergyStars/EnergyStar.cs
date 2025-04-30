@@ -3,7 +3,7 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.EnergyStars
 {
-    public class EnergyStarFields : IHasId, IHasBuildingId
+    public class EnergyStarFields : IHasId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

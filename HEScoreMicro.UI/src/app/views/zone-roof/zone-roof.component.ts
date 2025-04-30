@@ -131,7 +131,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       kneeWallPresent: [null],//ng-select
       kneeWallArea: [null],
       kneeWallInsulation: [null],
-      buildingId: [this.buildingId],
     })
     const construction = found.get('construction') as AbstractControl
     const exteriorFinish = found.get('exteriorFinish') as AbstractControl

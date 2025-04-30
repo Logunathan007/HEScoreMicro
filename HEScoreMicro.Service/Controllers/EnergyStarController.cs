@@ -17,17 +17,6 @@ namespace HEScoreMicro.Service.Controllers
             _energyStarOperations = energyStarOperations;
         }
 
-        [HttpGet("[action]/{Id}")]
-        public async Task<ActionResult<ResponseDTO<EnergyStarDTO>>> GetByBuildingId(Guid Id)
-        {
-            var res = await _energyStarOperations.GetByBuidlgingId(Id);
-            if (res.Failed)
-            {
-                return StatusCode(204);
-            }
-            return Ok(res);
-        }
-
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<EnergyStarDTO>>> Post([FromBody] EnergyStarDTO energyStarDTO)
         {

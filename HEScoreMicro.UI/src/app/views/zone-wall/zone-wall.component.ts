@@ -95,7 +95,6 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   wallInputs(): FormGroup {
     var wall = this.fb.group({
       id: [null],
-      buildingId: [this.buildingId],
       adjacentTo: ["Outside", [Validators.required]],
       construction: [null, [Validators.required]],
       exteriorFinish: [null, [Validators.required]],

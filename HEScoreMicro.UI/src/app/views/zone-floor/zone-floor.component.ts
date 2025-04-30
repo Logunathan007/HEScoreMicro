@@ -104,7 +104,6 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
       slabInsulationLevel: [null,],
       floorInsulationLevel: [null,],
       foundationwallsInsulationLevel: [null,],
-      buildingId: [this.buildingId],
     })
 
     const foundationType = found.get('foundationType') as AbstractControl

@@ -2,10 +2,9 @@
 
 namespace HEScoreMicro.Domain.Entity.ZoneWindows
 {
-    public class WindowFields : IHasBuildingId,IHasId
+    public class WindowFields : IHasId
     {
         public Guid Id { get; set; }
-        public Guid BuildingId { get; set; }
         public bool? SolarScreen { get; set; }
         public bool? KnowWindowSpecification { get; set; }
         public double? UFactor { get; set; }
@@ -19,7 +18,6 @@ namespace HEScoreMicro.Domain.Entity.ZoneWindows
         // Navigation properties
         public ZoneWindow ZoneWindow { get; set; }
         public Guid ZoneWindowId { get; set; }
-        public Building Building { get; set; }
     }
     public class WindowDTO : WindowFields
     {

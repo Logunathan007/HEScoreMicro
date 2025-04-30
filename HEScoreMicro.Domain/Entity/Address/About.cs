@@ -1,6 +1,6 @@
 ﻿namespace HEScoreMicro.Domain.Entity.Address
 {
-    public class AboutFields : IHasId, IHasBuildingId
+    public class AboutFields : IHasId
     {
         public Guid Id { get; set; }
         public DateTime AssessmentDate { get; set; }

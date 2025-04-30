@@ -4,6 +4,7 @@ using HEScoreMicro.Application.HPXMLClasses.Systems;
 using HEScoreMicro.Application.HPXMLClasses.ZoneFloors;
 using HEScoreMicro.Application.HPXMLClasses.ZoneRoofs;
 using HEScoreMicro.Application.HPXMLClasses.ZoneWalls;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace HEScoreMicro.Application.HPXMLClasses
@@ -42,6 +43,7 @@ namespace HEScoreMicro.Application.HPXMLClasses
         public Site Site { get; set; }
         public ProjectStatus ProjectStatus { get; set; }
         public BuildingDetails BuildingDetails { get; set; }
+        [XmlElement("extension")]
         public BuildingExtension extension { get; set; }
     }
 

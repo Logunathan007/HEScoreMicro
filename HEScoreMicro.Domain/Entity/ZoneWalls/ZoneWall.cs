@@ -2,7 +2,7 @@
 
 namespace HEScoreMicro.Domain.Entity.ZoneWalls
 {
-    public class ZoneWallFields : IHasBuildingId, IHasId
+    public class ZoneWallFields : IHasId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

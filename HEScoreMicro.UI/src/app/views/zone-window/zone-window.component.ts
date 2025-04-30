@@ -123,7 +123,6 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   windowInputs(): FormGroup {
     var window = this.fb.group({
       id: [null],
-      buildingId: [this.buildingId],
       solarScreen: [null, [Validators.required]],
       knowWindowSpecification: [null, [Validators.required]],
       uFactor: [null],

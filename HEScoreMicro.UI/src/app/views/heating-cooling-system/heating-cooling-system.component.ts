@@ -132,7 +132,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   systemsInputs(): FormGroup {
     var systems = this.fb.group({
       id: [null],
-      buildingId: [this.buildingId],
       percentAreaServed: [null],
       heatingSystemType: [null],
       heatingTracker: [{ efficiencyValue: false, efficiencyOptions: false, efficiencyUnit: false, ducts: false }],
@@ -374,7 +373,6 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   ductLocationInputs(): FormGroup {
     var ducts = this.fb.group({
       id: [null],
-      buildingId: [this.buildingId],
       location: [null, [Validators.required]],
       percentageOfDucts: [null],
       ductsIsInsulated: [null, [Validators.required]],

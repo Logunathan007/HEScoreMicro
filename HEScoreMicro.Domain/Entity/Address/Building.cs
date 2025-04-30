@@ -8,11 +8,10 @@ using HEScoreMicro.Domain.Entity.ZoneWindows;
 
 namespace HEScoreMicro.Domain.Entity.Address
 {
-    public class BuildingFields : IHasId, IHasBuildingId
+    public class BuildingFields : IHasId
     {
         public Guid Id { get; set; }
         public int? Number { get; set; }
-        public Guid BuildingId { get; set; } = Guid.Empty;
     }
 
     public class Building : BuildingFields

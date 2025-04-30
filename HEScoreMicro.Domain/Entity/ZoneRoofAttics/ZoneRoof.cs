@@ -3,7 +3,7 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.ZoneRoofAttics
 {
-    public class ZoneRoofFields : IHasBuildingId,IHasId
+    public class ZoneRoofFields : IHasId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

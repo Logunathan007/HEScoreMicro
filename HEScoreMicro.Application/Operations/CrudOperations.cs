@@ -10,16 +10,14 @@ namespace HEScoreMicro.Application.CrudOperations
     public interface ICrudOperations<TEntity, TEntityDTO>
     {
         public Task<ResponseDTO<TEntityDTO>> GetById(Guid Id);
-        public Task<ResponseDTO<TEntityDTO>> GetByBuidlgingId(Guid Id);
-        public Task<ResponseDTO<TEntityDTO>> Add(TEntity entity);
         public Task<ResponseDTO<TEntityDTO>> Add(TEntityDTO entityDTO);
         public Task<ResponseDTO<ICollection<TEntityDTO>>> GetAll();
-        public Task<ResponseDTO<TEntityDTO>> Update(TEntity entity);
         public Task<ResponseDTO<TEntityDTO>> Update(TEntityDTO entityDTO);
+        public Task<ResponseDTO<TEntityDTO>> Update(TEntity entity);
         public Task<ResponseDTO<TEntityDTO>> Delete(Guid Id);
         public Task<ResponseDTO<TEntityDTO>> BulkDelete(IEnumerable<Guid> ids);
     }
-    public class CrudOperations<TEntity, TEntityDTO> : ICrudOperations<TEntity, TEntityDTO> where TEntity : class, IHasId, IHasBuildingId
+    public class CrudOperations<TEntity, TEntityDTO> : ICrudOperations<TEntity, TEntityDTO> where TEntity : class, IHasId
     {
         private DbSet<TEntity> _table { get; set; }
         private string TableName { get; set; }
@@ -42,16 +40,6 @@ namespace HEScoreMicro.Application.CrudOperations
             var entityDTO = _mapper.Map<TEntityDTO>(entities);
             return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Fetched", Data = entityDTO };
         }
-        public virtual async Task<ResponseDTO<TEntityDTO>> GetByBuidlgingId(Guid Id)
-        {
-            var entities = await _table.AsNoTracking().FirstOrDefaultAsync(obj => obj.BuildingId == Id);
-            if (entities == null)
-            {
-                return new ResponseDTO<TEntityDTO> { Failed = true, Message = $"{TableName} not found" };
-            }
-            var entityDTO = _mapper.Map<TEntityDTO>(entities);
-            return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Fetched", Data = entityDTO };
-        }
         public async Task<ResponseDTO<ICollection<TEntityDTO>>> GetAll()
         {
             var entities = await _table.ToListAsync();
@@ -65,7 +53,7 @@ namespace HEScoreMicro.Application.CrudOperations
         public async Task<ResponseDTO<TEntityDTO>> Add(TEntity entity)
         {
             await _table.AddAsync(entity);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             var entityDTO = _mapper.Map<TEntityDTO>(entity);
             return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Added", Data = entityDTO };
         }
@@ -77,9 +65,9 @@ namespace HEScoreMicro.Application.CrudOperations
         public async Task<ResponseDTO<TEntityDTO>> Update(TEntity entity)
         {
             _table.Update(entity);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
             var entityDTO = _mapper.Map<TEntityDTO>(entity);
-            return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Updated", Data=entityDTO };
+            return new ResponseDTO<TEntityDTO> { Failed = false, Message = $"{TableName} Updated", Data = entityDTO };
         }
         public async Task<ResponseDTO<TEntityDTO>> Update(TEntityDTO entityDTO)
         {

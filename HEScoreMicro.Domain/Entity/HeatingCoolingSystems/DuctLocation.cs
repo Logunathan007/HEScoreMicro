@@ -1,20 +1,18 @@
-﻿using HEScoreMicro.Domain.Entity.Address;
-
+﻿
 namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
 {
-    public class DuctLocationFields : IHasId, IHasBuildingId
+    public class DuctLocationFields : IHasId
     {
         public Guid Id { get; set; }
-        public Guid BuildingId { get; set; }
         public string? Location { get; set; }
         public double? PercentageOfDucts { get; set; }
         public bool? DuctsIsInsulated { get; set; }
     }
     public class DuctLocation : DuctLocationFields
     {
+        // Navigation properties
         public Guid SystemsId { get; set; }
         public Systems Systems { get; set; }
-        public Building Building { get; set; }
     }
     public class DuctLocationDTO : DuctLocationFields
     {

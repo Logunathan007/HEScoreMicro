@@ -3,6 +3,7 @@ using System;
 using HEScoreMicro.Persistence.MakeConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HEScoreMicro.Persistence.Migrations
 {
     [DbContext(typeof(DbConnect))]
-    partial class DbConnectModelSnapshot : ModelSnapshot
+    [Migration("20250430065853_mig-6")]
+    partial class mig6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace HEScoreMicro.Persistence.Migrations
 
                     b.Property<bool>("BlowerDoorTestConducted")
                         .HasColumnType("boolean");
-
-                    b.Property<Guid>("BuildingId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Comments")
                         .HasColumnType("text");
@@ -72,9 +72,6 @@ namespace HEScoreMicro.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BuildingId")
-                        .IsUnique();
 
                     b.ToTable("About");
                 });
@@ -123,10 +120,15 @@ namespace HEScoreMicro.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AboutId")
+                        .HasColumnType("uuid");
+
                     b.Property<int?>("Number")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AboutId");
 
                     b.ToTable("Building");
                 });
@@ -606,17 +608,6 @@ namespace HEScoreMicro.Persistence.Migrations
                     b.ToTable("ZoneWindow");
                 });
 
-            modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address.About", b =>
-                {
-                    b.HasOne("HEScoreMicro.Domain.Entity.Address.Building", "Building")
-                        .WithOne("About")
-                        .HasForeignKey("HEScoreMicro.Domain.Entity.Address.About", "BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-                });
-
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address.Address", b =>
                 {
                     b.HasOne("HEScoreMicro.Domain.Entity.Address.Building", "Building")
@@ -626,6 +617,17 @@ namespace HEScoreMicro.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Building");
+                });
+
+            modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address.Building", b =>
+                {
+                    b.HasOne("HEScoreMicro.Domain.Entity.Address.About", "About")
+                        .WithMany()
+                        .HasForeignKey("AboutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("About");
                 });
 
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.EnergyStars.EnergyStar", b =>
@@ -784,9 +786,6 @@ namespace HEScoreMicro.Persistence.Migrations
 
             modelBuilder.Entity("HEScoreMicro.Domain.Entity.Address.Building", b =>
                 {
-                    b.Navigation("About")
-                        .IsRequired();
-
                     b.Navigation("Address")
                         .IsRequired();
 

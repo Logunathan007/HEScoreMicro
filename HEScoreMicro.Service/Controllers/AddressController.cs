@@ -17,17 +17,6 @@ namespace HEScoreMicro.Service.Controllers
         {
             _addressOperations = addressOperations;
         }
-
-/*        [HttpGet("{Id}")]
-        public async Task<ActionResult<ResponseDTO<AddressDTO>>> GetById(Guid Id)
-        {
-            var res = await _addressOperations.GetById(Id);
-            if (res.Failed)
-            {
-                return StatusCode(204);
-            }
-            return Ok(res);
-        }*/
         [HttpGet("[action]/{Id}")]
         public async Task<ActionResult<ResponseDTO<AddressDTO>>> GetByBuildingId(Guid Id)
         {
@@ -38,18 +27,6 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(res);
         }
-
-/*        [HttpGet("[action]")]
-        public async Task<ActionResult<ResponseDTO<ICollection<AddressDTO>>>> GetAll()
-        {
-            var res = await _addressOperations.GetAll();
-            if (res.Failed)
-            {
-                return NotFound(res);
-            }
-            return Ok(res);
-        }*/
-
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<AddressDTO>>> Post([FromBody] AddressDTO addressDTO)
         {
@@ -71,16 +48,5 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(res);
         }
-
-/*        [HttpDelete("{Id}")]
-        public async Task<ActionResult<ResponseDTO<AddressDTO>>> Delete(Guid Id)
-        {
-            var res = await _addressOperations.Delete(Id);
-            if (res.Failed)
-            {
-                return NotFound(res);
-            }
-            return Ok(res);
-        }*/
     }
 }

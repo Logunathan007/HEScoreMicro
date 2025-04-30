@@ -15,38 +15,6 @@ namespace HEScoreMicro.Service.Controllers
             _waterHeaterOperations = waterHeaterOperations;
         }
 
-/*        [HttpGet("{Id}")]
-        public async Task<ActionResult<ResponseDTO<WaterHeaterDTO>>> GetById(Guid Id)
-        {
-            var res = await _waterHeaterOperations.GetById(Id);
-            if (res.Failed)
-            {
-                return NotFound(res);
-            }
-            return Ok(res);
-        }*/
-        [HttpGet("[action]/{Id}")]
-        public async Task<ActionResult<ResponseDTO<WaterHeaterDTO>>> GetByBuildingId(Guid Id)
-        {
-            var res = await _waterHeaterOperations.GetByBuidlgingId(Id);
-            if (res.Failed)
-            {
-                return StatusCode(204);
-            }
-            return Ok(res);
-        }
-
-/*        [HttpGet("[action]")]
-        public async Task<ActionResult<ResponseDTO<ICollection<WaterHeaterDTO>>>> GetAll()
-        {
-            var res = await _waterHeaterOperations.GetAll();
-            if (res.Failed)
-            {
-                return NotFound(res);
-            }
-            return Ok(res);
-        }*/
-
         [HttpPost]
         public async Task<ActionResult<ResponseDTO<WaterHeaterDTO>>> Post([FromBody] WaterHeaterDTO waterHeaterDTO)
         {
@@ -68,16 +36,5 @@ namespace HEScoreMicro.Service.Controllers
             }
             return Ok(res);
         }
-
-/*        [HttpDelete("{Id}")]
-        public async Task<ActionResult<ResponseDTO<WaterHeaterDTO>>> Delete(Guid Id)
-        {
-            var res = await _waterHeaterOperations.Delete(Id);
-            if (res.Failed)
-            {
-                return NotFound(res);
-            }
-            return Ok(res);
-        }*/
     }
 }

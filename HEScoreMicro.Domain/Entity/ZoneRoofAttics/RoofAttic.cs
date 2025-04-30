@@ -3,16 +3,16 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.ZoneRoofAttics
 {
-    public class RoofAtticFields : IHasBuildingId,IHasId
+    public class RoofAtticFields : IHasId
     {
         public Guid Id { get; set; }
         public string? AtticOrCeilingType { get; set; }
-        
+
         //Roof Assembly
         public string? Construction { get; set; }
         public string? ExteriorFinish { get; set; }
-/*        public double? CathedralCeilingArea { get; set; }
-        public int? CathedralCeilingInsulation { get; set; }*/ // same variables are use roofarea & roofinsulation
+        /*        public double? CathedralCeilingArea { get; set; }
+                public int? CathedralCeilingInsulation { get; set; }*/ // same variables are use roofarea & roofinsulation
         public double? RoofArea { get; set; }
         public int? RoofInsulation { get; set; }
         public string? RoofColor { get; set; }
@@ -34,16 +34,14 @@ namespace HEScoreMicro.Domain.Entity.ZoneRoofAttics
         //Attic Floor
         public double? AtticFloorArea { get; set; }
         public int? AtticFloorInsulation { get; set; }
-        
+
         //Knee Wall
         public bool? KneeWallPresent { get; set; }
         public double? KneeWallArea { get; set; }
         public int? KneeWallInsulation { get; set; }
-        public Guid BuildingId { get; set; }
     }
     public class RoofAttic : RoofAtticFields
     {
-        public Building Building { get; set; }
         public ZoneRoof ZoneRoof { get; set; }
         public Guid ZoneRoofId { get; set; }
     }

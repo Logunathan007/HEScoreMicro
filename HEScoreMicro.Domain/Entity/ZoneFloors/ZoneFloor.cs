@@ -2,7 +2,7 @@
 
 namespace HEScoreMicro.Domain.Entity.ZoneFloors
 {
-    public class ZoneFloorFields : IHasBuildingId, IHasId
+    public class ZoneFloorFields : IHasId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }
@@ -18,7 +18,7 @@ namespace HEScoreMicro.Domain.Entity.ZoneFloors
     {
         public ICollection<FoundationDTO> Foundations { get; set; }
     }
-    public class FoundationFields : IHasBuildingId, IHasId
+    public class FoundationFields : IHasId
     {
         public Guid Id { get; set; }
         public string? FoundationType { get; set; }
@@ -26,7 +26,6 @@ namespace HEScoreMicro.Domain.Entity.ZoneFloors
         public int? SlabInsulationLevel { get; set; }
         public int? FloorInsulationLevel { get; set; }
         public int? FoundationwallsInsulationLevel { get; set; }
-        public Guid BuildingId { get; set; }
     }
     public class Foundation : FoundationFields
     {

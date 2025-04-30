@@ -2,7 +2,7 @@
 
 namespace HEScoreMicro.Domain.Entity.OtherSystems
 {
-    public class WaterHeaterFields : IHasId, IHasBuildingId
+    public class WaterHeaterFields : IHasId 
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

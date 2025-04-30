@@ -184,6 +184,10 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                             HVAC = hvac
                         },
                         GreenBuildingVerifications = (building.Data.EnergyStar?.EnergyStarPresent == true) ? new GreenBuildingVerifications() : null
+                    },
+                    extension = (building.Data.About.Comments == null) ? null : new BuildingExtension
+                    {
+                        Comments = building.Data.About.Comments,
                     }
                 },
                 Contractor = (building.Data.EnergyStar?.ContractorBusinessName != null) ? new Contractor()
@@ -857,7 +861,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         }
                     };
                 }
-                else if (zoneWall.Construction == "Wood Frame with Optimum Value Engineering(OVE)")
+                else if (zoneWall.Construction == "Wood Frame with Optimum Value Engineering (OVE)")
                 {
                     wall.WallType = new WallType
                     {
@@ -901,7 +905,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 }
                 else if (zoneWall.Construction == "Steel Frame")
                 {
-                    // TODO Need to clarify
+                    // TODO must need to clarify
+
                 }
 
                 //Wall Siding
@@ -1306,6 +1311,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     cs.CoolingSystemType = "evaporative cooler";
                     break;
             }
+            // TODO PercentAreaServed where i need to mention for heat cool heatpump
             if (system.PercentAreaServed != null)
             {
                 if (system.HeatingSystemType == "None")

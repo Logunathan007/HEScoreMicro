@@ -4,10 +4,9 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
 {
-    public class SystemsFields : IHasId, IHasBuildingId
+    public class SystemsFields : IHasId
     {
         public Guid Id { get; set; }
-        public Guid BuildingId { get; set; }
         public double? PercentAreaServed { get; set; }
         //Heating
         public string? HeatingSystemType { get; set; }
@@ -31,7 +30,8 @@ namespace HEScoreMicro.Domain.Entity.HeatingCoolingSystems
     {
         // Navigation properties
         public ICollection<DuctLocation> DuctLocations { get; set; } = new List<DuctLocation>();
-        public Building? Building { get; set; }
+        public HeatingCoolingSystem HeatingCoolingSystem { get; set; }
+        public Guid HeatingCoolingSystemId { get; set; }
     }
 
     public class SystemsDTO : SystemsFields

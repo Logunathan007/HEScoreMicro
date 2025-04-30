@@ -4,7 +4,7 @@ using HEScoreMicro.Domain.Entity.Address;
 
 namespace HEScoreMicro.Domain.Entity.ZoneWindows
 {
-    public class ZoneWindowFields : IHasBuildingId, IHasId
+    public class ZoneWindowFields : IHasId
     {
         public Guid Id { get; set; }
         public Guid BuildingId { get; set; }

@@ -4,8 +4,4 @@
     {
         public Guid Id { get; set; }
     }
-    public interface IHasBuildingId
-    {
-        public Guid BuildingId { get; set; }
-    }
 }

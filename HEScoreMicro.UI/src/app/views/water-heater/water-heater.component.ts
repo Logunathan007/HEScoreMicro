@@ -1,6 +1,6 @@
 import { WaterHeaterTypeOptions } from '../../shared/lookups/water-heater.lookup';
 import { UnitOptions, Year1998Options } from '../../shared/lookups/common.lookup';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Unsubscriber } from "../../shared/modules/unsubscribe/unsubscribe.component.";
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { WaterHeaterReadModel } from "../../shared/models/water-heater/water-heater.model";
@@ -98,8 +98,10 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
     return waterHeater;
   }
   energyValueValidation(waterHeaterType: string | null): ValidatorFn[] {
-    if (waterHeaterType == "Electric Instantaneous" || waterHeaterType == "Electric Storage") {
+    if (waterHeaterType == "Electric Instantaneous") {
       return [Validators.required, Validators.min(0.86), Validators.max(0.99)]
+    } else if (waterHeaterType == "Electric Storage") {
+      return [Validators.required, Validators.min(0.86), Validators.max(0.95)]
     } else if (waterHeaterType == "Propane (LPG) Storage" || waterHeaterType == "Natural Gas Storage") {
       return [Validators.required, Validators.min(0.5), Validators.max(0.95)]
     } else if (waterHeaterType == "Oil Storage") {
