@@ -12,6 +12,7 @@ namespace HEScoreMicro.Application.HPXMLClasses.ZoneWalls
     {
         public SystemIdentifier SystemIdentifier { get; set; }
         public double? Area { get; set; }
+        public string? Orientation { get; set; }
         public FrameType FrameType { get; set; }
         public string? GlassLayers { get; set; }
         public string? GlassType { get; set; }

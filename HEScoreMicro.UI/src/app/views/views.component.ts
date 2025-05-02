@@ -30,7 +30,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   floorType2: string | null | undefined;
   footPrint: number | null | undefined;
   totalRoofArea: number | null | undefined;
-  windowsAvailable: number[] | null = null //0->Front,1->Back,2->Right,3->Left
+  windowsAvailable: number[] = [] //0->Front,1->Back,2->Right,3->Left
 
   constructor(
     public route: ActivatedRoute, public buildingService: BuildingService, public router: Router,

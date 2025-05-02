@@ -24,7 +24,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   zoneWindowForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('buildingType') buildingType!: number | null;
-  @Input('windowsAvailable') windowsAvailable: number[] | null = [];
+  @Input('windowsAvailable') windowsAvailable: number[] = [];
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
   @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
@@ -123,6 +123,7 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   windowInputs(): FormGroup {
     var window = this.fb.group({
       id: [null],
+      facing: [0, [Validators.required]],
       solarScreen: [null, [Validators.required]],
       knowWindowSpecification: [null, [Validators.required]],
       uFactor: [null],
@@ -215,13 +216,18 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       this.zoneWindowForm.patchValue(this.zoneWindowReadModel)
     }
   }
-
+  updateFacingValues() {
+    this.windowsObj.controls.forEach((control, index) => {
+      control.get('facing')?.setValue(this.windowsAvailable[index]);
+    });
+  }
   onSave() {
     if (this.zoneWindowForm.invalid) {
       this.zoneWindowForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    this.updateFacingValues();
     this.zoneWindowReadModel = this.zoneWindowForm.value
     this.zoneWindowReadModel = removeNullIdProperties(this.zoneWindowReadModel);
     if (this.zoneWindowForm.value?.id) {

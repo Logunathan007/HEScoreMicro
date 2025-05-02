@@ -33,12 +33,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
     public class HPXMLObjectCreation(IBuildingOperations _buildingOperations) : IHPXMLObjectCreation
     {
         // Interface Implemented Methods =========================================================================
+        private string[] Directions = new string[4];
         public async Task<ResponseDTO<HPXML>> CreateHPXMLObject(Guid Id)
         {
             var building = await _buildingOperations.GetById(Id);
 
             // Inside Enclosure
-            //
             List<Floor> floors = new List<Floor>();
             List<WallHPXML> walls = new List<WallHPXML>();
             List<Attic> attics = new List<Attic>();
@@ -65,6 +65,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     Message = "About data not found."
                 };
             }
+
+            // before zone window,wall generation we need to generate the direction
+            this.generateDirections(building.Data.About.DirectionFacedByFrontOfHome);
 
             if (building.Data.ZoneRoof != null)
                 this.GenerateAtticsObject(building.Data.ZoneRoof, attics, floors, walls, roofs, skylights);
@@ -228,6 +231,27 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 Message = "HPXML object created successfully."
             };
         }
+
+        public void generateDirections(string direction)
+        {
+            string[] tempDirection;
+            if (direction.Length <= 5)
+            {
+                tempDirection = ["north", "west", "south", "east"];
+            }
+            else
+            {
+                tempDirection = ["northwest", "southwest", "southeast", "northeast"];
+            }
+            int indexOfDirection = Array.IndexOf(tempDirection, direction);
+            if (indexOfDirection == -1) return;
+            for (int i = 0; i < tempDirection.Length; i++)
+            {
+                int circularIndex = (indexOfDirection + i) % tempDirection.Length;
+                this.Directions[i] = tempDirection[circularIndex];
+            }
+        }
+
         public async Task<ResponseDTO<string>> GenerateHPXMLString(HPXML hpxml)
         {
             var serializer = new XmlSerializer(typeof(HPXML));
@@ -774,7 +798,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = idref + "-insulation-1"
                     },
-                    AssemblyEffectiveRValue = zoneFloor.FoundationwallsInsulationLevel,
+                    Layer = new List<Layer>
+                    {
+                        new Layer
+                        {
+                            NominalRValue = zoneFloor.FoundationwallsInsulationLevel
+                        }
+                    }
                 }
             };
             foundationWalls.Add(foundationWall);
@@ -802,6 +832,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         public void GenerateZoneWallsObject(ZoneWallDTO zoneWallDTO, List<WallHPXML> walls)
         {
             int i = 1;
+            bool singleWall = zoneWallDTO.Walls.Count == 1;
             foreach (var zoneWall in zoneWallDTO.Walls)
             {
                 var id = "wall-" + i;
@@ -822,8 +853,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     },
                     InteriorAdjacentTo = "living space",
                     ExteriorAdjacentTo = this.GetExteriorAdjacentTo(zoneWall.AdjacentTo),
+                    Orientation = singleWall ? null : this.Directions[i - 1],
 
-                    // TODO Need to clarify
+                    // TODO must Need to clarify just for avoid errors
                     Area = zoneWallDTO.Walls.Count > 1 ? 20 : null
                 };
                 if (zoneWall.AdjacentTo != "Outside")
@@ -905,8 +937,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 }
                 else if (zoneWall.Construction == "Steel Frame")
                 {
-                    // TODO must need to clarify
-
+                    // TODO must need to clarify just for hide error
+                    wall.WallType = new WallType
+                    {
+                        WoodStud = new WoodStud
+                        {
+                            OptimumValueEngineering = true
+                        }
+                    };
                 }
 
                 //Wall Siding
@@ -940,14 +978,12 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             int i = 1;
             var listWindowArea = new List<double?>()
             {
-                zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaBack,
-                zoneWindowDTO.WindowAreaRight,zoneWindowDTO.WindowAreaLeft
+                // must maintain the order of the direction like frontend we get input
+                zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaLeft,
+                zoneWindowDTO.WindowAreaBack,zoneWindowDTO.WindowAreaRight,
             };
-            listWindowArea.Sort();
-            listWindowArea.Reverse();
-            List<string> exteriorWallIds = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.SystemIdentifier.Id).ToList(); ;
-            int exteriorWallCount = exteriorWallIds.Count;
-            int windowCount = zoneWindowDTO.Windows.Count;
+            bool singleWindow = zoneWindowDTO.Windows.Count == 1;
+            List<string> exteriorWallIds = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.SystemIdentifier.Id).ToList();
             foreach (var zoneWindow in zoneWindowDTO.Windows)
             {
                 var id = "window-" + i;
@@ -957,22 +993,9 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = id
                     },
-                    Area = listWindowArea[i - 1],
+                    Area = listWindowArea[zoneWindow.Facing],
+                    Orientation = singleWindow ? null : this.Directions[zoneWindow.Facing],
                 };
-                if (type == "Single-Family Detached")
-                {
-                    window.AttachedToWall = new AttachedToWall()
-                    {
-                        IdRef = exteriorWallCount == 1 ? "wall-1" : "wall-" + i
-                    };
-                }
-                else if (type == "Townhouse/Rowhouse/Duplex")
-                {
-                    window.AttachedToWall = new AttachedToWall()
-                    {
-                        IdRef = exteriorWallIds[i - 1]
-                    };
-                }
 
                 if (zoneWindow.KnowWindowSpecification == true)
                 {
@@ -1263,6 +1286,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 if (id.StartsWith("system-2"))
@@ -1274,6 +1298,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 // else create new distribution system
@@ -1347,6 +1372,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 if (id.StartsWith("system-2"))
@@ -1358,6 +1384,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 // else create new distribution system
@@ -1463,6 +1490,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 if (id.StartsWith("system-2"))
@@ -1474,6 +1502,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        return;
                     }
                 }
                 // else create new distribution system

@@ -2,6 +2,7 @@
 export interface WindowReadModel {
   id?: string;
   buildingId: string;
+  facing:number;
   solarScreen: boolean | null;
   knowWindowSpecification: boolean | null;
   uFactor: number | null;

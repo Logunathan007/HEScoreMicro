@@ -5,6 +5,7 @@ namespace HEScoreMicro.Domain.Entity.ZoneWindows
     public class WindowFields : IHasId
     {
         public Guid Id { get; set; }
+        public int Facing { get; set; } // 0 = North, 1 = West, 2 = South, 3 = East
         public bool? SolarScreen { get; set; }
         public bool? KnowWindowSpecification { get; set; }
         public double? UFactor { get; set; }

@@ -95,6 +95,7 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
   wallInputs(): FormGroup {
     var wall = this.fb.group({
       id: [null],
+      facing: [0, [Validators.required]],
       adjacentTo: ["Outside", [Validators.required]],
       construction: [null, [Validators.required]],
       exteriorFinish: [null, [Validators.required]],
@@ -164,13 +165,18 @@ export class ZoneWallComponent extends Unsubscriber implements OnInit {
       this.zoneWallForm.patchValue(this.zoneWallReadModel)
     }
   }
-
+  updateFacingValues() {
+    this.wallsObj.controls.forEach((control, index) => {
+      control.get('facing')?.setValue(index);
+    });
+  }
   onSave() {
     if (this.zoneWallForm.invalid) {
       this.zoneWallForm.markAllAsTouched();
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    this.updateFacingValues();
     this.zoneWallReadModel = this.zoneWallForm.value
     this.zoneWallReadModel = removeNullIdProperties(this.zoneWallReadModel);
     if (this.zoneWallForm.value?.id) {

@@ -55,9 +55,9 @@ export function getDirection(index: number | null | undefined): string {
     case 0:
       return "Front"
     case 1:
-      return "Back"
-    case 2:
       return "Right"
+    case 2:
+      return "Back"
     case 3:
       return "Left"
   }
