@@ -193,7 +193,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         Comments = building.Data.About.Comments,
                     }
                 },
-                Contractor = (building.Data.EnergyStar.EnergyStarPresent == true) ? new Contractor()
+                Contractor = (building.Data.EnergyStar?.EnergyStarPresent == true) ? new Contractor()
                 {
                     ContractorDetails = new ContractorDetails
                     {
@@ -207,7 +207,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                             {
                                 Id = "contractor-1-businessinfo-1"
                             },
-                            BusinessName = building.Data.EnergyStar.ContractorBusinessName,
+                            BusinessName = building.Data.EnergyStar?.ContractorBusinessName,
                             extension = (building.Data.EnergyStar?.ContractorZipCode != null) ? new BusinessInfoextension
                             {
                                 ZipCode = building.Data.EnergyStar?.ContractorZipCode?.ToString("D5")
@@ -215,7 +215,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         }
                     }
                 } : null,
-                Project = building.Data.EnergyStar.EnergyStarPresent == true ? new Project()
+                Project = building.Data.EnergyStar?.EnergyStarPresent == true ? new Project()
                 {
                     ProjectDetails = new ProjectDetails
                     {
@@ -385,7 +385,6 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         this.GenerateAtticFloorObject(zoneRoofDTO, floors, attic.AttachedToFloor.IdRef);
                         break;
                 }
-
                 attics.Add(attic);
                 i++;
             }
@@ -856,7 +855,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
         {
             int i = 1;
             bool singleWall = zoneWallDTO.Walls.Count == 1;
-            foreach (var zoneWall in zoneWallDTO.Walls)
+            var zoneWalls = zoneWallDTO.Walls.OrderBy(wall => wall.Facing).ToList();
+            foreach (var zoneWall in zoneWalls)
             {
                 var id = "wall-" + i;
 
@@ -970,10 +970,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     // TODO must need to clarify just for hide error
                     wall.WallType = new WallType
                     {
-                        WoodStud = new WoodStud
-                        {
-                            OptimumValueEngineering = true
-                        }
+                        WoodStud = new WoodStud()
                     };
                 }
 
@@ -1012,8 +1009,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaRight,
                 zoneWindowDTO.WindowAreaBack,zoneWindowDTO.WindowAreaLeft
             };
-            List<WindowDTO> Windows = (List<WindowDTO>)zoneWindowDTO.Windows;
-            List<string> exteriorWallIds = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.SystemIdentifier.Id).ToList();
+            var Windows = zoneWindowDTO.Windows.OrderBy(obj => obj.Facing).ToList() ;
+            List<string> exteriorWallOrientations = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.Orientation).ToList();
             bool sfd = false;
             if (type == "Single-Family Detached")
             {
@@ -1033,7 +1030,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         Id = id
                     },
                     Area = listWindowArea[sfd ? i - 1 : zoneWindow.Facing],
-                    Orientation = this.Directions[sfd ? i - 1 : zoneWindow.Facing],
+                    Orientation = sfd ? this.Directions[i - 1] : exteriorWallOrientations[i-1],
                 };
 
                 if (zoneWindow.KnowWindowSpecification == true)
@@ -1411,6 +1408,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        coolingSystems.Add(cs);
                         return;
                     }
                 }
@@ -1423,6 +1421,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        coolingSystems.Add(cs);
                         return;
                     }
                 }

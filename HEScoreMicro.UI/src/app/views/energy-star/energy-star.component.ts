@@ -51,7 +51,7 @@ export class EnergyStarComponent extends Unsubscriber implements OnInit {
     var energyStar = this.fb.group({
       id: [null],
       buildingId: [this.buildingId],
-      energyStarPresent: [false, Validators.required],
+      energyStarPresent: [null, Validators.required],
       startDate: [null,],
       completionDate: [null,],
       contractorBusinessName: [null,],

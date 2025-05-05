@@ -21,6 +21,8 @@
               id="assessmentDate"
               placeholder="Assessment Date"
               bsDatepicker
+              [minDate]="minDate"
+              [maxDate]="maxDate"
             />
             <div
               class="errormsg"
@@ -387,7 +389,11 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.aboutForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+        <button
+          type="button"
+          class="bg-secondary btn-style"
+          (click)="move.emit(true)"
+        >
           Next
         </button>
       </div>

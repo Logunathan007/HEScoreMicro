@@ -44,13 +44,13 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   ductLocationCountOptions = DuctLocationCountOptions
   heatingEfficiencyUnitOptions = HeatingEfficiencyUnitOptions
   year1998Options = Year1998Options
-  ductLocationOptions:any
+  ductLocationOptions: any
 
   get heatingCoolingSystemControl() {
     return this.heatingCoolingSystemForm.controls;
   }
 
-  get systemsObj() {
+  get systemsObj(): FormArray {
     return this.heatingCoolingSystemControl['systems'] as FormArray
   }
 
@@ -152,7 +152,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
       ductLocationCount: [null, [Validators.required]],
       ductLocations: this.fb.array([]),
     })
-
+    const percentAreaServed = systems.get('percentAreaServed') as AbstractControl
     const heatingTracker = systems.get('heatingTracker') as AbstractControl
     const heatingSystemType = systems.get('heatingSystemType') as AbstractControl
     const knowHeatingEfficiency = systems.get('knowHeatingEfficiency') as AbstractControl
@@ -170,6 +170,23 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     const ductAreProfessionallySealed = systems.get('ductAreProfessionallySealed') as AbstractControl
     const ductLocationCount = systems.get('ductLocationCount') as AbstractControl
     const ductLocations = systems.get('ductLocations') as FormArray
+
+    percentAreaServed?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: number) => {
+      const controlArray = this.systemsObj.controls?.map(
+        (obj: AbstractControl) => obj.get('percentAreaServed')!
+      );
+      if (controlArray.length === 2) {
+        const index = controlArray.indexOf(percentAreaServed);
+        const otherIndex = index === 0 ? 1 : 0;
+        const otherControl = controlArray[otherIndex];
+        // Avoid setting value if it's already correct
+        const newValue = 100 - val;
+        if (otherControl.value !== newValue) {
+          otherControl.setValue(newValue, { emitEvent: false });
+          otherControl.updateValueAndValidity();
+        }
+      }
+    });
 
     const heatingSystemTypeValidation = (control: AbstractControl): ValidationErrors | null => {
       let heatType = control?.value

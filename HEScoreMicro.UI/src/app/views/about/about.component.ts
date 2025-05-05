@@ -31,7 +31,8 @@ export class AboutComponent extends Unsubscriber implements OnInit {
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
   manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
-
+  minDate = new Date('2010-01-01')
+  maxDate = new Date()
   @Output() myEvent = new EventEmitter<any>();
 
   get aboutControl() {
@@ -83,12 +84,10 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       let val = control.value / (storiesAboveGroundLevel.value ?? 1)
       if (val < 250) {
         return { min: { min: 250 * (storiesAboveGroundLevel.value ?? 1) } }
-      } else if (val > 25000) {
-        return { max: { max: 25000 * (storiesAboveGroundLevel.value ?? 1) } }
       }
       return null;
     }
-    setValidations(totalConditionedFloorArea, [Validators.required, footPrintValidator])
+    setValidations(totalConditionedFloorArea, [Validators.required, footPrintValidator, Validators.max(25000)])
 
     storiesAboveGroundLevel?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((val: any) => {
       totalConditionedFloorArea.updateValueAndValidity();
