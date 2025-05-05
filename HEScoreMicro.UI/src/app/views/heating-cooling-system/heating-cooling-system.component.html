@@ -440,7 +440,7 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.heatingCoolingSystemForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+        <button type="button" class="bg-secondary btn-style" [disabled]="!this.heatingCoolingSystemForm.value?.id"  (click)="move.emit(true)">
           Next
         </button>
       </div>

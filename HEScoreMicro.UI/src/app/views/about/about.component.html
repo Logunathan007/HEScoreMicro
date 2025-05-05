@@ -270,7 +270,7 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.aboutForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+        <button type="button" class="bg-secondary btn-style" [disabled]="!this.aboutForm.value?.id" (click)="move.emit(true)">
           Next
         </button>
       </div>

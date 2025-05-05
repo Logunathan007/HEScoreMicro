@@ -255,7 +255,7 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.zoneWindowForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+        <button type="button" [disabled]="!this.zoneWindowForm.value?.id" class="bg-secondary btn-style" (click)="move.emit(true)">
           Next
         </button>
       </div>

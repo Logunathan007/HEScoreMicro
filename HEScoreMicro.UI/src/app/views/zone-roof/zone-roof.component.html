@@ -458,7 +458,7 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.zoneRoofForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+        <button type="button" class="bg-secondary btn-style" [disabled]="!this.zoneRoofForm.value?.id" (click)="move.emit(true)">
           Next
         </button>
       </div>

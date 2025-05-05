@@ -67,6 +67,7 @@ export class EnergyStarComponent extends Unsubscriber implements OnInit {
       resetValuesAndValidations([startDate, completionDate, contractorBusinessName, contractorZipCode]);
       if (val) {
         setValidations([startDate, completionDate, contractorBusinessName, contractorZipCode])
+        setValidations(contractorZipCode, [Validators.required, Validators.min(1), Validators.max(99999)])
       }
     })
     return energyStar;
