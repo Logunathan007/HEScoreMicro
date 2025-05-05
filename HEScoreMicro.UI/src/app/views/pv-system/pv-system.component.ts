@@ -21,15 +21,13 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
   //variable initializations
   pVSystemForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
-  @Output('update')
-  updateEvent: EventEmitter<EmitterModel<PVSystemReadModel>> = new EventEmitter();
+  @Output('update') updateEvent: EventEmitter<EmitterModel<PVSystemReadModel>> = new EventEmitter();
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   @Input('input') pVSystemReadModel!: PVSystemReadModel;
   booleanOptions = BooleanOptions
   anglePanelsAreTiltedOptions = AnglePanelsAreTiltedOptions
   orientationOptions = OrientationOptions
   year2000Options = Year2000Options
-
-
 
   get pVSystemControl() {
     return this.pVSystemForm.controls;
@@ -140,10 +138,5 @@ export class PVSystemComponent extends Unsubscriber implements OnInit {
       })
     }
   }
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
-  }
-
 }
 

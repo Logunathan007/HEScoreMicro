@@ -19,14 +19,15 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
 })
 export class AboutComponent extends Unsubscriber implements OnInit {
   //variable initializations
-  aboutForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('input') aboutReadModel!: AboutReadModel | undefined;
   @Input('buildingType') buildingType!: number | null;
 
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<AboutReadModel>> = new EventEmitter();
 
+  aboutForm!: FormGroup | any;
   booleanOptions = BooleanOptions
   orientationOptions = OrientationOptions
   manufacturedHomeTypeOptions = ManufacturedHomeTypeOptions
@@ -157,10 +158,5 @@ export class AboutComponent extends Unsubscriber implements OnInit {
       }
     }
   }
-
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
-  }
-
 }
+

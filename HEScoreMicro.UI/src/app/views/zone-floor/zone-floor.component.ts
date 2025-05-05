@@ -26,6 +26,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
   @Input('buildingType') buildingType!: number | null;
   @Input('totalRoofArea') totalRoofArea!: number | null | undefined;
   @Input('footPrint') footPrint: number | null | undefined;
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
 
   @Input('input') zoneFloorReadModel!: ZoneFloorReadModel;
   @Output('update')
@@ -226,10 +227,6 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     } else {
       arr.removeAt(1);
     }
-  }
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
   }
 }
 

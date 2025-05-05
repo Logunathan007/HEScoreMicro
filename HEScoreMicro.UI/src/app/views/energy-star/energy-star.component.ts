@@ -21,6 +21,7 @@ export class EnergyStarComponent extends Unsubscriber implements OnInit {
   @Input('buildingId') buildingId: string | null | undefined;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<EnergyStarReadModel>> = new EventEmitter();
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   @Input('input') energyStarReadModel!: EnergyStarReadModel;
   @Input('hasBoiler') hasBoiler!: boolean;
   booleanOptions = BooleanOptions
@@ -130,9 +131,5 @@ export class EnergyStarComponent extends Unsubscriber implements OnInit {
         }
       })
     }
-  }
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
   }
 }

@@ -213,7 +213,7 @@
       <button type="button" class="bg-primary btn-style" (click)="onSave()">
         {{ this.zoneFloorForm.value?.id ? "Update" : "Save" }}
       </button>
-      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+      <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
         Next
       </button>
     </div>

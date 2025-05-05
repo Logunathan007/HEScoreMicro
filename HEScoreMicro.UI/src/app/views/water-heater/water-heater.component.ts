@@ -23,6 +23,7 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
   @Input('buildingId') buildingId: string | null | undefined;
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<WaterHeaterReadModel>> = new EventEmitter();
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
   @Input('input') waterHeaterReadModel!: WaterHeaterReadModel;
   @Input('hasBoiler') hasBoiler!: boolean;
   booleanOptions = BooleanOptions
@@ -162,9 +163,5 @@ export class WaterHeaterComponent extends Unsubscriber implements OnInit {
         }
       })
     }
-  }
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
   }
 }

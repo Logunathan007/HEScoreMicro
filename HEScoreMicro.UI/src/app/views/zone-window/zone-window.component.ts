@@ -21,19 +21,20 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
 })
 export class ZoneWindowComponent extends Unsubscriber implements OnInit {
   //variable initializations
-  zoneWindowForm!: FormGroup | any;
   @Input('buildingId') buildingId: string | null | undefined;
   @Input('buildingType') buildingType!: number | null;
   @Input('windowsAvailable') windowsAvailable: number[] = [];
-  @Output('update')
-  updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
   @Input('input') zoneWindowReadModel!: ZoneWindowReadModel;
+
+  @Output('update') updateEvent: EventEmitter<EmitterModel<ZoneWindowReadModel>> = new EventEmitter();
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
 
   getDirection = getDirection
   booleanOptions = BooleanOptions
   paneOptions = PaneOptions
   frameMaterialOptions = EmptyOptions
   glazingTypeOptions = EmptyOptions
+  zoneWindowForm!: FormGroup | any;
 
   get zoneWindowControl() {
     return this.zoneWindowForm.controls;
@@ -104,10 +105,10 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
               setValidations(windowAreaFront, [Validators.required, Validators.min(0), Validators.max(999)])
               break;
             case 1:
-              setValidations(windowAreaBack, [Validators.required, Validators.min(0), Validators.max(999)])
+              setValidations(windowAreaRight, [Validators.required, Validators.min(0), Validators.max(999)])
               break;
             case 2:
-              setValidations(windowAreaRight, [Validators.required, Validators.min(0), Validators.max(999)])
+              setValidations(windowAreaBack, [Validators.required, Validators.min(0), Validators.max(999)])
               break;
             case 3:
               setValidations(windowAreaLeft, [Validators.required, Validators.min(0), Validators.max(999)])
@@ -216,11 +217,14 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
       this.zoneWindowForm.patchValue(this.zoneWindowReadModel)
     }
   }
+
   updateFacingValues() {
+
     this.windowsObj.controls.forEach((control, index) => {
       control.get('facing')?.setValue(this.windowsAvailable[index]);
     });
   }
+
   onSave() {
     if (this.zoneWindowForm.invalid) {
       this.zoneWindowForm.markAllAsTouched();
@@ -287,11 +291,6 @@ export class ZoneWindowComponent extends Unsubscriber implements OnInit {
         this.windowsObj.removeAt(this.windowsObj.length - 1);
       }
     }
-  }
-
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
   }
 
 }

@@ -30,6 +30,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
   @Input('floorType1') floorType1: string | null | undefined;
   @Input('floorType2') floorType2: string | null | undefined;
   @Input('input') heatingCoolingSystemReadModel!: HeatingCoolingSystemReadModel;
+  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
 
   @Output('update')
   updateEvent: EventEmitter<EmitterModel<HeatingCoolingSystemReadModel>> = new EventEmitter();
@@ -489,14 +490,5 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
     }
   }
 
-  @Output("move") move: EventEmitter<boolean> = new EventEmitter();
-  goNext() {
-    this.move.emit(true);
-  }
-
-  // ngOnDestroy() {
-  //   debugger
-  //   this.ductLocationOptions = []
-  // }
 }
 

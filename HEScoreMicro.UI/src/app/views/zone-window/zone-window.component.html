@@ -35,7 +35,7 @@
       </div>
       <div
         class="col-md-6"
-        *ngIf="buildingType == 0 || windowsAvailable?.includes(3)"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(1)"
       >
         <div class="input-box">
           <label class="required" for="windowAreaRight">
@@ -99,7 +99,7 @@
       </div>
       <div
         class="col-md-6"
-        *ngIf="buildingType == 0 || windowsAvailable?.includes(1)"
+        *ngIf="buildingType == 0 || windowsAvailable?.includes(3)"
       >
         <div class="input-box">
           <label class="required" for="windowAreaLeft">
@@ -182,7 +182,7 @@
                   ? " : " +
                     getDirection(
                       buildingType == 1
-                        ? windowsAvailable?.at(windowIndex)
+                        ? windowsAvailable.at(windowIndex)
                         : windowIndex
                     )
                   : ""
@@ -403,7 +403,7 @@
       <button type="button" class="bg-primary btn-style" (click)="onSave()">
         {{ this.zoneWindowForm.value?.id ? "Update" : "Save" }}
       </button>
-      <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+      <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
         Next
       </button>
     </div>

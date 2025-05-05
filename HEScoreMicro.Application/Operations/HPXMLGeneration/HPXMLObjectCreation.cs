@@ -92,7 +92,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 XMLTransactionHeaderInformation = new XMLTransactionHeaderInformation()
                 {
                     XMLType = "HPXML",
-                    XMLGeneratedBy = "Inpection Depot",
+                    XMLGeneratedBy = "Inspection Depot",
                     CreatedDateAndTime = DateTime.Now,
                     Transaction = "create",
                 },
@@ -193,7 +193,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         Comments = building.Data.About.Comments,
                     }
                 },
-                Contractor = (building.Data.EnergyStar?.ContractorBusinessName != null) ? new Contractor()
+                Contractor = (building.Data.EnergyStar.EnergyStarPresent == true) ? new Contractor()
                 {
                     ContractorDetails = new ContractorDetails
                     {
@@ -215,14 +215,14 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         }
                     }
                 } : null,
-                Project = new Project()
+                Project = building.Data.EnergyStar.EnergyStarPresent == true ? new Project()
                 {
                     ProjectDetails = new ProjectDetails
                     {
                         StartDate = building.Data?.EnergyStar?.StartDate?.ToString("yyyy-MM-dd"),
                         CompleteDateActual = building.Data?.EnergyStar?.CompletionDate?.ToString("yyyy-MM-dd"),
                     },
-                },
+                } : null,
             };
             return new ResponseDTO<HPXML>
             {
@@ -483,8 +483,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
 
             // Roof Area and Roof Insulation for type = 0
             roof.Area = roofAtticDTO.RoofArea;
-            roof.Insulation.AssemblyEffectiveRValue = roofAtticDTO.RoofInsulation;
-
+            roof.Insulation.Layer = new List<Layer>
+            {
+                new Layer
+                {
+                    NominalRValue =roofAtticDTO.RoofInsulation
+                }
+            };
             // Roof Skylights
             if (roofAtticDTO.SkylightsPresent == true)
             {
@@ -507,7 +512,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = idref + "-insulation-1"
                     },
-                    AssemblyEffectiveRValue = roofAtticDTO.AtticFloorInsulation
+                    Layer = new List<Layer>
+                    {
+                        new Layer
+                        {
+                            NominalRValue =roofAtticDTO.AtticFloorInsulation
+                        }
+                    }
                 }
             };
             floors.Add(floor);
@@ -536,7 +547,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             Id = idref + "-insulation-1"
                         },
-                        AssemblyEffectiveRValue = roofAtticDTO.KneeWallInsulation,
+                        Layer = new List<Layer>
+                        {
+                            new Layer
+                            {
+                                NominalRValue = roofAtticDTO.KneeWallInsulation
+                            }
+                        }
                     }
                 };
                 walls.Add(wall);
@@ -824,7 +841,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = idref + "-insulation-1"
                     },
-                    AssemblyEffectiveRValue = zoneFloor.FloorInsulationLevel,
+                    Layer = new List<Layer>
+                    {
+                        new Layer
+                        {
+                            NominalRValue = zoneFloor.FloorInsulationLevel
+                        }
+                    }
                 }
             };
             floors.Add(floor);
@@ -849,7 +872,13 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             Id = id + "-insulation-1"
                         },
-                        AssemblyEffectiveRValue = zoneWall.WallInsulationLevel,
+                        Layer = new List<Layer>
+                        {
+                            new Layer
+                            {
+                                NominalRValue = zoneWall.WallInsulationLevel
+                            }
+                        }
                     },
                     InteriorAdjacentTo = "living space",
                     ExteriorAdjacentTo = this.GetExteriorAdjacentTo(zoneWall.AdjacentTo),
@@ -890,6 +919,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                             {
                                 Rigid = "eps"
                             },
+                            NominalRValue = zoneWall.WallInsulationLevel
                         }
                     };
                 }
@@ -979,12 +1009,21 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
             var listWindowArea = new List<double?>()
             {
                 // must maintain the order of the direction like frontend we get input
-                zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaLeft,
-                zoneWindowDTO.WindowAreaBack,zoneWindowDTO.WindowAreaRight,
+                zoneWindowDTO.WindowAreaFront,zoneWindowDTO.WindowAreaRight,
+                zoneWindowDTO.WindowAreaBack,zoneWindowDTO.WindowAreaLeft
             };
-            bool singleWindow = zoneWindowDTO.Windows.Count == 1;
+            List<WindowDTO> Windows = (List<WindowDTO>)zoneWindowDTO.Windows;
             List<string> exteriorWallIds = walls.Where(obj => obj.ExteriorAdjacentTo == "outside").Select(obj => obj.SystemIdentifier.Id).ToList();
-            foreach (var zoneWindow in zoneWindowDTO.Windows)
+            bool sfd = false;
+            if (type == "Single-Family Detached")
+            {
+                if (zoneWindowDTO.WindowsSame == true && Windows.Count == 1)
+                {
+                    for (int j = 0; j < 3; j++) { Windows.Add(Windows[0]); }
+                }
+                sfd = true;
+            }
+            foreach (var zoneWindow in Windows)
             {
                 var id = "window-" + i;
                 WindowHPXML window = new WindowHPXML()
@@ -993,8 +1032,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     {
                         Id = id
                     },
-                    Area = listWindowArea[zoneWindow.Facing],
-                    Orientation = singleWindow ? null : this.Directions[zoneWindow.Facing],
+                    Area = listWindowArea[sfd ? i - 1 : zoneWindow.Facing],
+                    Orientation = this.Directions[sfd ? i - 1 : zoneWindow.Facing],
                 };
 
                 if (zoneWindow.KnowWindowSpecification == true)
@@ -1697,7 +1736,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                 case "Single-Family Detached":
                     return "single-family detached";
                 case "Townhouse/Rowhouse/Duplex":
-                    return "multi-family - town homes";
+                    return "single-family attached";
                 case "Multifamily Building Unit":
                     return "apartment unit";
                 default:
@@ -1757,7 +1796,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                     return "other heated space";
                 case "Other Non-Freezing Space":
                     return "other multifamily buffer space";
-                case "Other Multi - Family Buffer Space":
+                case "Other Multi-Family Buffer Space":
                     return "other non-freezing space";
                 default:
                     return "";
