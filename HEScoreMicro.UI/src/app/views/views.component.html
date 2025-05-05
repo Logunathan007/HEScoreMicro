@@ -9,19 +9,19 @@
       New <br class="d-md-block d-none" />
       Building
     </h6>
-    <h6
-      class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
+    <button
+      class="border-0 bg-white cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
       *ngFor="let item of navs; let ind = index"
-      [ngClass]="{ 'fw-bolder': selectedIndex === ind }"
+      [class.fw-bolder]="selectedIndex === ind"
       (click)="move(ind)"
     >
-      {{ item }}
-    </h6>
+      {{ item.name }}
+    </button>
   </div>
   <div class="container py-lg-4 py-md-3 py-2">
     @if (building) {
     <h3 class="text-center mb-4">
-      {{ (selectedIndex == 8 ? "Energy " : "") + navs[selectedIndex] }}
+      {{ (selectedIndex == 8 ? "Energy " : "") + navs[selectedIndex].name }}
     </h3>
     <ng-container [ngSwitch]="selectedIndex">
       <app-about

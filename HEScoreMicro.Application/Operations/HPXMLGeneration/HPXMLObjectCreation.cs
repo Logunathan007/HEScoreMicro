@@ -1322,6 +1322,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        heatingSystems.Add(hs);
                         return;
                     }
                 }
@@ -1334,6 +1335,7 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        heatingSystems.Add(hs);
                         return;
                     }
                 }
@@ -1528,6 +1530,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        if (hp != null)
+                            heatPumps.Add(hp);
                         return;
                     }
                 }
@@ -1540,6 +1544,8 @@ namespace HEScoreMicro.Application.Operations.HPXMLGeneration
                         {
                             IdRef = ds.SystemIdentifier.Id
                         };
+                        if (hp != null)
+                            heatPumps.Add(hp);
                         return;
                     }
                 }

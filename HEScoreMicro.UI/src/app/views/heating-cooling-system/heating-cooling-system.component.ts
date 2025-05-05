@@ -197,7 +197,7 @@ export class HeatingCoolingSystemComponent extends Unsubscriber implements OnIni
           return { "typeMisMatch": `${heatType} not matched to ${coolType}` }
         }
       } else if (heatType?.endsWith("heat pump")) {
-        if (!(!coolType || coolType == "None" || coolType == heatType || coolType == "Direct evaporative cooling" || coolType == "Direct evaporative cooling" || coolType == "Minisplit (ductless) heat pump")) {
+        if (!(!coolType || coolType == "None" || coolType == heatType || coolType == "Direct evaporative cooling" || coolType == "Minisplit (ductless) heat pump")) {
           return { "typeMisMatch": `${heatType} not matched to ${coolType}` }
         }
       }

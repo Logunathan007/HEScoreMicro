@@ -60,7 +60,7 @@ export class AddressComponent extends Unsubscriber implements OnInit {
       addressLine: [null,],
       city: [null, Validators.required],
       state: [null, Validators.required],
-      zipCode: [null, Validators.required,Validators.min(1),Validators.max(99999)],
+      zipCode: [null, [Validators.required,Validators.min(1),Validators.max(99999)]],
       assessmentType: [null, Validators.required],
       buildingId: [null],
     })

@@ -125,7 +125,7 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.addressForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="goNext()">
+        <button type="button" [disabled]="!addressForm.value?.id" class="bg-secondary btn-style" (click)="goNext()">
           Next
         </button>
       </div>

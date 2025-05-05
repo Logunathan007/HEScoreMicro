@@ -9,7 +9,10 @@ import { EmitterModel } from '../shared/models/common/emitter.model';
 import { WallReadModel } from '../shared/models/zone-wall/wall.read.model';
 import { WindowService } from '../shared/services/zone-window/window.service';
 import { WindowReadModel } from '../shared/models/zone-window/window.model';
-
+interface Navs {
+  name: string;
+  id?: string | null | undefined;
+}
 @Component({
   selector: 'app-views',
   templateUrl: './views.component.html',
@@ -18,7 +21,7 @@ import { WindowReadModel } from '../shared/models/zone-window/window.model';
 export class ViewsComponent extends Unsubscriber implements OnInit {
 
   //variable initializations
-  navs!: string[]
+  navs!: Navs[]
   selectedIndex!: number;
   building!: BuildingReadModel;
   buildingId!: string;
@@ -41,14 +44,29 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
 
   ngOnInit(): void {
     this.getBuildingId();
-    this.variableDeclaration();
     this.getBuildingData();
+    this.variableDeclaration();
   }
 
   //variable declarations
   variableDeclaration() {
-    this.navs = ["About", "Roof", "Floor", "Wall", "Window", "HVAC", "DHW", "PVSystem", "Star", "Summary"]
+    this.updateNav()
     this.selectedIndex = 0;
+  }
+
+  updateNav() {
+    this.navs = [
+      { name: "About", id: this.building?.about?.id },
+      { name: "Roof", id: this.building?.zoneRoof?.id },
+      { name: "Floor", id: this.building?.zoneFloor?.id },
+      { name: "Wall", id: this.building?.zoneWall?.id },
+      { name: "Window", id: this.building?.zoneWindow?.id },
+      { name: "HVAC", id: this.building?.heatingCoolingSystem?.id },
+      { name: "DHW", id: this.building?.waterHeater?.id },
+      { name: "PVSystem", id: this.building?.pvSystem?.id },
+      { name: "Star", id: this.building?.energyStar?.id },
+      { name: "Summary", id: "summary" }
+    ]
   }
 
   getBuildingId() {
@@ -71,6 +89,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
             this.windowsAvailable = []
             this.checkWallsAvailability();
           }
+          this.updateNav()
         }
       },
       error: (err: any) => {
@@ -127,9 +146,9 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
 
   checkWallsAvailability() {
     this.building?.zoneWall?.walls?.forEach((val: WallReadModel, index: number) => {
-      if (val.adjacentTo == "Outside") this.windowsAvailable?.push(index);
+      if (val.adjacentTo == "Outside") this.windowsAvailable?.push(val.facing);
     })
-    if (this.windowsAvailable?.length != this.building.zoneWindow.windows?.length) {
+    if (this.windowsAvailable?.length != this.building?.zoneWindow?.windows?.length) {
       const ids = this.building?.zoneWindow?.windows?.map(w => w?.id).filter(id => !!id) as string[];
       if (ids.length) {
         this.windowService.bulkDelete(ids).pipe(takeUntil(this.destroy$)).subscribe({
@@ -182,6 +201,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
         this.building.energyStar = data.field
         break;
     }
+    this.updateNav()
   }
 
   move(event: boolean | number) {
@@ -197,7 +217,9 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
       }
     } else if (typeof event === 'number') {
       // move to that index
-      this.selectedIndex = event
+      if (this.navs[event]?.id || this.navs?.at(event - 1)?.id) {
+        this.selectedIndex = event
+      }
     }
   }
 }
