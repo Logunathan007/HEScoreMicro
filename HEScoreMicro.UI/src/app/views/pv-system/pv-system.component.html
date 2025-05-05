@@ -5,25 +5,15 @@
         <div class="col-md-6">
           <div class="select-box">
             <label class="required"> Photovoltaic is there your home</label>
-            <ng-select
-              [items]="booleanOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Photovoltaic is Present"
-              id="hasPhotovoltaic"
-              formControlName="hasPhotovoltaic"
-            >
+            <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Photovoltaic is Present" id="hasPhotovoltaic"
+              formControlName="hasPhotovoltaic">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (pVSystemControl['hasPhotovoltaic']?.touched ||
                   pVSystemControl['hasPhotovoltaic']?.dirty) &&
                 pVSystemControl['hasPhotovoltaic']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Photovoltaic is invalid
               </label>
@@ -34,25 +24,14 @@
           <div class="col-md-6">
             <div class="select-box">
               <label class="required"> Year Installed </label>
-              <ng-select
-                [items]="year2000Options"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="Year Installed"
-                id="yearInstalled"
-                formControlName="yearInstalled"
-              >
+              <ng-select [items]="year2000Options" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                bindValue="value" placeholder="Year Installed" id="yearInstalled" formControlName="yearInstalled">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['yearInstalled']?.touched ||
                     pVSystemControl['yearInstalled']?.dirty) &&
                   pVSystemControl['yearInstalled']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Year Installed is invalid
                 </label>
@@ -62,25 +41,15 @@
           <div class="col-md-6">
             <div class="select-box">
               <label class="required"> Direction Panels Face</label>
-              <ng-select
-                [items]="orientationOptions"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="Direction Panels Face"
-                id="directionPanelsFace"
-                formControlName="directionPanelsFace"
-              >
+              <ng-select [items]="orientationOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                bindValue="value" placeholder="Direction Panels Face" id="directionPanelsFace"
+                formControlName="directionPanelsFace">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['directionPanelsFace']?.touched ||
                     pVSystemControl['directionPanelsFace']?.dirty) &&
                   pVSystemControl['directionPanelsFace']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Direction Panels Face is invalid
                 </label>
@@ -90,25 +59,15 @@
           <div class="col-md-6">
             <div class="select-box">
               <label class="required"> Angle Panels Are Tilted</label>
-              <ng-select
-                [items]="anglePanelsAreTiltedOptions"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="Angle Panels Are Tilted"
-                id="anglePanelsAreTilted"
-                formControlName="anglePanelsAreTilted"
-              >
+              <ng-select [items]="anglePanelsAreTiltedOptions" bindLabel="name" [clearable]="true"
+                [closeOnSelect]="true" bindValue="value" placeholder="Angle Panels Are Tilted" id="anglePanelsAreTilted"
+                formControlName="anglePanelsAreTilted">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['anglePanelsAreTilted']?.touched ||
                     pVSystemControl['anglePanelsAreTilted']?.dirty) &&
                   pVSystemControl['anglePanelsAreTilted']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Angle Panels Are Tilted is invalid
                 </label>
@@ -118,84 +77,47 @@
           <div class="col-md-6">
             <div class="select-box">
               <label class="required">Do you known System Capacity</label>
-              <ng-select
-                [items]="booleanOptions"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="System Capacity"
-                id="knowSystemCapacity"
-                formControlName="knowSystemCapacity"
-              >
+              <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                bindValue="value" placeholder="System Capacity" id="knowSystemCapacity"
+                formControlName="knowSystemCapacity">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['knowSystemCapacity']?.touched ||
                     pVSystemControl['knowSystemCapacity']?.dirty) &&
                   pVSystemControl['knowSystemCapacity']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Know System Capacity is invalid
                 </label>
               </div>
             </div>
           </div>
-          <div
-            class="col-md-6"
-            *ngIf="pVSystemControl['knowSystemCapacity'].value == false"
-          >
+          <div class="col-md-6" *ngIf="pVSystemControl['knowSystemCapacity'].value == false">
             <div class="input-box">
-              <label  class="required" for="numberOfPanels"> Number Of Panels </label>
-              <input
-                formControlName="numberOfPanels"
-                type="number"
-                id="numberOfPanels"
-                placeholder="Number Of Panels"
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <label class="required" for="numberOfPanels"> Number Of Panels </label>
+              <input formControlName="numberOfPanels" type="number" id="numberOfPanels"
+                placeholder="Number Of Panels" />
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['numberOfPanels']?.touched ||
                     pVSystemControl['numberOfPanels']?.dirty) &&
                   pVSystemControl['numberOfPanels']?.invalid
-                "
-              >
-                <label
-                  for="numberOfPanels"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="numberOfPanels" class="text-danger fw-semibold position-absolute">
                   Number Of Panels is invalid {{ pVSystemControl['numberOfPanels'].errors | json }}
                 </label>
               </div>
             </div>
           </div>
-          <div
-            class="col-md-6"
-            *ngIf="pVSystemControl['knowSystemCapacity'].value == true"
-          >
+          <div class="col-md-6" *ngIf="pVSystemControl['knowSystemCapacity'].value == true">
             <div class="input-box">
-              <label  class="required" for="dcCapacity"> DC Capacity </label>
-              <input
-                formControlName="dcCapacity"
-                type="number"
-                id="dcCapacity"
-                placeholder="DC Capacity"
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <label class="required" for="dcCapacity"> DC Capacity </label>
+              <input formControlName="dcCapacity" type="number" id="dcCapacity" placeholder="DC Capacity" />
+              <div class="errormsg" *ngIf="
                   (pVSystemControl['dcCapacity']?.touched ||
                     pVSystemControl['dcCapacity']?.dirty) &&
                   pVSystemControl['dcCapacity']?.invalid
-                "
-              >
-                <label
-                  for="dcCapacity"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="dcCapacity" class="text-danger fw-semibold position-absolute">
                   DC Capacity is invalid {{ pVSystemControl['dcCapacity'].errors | json }}
                 </label>
               </div>
@@ -203,13 +125,18 @@
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end gap-3 mt-4">
-        <button type="button" class="bg-primary btn-style" (click)="onSave()">
-          {{ this.pVSystemForm.value?.id ? "Update" : "Save" }}
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(false)">
+          Back
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
-          Next
-        </button>
+        <div class="d-flex justify-content-end gap-3 ">
+          <button type="button" class="bg-primary btn-style" (click)="onSave()">
+            {{ this.pVSystemForm.value?.id ? "Update" : "Save" }}
+          </button>
+          <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+            Next
+          </button>
+        </div>
       </div>
     </form>
   </div>

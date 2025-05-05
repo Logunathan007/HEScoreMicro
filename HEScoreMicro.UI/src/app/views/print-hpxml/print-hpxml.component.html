@@ -1,8 +1,5 @@
 <div class="d-flex justify-content-center gap-2 my-5">
-  <button
-    class="d-block btn-style bg-success"
-    (click)="generateHPXML()"
-  >
+  <button class="d-block btn-style bg-success" (click)="generateHPXML()">
     Generate HPXML
   </button>
   <button *ngIf="hpxmlString" class="d-block btn-style bg-danger" (click)="hpxmlString=''">Clear</button>

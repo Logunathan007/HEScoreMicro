@@ -5,9 +5,9 @@
         <h5>
           Building Type :
           {{
-            buildingType == 0
-              ? "Single-Family Detached"
-              : "Townhouse/Rowhouse/Duplex"
+          buildingType == 0
+          ? "Single-Family Detached"
+          : "Townhouse/Rowhouse/Duplex"
           }}
         </h5>
         <div class="col-md-6">
@@ -15,27 +15,14 @@
             <label for="assessmentDate" class="required">
               Assessment Date
             </label>
-            <input
-              formControlName="assessmentDate"
-              type="text"
-              id="assessmentDate"
-              placeholder="Assessment Date"
-              bsDatepicker
-              [minDate]="minDate"
-              [maxDate]="maxDate"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="assessmentDate" type="text" id="assessmentDate" placeholder="Assessment Date"
+              bsDatepicker [minDate]="minDate" [maxDate]="maxDate" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['assessmentDate']?.touched ||
                   aboutControl['assessmentDate']?.dirty) &&
                 aboutControl['assessmentDate']?.invalid
-              "
-            >
-              <label
-                for="assessmentDate"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="assessmentDate" class="text-danger fw-semibold position-absolute">
                 Assessment Date is invalid
               </label>
             </div>
@@ -44,24 +31,13 @@
         <div class="col-md-6">
           <div class="input-box">
             <label for="yearBuilt" class="required"> Year Built </label>
-            <input
-              formControlName="yearBuilt"
-              type="number"
-              id="yearBuilt"
-              placeholder="Year Built"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="yearBuilt" type="number" id="yearBuilt" placeholder="Year Built" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['yearBuilt']?.touched ||
                   aboutControl['yearBuilt']?.dirty) &&
                 aboutControl['yearBuilt']?.invalid
-              "
-            >
-              <label
-                for="yearBuilt"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="yearBuilt" class="text-danger fw-semibold position-absolute">
                 Year Built is invalid
                 {{ aboutControl["yearBuilt"]?.errors | json }}
               </label>
@@ -73,24 +49,14 @@
             <label for="numberOfBedrooms" class="required">
               Number Of Bedrooms
             </label>
-            <input
-              formControlName="numberOfBedrooms"
-              type="text"
-              id="numberOfBedrooms"
-              placeholder="Number Of Bedrooms"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="numberOfBedrooms" type="text" id="numberOfBedrooms"
+              placeholder="Number Of Bedrooms" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['numberOfBedrooms']?.touched ||
                   aboutControl['numberOfBedrooms']?.dirty) &&
                 aboutControl['numberOfBedrooms']?.invalid
-              "
-            >
-              <label
-                for="numberOfBedrooms"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="numberOfBedrooms" class="text-danger fw-semibold position-absolute">
                 Number Of Bedrooms is invalid
                 {{ aboutControl["numberOfBedrooms"]?.errors | json }}
               </label>
@@ -102,24 +68,14 @@
             <label for="storiesAboveGroundLevel" class="required">
               Stories Above Ground Level
             </label>
-            <input
-              formControlName="storiesAboveGroundLevel"
-              type="number"
-              id="storiesAboveGroundLevel"
-              placeholder="Stories Above Ground Level"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="storiesAboveGroundLevel" type="number" id="storiesAboveGroundLevel"
+              placeholder="Stories Above Ground Level" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['storiesAboveGroundLevel']?.touched ||
                   aboutControl['storiesAboveGroundLevel']?.dirty) &&
                 aboutControl['storiesAboveGroundLevel']?.invalid
-              "
-            >
-              <label
-                for="storiesAboveGroundLevel"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="storiesAboveGroundLevel" class="text-danger fw-semibold position-absolute">
                 Stories Above Ground Level is invalid
                 {{ aboutControl["storiesAboveGroundLevel"]?.errors | json }}
               </label>
@@ -131,27 +87,17 @@
             <label for="interiorFloorToCeilingHeight" class="required">
               Interior Floor To Ceiling Height
             </label>
-            <input
-              formControlName="interiorFloorToCeilingHeight"
-              type="number"
-              id="interiorFloorToCeilingHeight"
-              placeholder="Interior Floor To Ceiling Height"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="interiorFloorToCeilingHeight" type="number" id="interiorFloorToCeilingHeight"
+              placeholder="Interior Floor To Ceiling Height" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['interiorFloorToCeilingHeight']?.touched ||
                   aboutControl['interiorFloorToCeilingHeight']?.dirty) &&
                 aboutControl['interiorFloorToCeilingHeight']?.invalid
-              "
-            >
-              <label
-                for="interiorFloorToCeilingHeight"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="interiorFloorToCeilingHeight" class="text-danger fw-semibold position-absolute">
                 Interior Floor To Ceiling Height is invalid
                 {{
-                  aboutControl["interiorFloorToCeilingHeight"]?.errors | json
+                aboutControl["interiorFloorToCeilingHeight"]?.errors | json
                 }}
               </label>
             </div>
@@ -162,24 +108,14 @@
             <label for="totalConditionedFloorArea" class="required">
               Total Conditioned Floor Area
             </label>
-            <input
-              formControlName="totalConditionedFloorArea"
-              type="number"
-              id="totalConditionedFloorArea"
-              placeholder="Total Conditioned Floor Area"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="totalConditionedFloorArea" type="number" id="totalConditionedFloorArea"
+              placeholder="Total Conditioned Floor Area" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['totalConditionedFloorArea']?.touched ||
                   aboutControl['totalConditionedFloorArea']?.dirty) &&
                 aboutControl['totalConditionedFloorArea']?.invalid
-              "
-            >
-              <label
-                for="totalConditionedFloorArea"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="totalConditionedFloorArea" class="text-danger fw-semibold position-absolute">
                 Total Conditioned Floor Area is invalid
                 {{ aboutControl["totalConditionedFloorArea"]?.errors | json }}
               </label>
@@ -189,25 +125,15 @@
         <div class="col-md-6">
           <div class="select-box">
             <label class="required"> Direction Faced By Front Of Home </label>
-            <ng-select
-              [items]="orientationOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Direction Faced By Front Of Home"
-              id="directionFacedByFrontOfHome"
-              formControlName="directionFacedByFrontOfHome"
-            >
+            <ng-select [items]="orientationOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Direction Faced By Front Of Home" id="directionFacedByFrontOfHome"
+              formControlName="directionFacedByFrontOfHome">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (aboutControl['directionFacedByFrontOfHome']?.touched ||
                   aboutControl['directionFacedByFrontOfHome']?.dirty) &&
                 aboutControl['directionFacedByFrontOfHome']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Direction Faced By Front Of Home is invalid
               </label>
@@ -217,57 +143,33 @@
         <div class="col-md-6">
           <div class="select-box">
             <label class="required"> Blower Door Test Conducted </label>
-            <ng-select
-              [items]="booleanOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Blower Door Test Conducted"
-              id="blowerDoorTestConducted"
-              formControlName="blowerDoorTestConducted"
-            >
+            <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Blower Door Test Conducted" id="blowerDoorTestConducted"
+              formControlName="blowerDoorTestConducted">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (aboutControl['blowerDoorTestConducted']?.touched ||
                   aboutControl['blowerDoorTestConducted']?.dirty) &&
                 aboutControl['blowerDoorTestConducted']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Blower Door Test Conducted is invalid
               </label>
             </div>
           </div>
         </div>
-        <div
-          class="col-md-6"
-          *ngIf="aboutControl['blowerDoorTestConducted'].value"
-        >
+        <div class="col-md-6" *ngIf="aboutControl['blowerDoorTestConducted'].value">
           <div class="input-box">
             <label for="airLeakageRate" class="required">
               Air Leakage Rate
             </label>
-            <input
-              formControlName="airLeakageRate"
-              type="number"
-              id="airLeakageRate"
-              placeholder="Air Leakage Rate"
-            />
-            <div
-              class="errormsg"
-              *ngIf="
+            <input formControlName="airLeakageRate" type="number" id="airLeakageRate" placeholder="Air Leakage Rate" />
+            <div class="errormsg" *ngIf="
                 (aboutControl['airLeakageRate']?.touched ||
                   aboutControl['airLeakageRate']?.dirty) &&
                 aboutControl['airLeakageRate']?.invalid
-              "
-            >
-              <label
-                for="airLeakageRate"
-                class="text-danger fw-semibold position-absolute"
-              >
+              ">
+              <label for="airLeakageRate" class="text-danger fw-semibold position-absolute">
                 Air Leakage Rate is invalid
                 {{ aboutControl["airLeakageRate"]?.errors | json }}
               </label>
@@ -277,25 +179,14 @@
         <div class="col-md-6">
           <div class="select-box">
             <label class="required"> Air Sealed </label>
-            <ng-select
-              [items]="booleanOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Air Sealed"
-              id="airSealed"
-              formControlName="airSealed"
-            >
+            <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Air Sealed" id="airSealed" formControlName="airSealed">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (aboutControl['airSealed']?.touched ||
                   aboutControl['airSealed']?.dirty) &&
                 aboutControl['airSealed']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Air Sealed is invalid
               </label>
@@ -361,39 +252,25 @@
         <div class="col-md-12">
           <div class="input-box">
             <label> Comments </label>
-            <textarea
-              formControlName="comments"
-              type="text"
-              id="comments"
-              placeholder="Comments"
-            ></textarea>
-            <div
-              class="errormsg"
-              *ngIf="
+            <textarea formControlName="comments" type="text" id="comments" placeholder="Comments"></textarea>
+            <div class="errormsg" *ngIf="
                 (aboutControl['comments']?.touched ||
                   aboutControl['comments']?.dirty) &&
                 aboutControl['comments']?.invalid
-              "
-            >
-              <label
-                class="text-danger fw-semibold position-absolute"
-                *ngIf="aboutControl['comments']?.errors?.['required']"
-              >
+              ">
+              <label class="text-danger fw-semibold position-absolute"
+                *ngIf="aboutControl['comments']?.errors?.['required']">
                 Comments is invalid
               </label>
             </div>
           </div>
         </div>
       </div>
-      <div class="d-flex justify-content-end gap-3 mt-4">
+      <div class="d-flex justify-content-end gap-3">
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.aboutForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button
-          type="button"
-          class="bg-secondary btn-style"
-          (click)="move.emit(true)"
-        >
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
           Next
         </button>
       </div>

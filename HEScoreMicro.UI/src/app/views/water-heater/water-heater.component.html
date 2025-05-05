@@ -5,93 +5,57 @@
         <div class="col-md-6">
           <div class="select-box">
             <label class="required"> Water Heater Type</label>
-            <ng-select
-              [items]="waterHeaterTypeOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Water Heater Type"
-              id="waterHeaterType"
-              formControlName="waterHeaterType"
-            >
+            <ng-select [items]="waterHeaterTypeOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Water Heater Type" id="waterHeaterType" formControlName="waterHeaterType">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (waterHeaterControl['waterHeaterType']?.touched ||
                   waterHeaterControl['waterHeaterType']?.dirty) &&
                 waterHeaterControl['waterHeaterType']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Water Heater Type is invalid
               </label>
             </div>
           </div>
         </div>
-        <ng-container *ngIf="waterHeaterControl['waterHeaterType'].value && !waterHeaterControl['waterHeaterType'].value?.startsWith('Boiler with')">
-          <div
-            class="col-md-6"
-            *ngIf="
+        <ng-container
+          *ngIf="waterHeaterControl['waterHeaterType'].value && !waterHeaterControl['waterHeaterType'].value?.startsWith('Boiler with')">
+          <div class="col-md-6" *ngIf="
               waterHeaterControl['waterHeaterType'].value?.endsWith('Storage')
-            "
-          >
+            ">
             <div class="select-box">
               <label class="required"> Know Water Heater Energy Factor</label>
-              <ng-select
-                [items]="booleanOptions"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="Know Water Heater Energy Factor"
-                id="knowWaterHeaterEnergyFactor"
-                formControlName="knowWaterHeaterEnergyFactor"
-              >
+              <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                bindValue="value" placeholder="Know Water Heater Energy Factor" id="knowWaterHeaterEnergyFactor"
+                formControlName="knowWaterHeaterEnergyFactor">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (waterHeaterControl['knowWaterHeaterEnergyFactor']?.touched ||
                     waterHeaterControl['knowWaterHeaterEnergyFactor']?.dirty) &&
                   waterHeaterControl['knowWaterHeaterEnergyFactor']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Know Water Heater Energy Factor is invalid
                 </label>
               </div>
             </div>
           </div>
-          <ng-container
-            *ngIf="
+          <ng-container *ngIf="
               waterHeaterControl['knowWaterHeaterEnergyFactor'].value ||
               !waterHeaterControl['waterHeaterType'].value?.endsWith('Storage')
-            "
-          >
+            ">
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Unit</label>
-                <ng-select
-                  [items]="unitOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Unit"
-                  id="unit"
-                  formControlName="unit"
-                >
+                <ng-select [items]="unitOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                  bindValue="value" placeholder="Unit" id="unit" formControlName="unit">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (waterHeaterControl['unit']?.touched ||
                       waterHeaterControl['unit']?.dirty) &&
                     waterHeaterControl['unit']?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Unit is invalid
                   </label>
@@ -101,24 +65,13 @@
             <div class="col-md-6">
               <div class="input-box">
                 <label class="required" for="energyValue"> Energy Value </label>
-                <input
-                  formControlName="energyValue"
-                  type="number"
-                  id="energyValue"
-                  placeholder="Energy Value"
-                />
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <input formControlName="energyValue" type="number" id="energyValue" placeholder="Energy Value" />
+                <div class="errormsg" *ngIf="
                     (waterHeaterControl['energyValue']?.touched ||
                       waterHeaterControl['energyValue']?.dirty) &&
                     waterHeaterControl['energyValue']?.invalid
-                  "
-                >
-                  <label
-                    for="energyValue"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  ">
+                  <label for="energyValue" class="text-danger fw-semibold position-absolute">
                     Energy Value is invalid
                     {{ waterHeaterControl["energyValue"]?.errors | json }}
                   </label>
@@ -129,25 +82,15 @@
           <div class="col-md-6" *ngIf="waterHeaterControl['knowWaterHeaterEnergyFactor']?.value == false">
             <div class="select-box">
               <label class="required"> Year Of Manufacture</label>
-              <ng-select
-                [items]="year1998Options"
-                bindLabel="name"
-                [clearable]="true"
-                [closeOnSelect]="true"
-                bindValue="value"
-                placeholder="Water Heater Type"
-                id="yearOfManufacture"
-                formControlName="yearOfManufacture"
-              >
+              <ng-select [items]="year1998Options" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                bindValue="value" placeholder="Water Heater Type" id="yearOfManufacture"
+                formControlName="yearOfManufacture">
               </ng-select>
-              <div
-                class="errormsg"
-                *ngIf="
+              <div class="errormsg" *ngIf="
                   (waterHeaterControl['yearOfManufacture']?.touched ||
                     waterHeaterControl['yearOfManufacture']?.dirty) &&
                   waterHeaterControl['yearOfManufacture']?.invalid
-                "
-              >
+                ">
                 <label class="text-danger fw-semibold position-absolute">
                   Year Of Manufacture is invalid
                 </label>
@@ -156,13 +99,18 @@
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end gap-3 mt-4">
-        <button type="button" class="bg-primary btn-style" (click)="onSave()">
-          {{ this.waterHeaterForm.value?.id ? "Update" : "Save" }}
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(false)">
+          Back
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
-          Next
-        </button>
+        <div class="d-flex justify-content-end gap-3 ">
+          <button type="button" class="bg-primary btn-style" (click)="onSave()">
+            {{ this.waterHeaterForm.value?.id ? "Update" : "Save" }}
+          </button>
+          <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+            Next
+          </button>
+        </div>
       </div>
     </form>
   </div>

@@ -4,25 +4,15 @@
       <div class="col-md-6">
         <div class="select-box">
           <label class="required"> Enable Second Foundation </label>
-          <ng-select
-            [items]="booleanOptions"
-            bindLabel="name"
-            [clearable]="true"
-            [closeOnSelect]="true"
-            bindValue="value"
-            placeholder="Enable Second Foundation"
-            id="enableSecondFoundation"
-            formControlName="enableSecondFoundation"
-          >
+          <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+            bindValue="value" placeholder="Enable Second Foundation" id="enableSecondFoundation"
+            formControlName="enableSecondFoundation">
           </ng-select>
-          <div
-            class="errormsg"
-            *ngIf="
+          <div class="errormsg" *ngIf="
               (zoneFloorForm.get('enableSecondFoundation')?.touched ||
                 zoneFloorForm.get('enableSecondFoundation')?.dirty) &&
               zoneFloorForm.get('enableSecondFoundation')?.invalid
-            "
-          >
+            ">
             <label class="text-danger fw-semibold position-absolute">
               Enable Second Foundation is invalid
             </label>
@@ -30,36 +20,23 @@
         </div>
       </div>
       <ng-container formArrayName="foundations">
-        <ng-container
-          *ngFor="
+        <ng-container *ngFor="
             let foundationItem of foundationsObj.controls;
             let foundationIndex = index
-          "
-        >
+          ">
           <ng-container [formGroupName]="foundationIndex">
             <h4 class="col-12 my-3">Foundation {{ foundationIndex + 1 }}</h4>
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Foundation Type </label>
-                <ng-select
-                  [items]="foundationTypeOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Foundation Type"
-                  id="foundationType"
-                  formControlName="foundationType"
-                >
+                <ng-select [items]="foundationTypeOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                  bindValue="value" placeholder="Foundation Type" id="foundationType" formControlName="foundationType">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (foundationItem.get('foundationType')?.touched ||
                       foundationItem.get('foundationType')?.dirty) &&
                     foundationItem.get('foundationType')?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Foundation Type is invalid
                   </label>
@@ -70,36 +47,26 @@
               <div class="input-box">
                 <label class="required" for="foundationArea">
                   {{
-                    foundationItem.get("foundationType")?.value ===
-                    "Above Other Unit"
-                      ? "Floor"
-                      : "Foundation"
+                  foundationItem.get("foundationType")?.value ===
+                  "Above Other Unit"
+                  ? "Floor"
+                  : "Foundation"
                   }}
                   Area
                 </label>
-                <input
-                  formControlName="foundationArea"
-                  type="number"
-                  id="foundationArea"
-                  placeholder="Foundation Area"
-                />
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <input formControlName="foundationArea" type="number" id="foundationArea"
+                  placeholder="Foundation Area" />
+                <div class="errormsg" *ngIf="
                     (foundationItem.get('foundationArea')?.touched ||
                       foundationItem.get('foundationArea')?.dirty) &&
                     foundationItem.get('foundationArea')?.invalid
-                  "
-                >
-                  <label
-                    for="foundationArea"
-                    class="text-danger fw-semibold position-absolute"
-                  >
+                  ">
+                  <label for="foundationArea" class="text-danger fw-semibold position-absolute">
                     {{
-                      foundationItem.get("foundationType")?.value ===
-                      "Above Other Unit"
-                        ? "Floor"
-                        : "Foundation"
+                    foundationItem.get("foundationType")?.value ===
+                    "Above Other Unit"
+                    ? "Floor"
+                    : "Foundation"
                     }}
                     Area is invalid
                     {{ foundationItem.get("foundationArea")?.errors | json }}
@@ -107,98 +74,59 @@
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-6"
-              *ngIf="foundationItem.get('tracker')?.value?.slab"
-            >
+            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.slab">
               <div class="select-box">
                 <label class="required"> Slab Insulation Level </label>
-                <ng-select
-                  [items]="foundationSlabInsulationOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Slab Insulation Level"
-                  id="slabInsulationLevel"
-                  formControlName="slabInsulationLevel"
-                >
+                <ng-select [items]="foundationSlabInsulationOptions" bindLabel="name" [clearable]="true"
+                  [closeOnSelect]="true" bindValue="value" placeholder="Slab Insulation Level" id="slabInsulationLevel"
+                  formControlName="slabInsulationLevel">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (foundationItem.get('slabInsulationLevel')?.touched ||
                       foundationItem.get('slabInsulationLevel')?.dirty) &&
                     foundationItem.get('slabInsulationLevel')?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Slab Insulation Level is invalid
                   </label>
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-6"
-              *ngIf="foundationItem.get('tracker')?.value?.floor"
-            >
+            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.floor">
               <div class="select-box">
                 <label class="required"> Floor Insulation Level </label>
-                <ng-select
-                  [items]="foundationFloorInsulationOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Floor Insulation Level"
-                  id="floorInsulationLevel"
-                  formControlName="floorInsulationLevel"
-                >
+                <ng-select [items]="foundationFloorInsulationOptions" bindLabel="name" [clearable]="true"
+                  [closeOnSelect]="true" bindValue="value" placeholder="Floor Insulation Level"
+                  id="floorInsulationLevel" formControlName="floorInsulationLevel">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (foundationItem.get('floorInsulationLevel')?.touched ||
                       foundationItem.get('floorInsulationLevel')?.dirty) &&
                     foundationItem.get('floorInsulationLevel')?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Floor Insulation Level is invalid
                   </label>
                 </div>
               </div>
             </div>
-            <div
-              class="col-md-6"
-              *ngIf="foundationItem.get('tracker')?.value?.wall"
-            >
+            <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.wall">
               <div class="select-box">
                 <label class="required">
                   Foundationwall Insulation Level
                 </label>
-                <ng-select
-                  [items]="foundationWallInsulationOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Foundationwall Insulation Level"
-                  id="foundationwallsInsulationLevel"
-                  formControlName="foundationwallsInsulationLevel"
-                >
+                <ng-select [items]="foundationWallInsulationOptions" bindLabel="name" [clearable]="true"
+                  [closeOnSelect]="true" bindValue="value" placeholder="Foundationwall Insulation Level"
+                  id="foundationwallsInsulationLevel" formControlName="foundationwallsInsulationLevel">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (foundationItem.get('foundationwallsInsulationLevel')
                       ?.touched ||
                       foundationItem.get('foundationwallsInsulationLevel')
                         ?.dirty) &&
                     foundationItem.get('foundationwallsInsulationLevel')
                       ?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Foundationwall Insulation Level is invalid
                   </label>
@@ -209,13 +137,18 @@
         </ng-container>
       </ng-container>
     </div>
-    <div class="d-flex justify-content-end gap-3 mt-4">
-      <button type="button" class="bg-primary btn-style" (click)="onSave()">
-        {{ this.zoneFloorForm.value?.id ? "Update" : "Save" }}
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="bg-secondary btn-style" (click)="move.emit(false)">
+        Back
       </button>
-      <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
-        Next
-      </button>
+      <div class="d-flex justify-content-end gap-3 ">
+        <button type="button" class="bg-primary btn-style" (click)="onSave()">
+          {{ this.zoneFloorForm.value?.id ? "Update" : "Save" }}
+        </button>
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+          Next
+        </button>
+      </div>
     </div>
   </form>
 </div>

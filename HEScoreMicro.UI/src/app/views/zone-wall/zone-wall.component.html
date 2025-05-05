@@ -4,25 +4,14 @@
       <div class="col-md-6" *ngIf="buildingType === 0">
         <div class="select-box">
           <label class="required"> Exterior Wall Same </label>
-          <ng-select
-            [items]="booleanOptions"
-            bindLabel="name"
-            [clearable]="true"
-            [closeOnSelect]="true"
-            bindValue="value"
-            placeholder="Exterior Wall Same"
-            id="exteriorWallSame"
-            formControlName="exteriorWallSame"
-          >
+          <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+            bindValue="value" placeholder="Exterior Wall Same" id="exteriorWallSame" formControlName="exteriorWallSame">
           </ng-select>
-          <div
-            class="errormsg"
-            *ngIf="
+          <div class="errormsg" *ngIf="
               (zoneWallForm.get('exteriorWallSame')?.touched ||
                 zoneWallForm.get('exteriorWallSame')?.dirty) &&
               zoneWallForm.get('exteriorWallSame')?.invalid
-            "
-          >
+            ">
             <label class="text-danger fw-semibold position-absolute">
               Exterior Wall Same is invalid
             </label>
@@ -30,77 +19,50 @@
         </div>
       </div>
       <ng-container formArrayName="walls">
-        <ng-container
-          *ngFor="let wallItem of wallsObj.controls; let wallIndex = index"
-        >
+        <ng-container *ngFor="let wallItem of wallsObj.controls; let wallIndex = index">
           <ng-container [formGroupName]="wallIndex">
             <h4 class="col-12 my-3">
               Wall{{
-                zoneWallForm.get("exteriorWallSame")?.value === false ||
-                buildingType == 1
-                  ? " : " + getDirection(wallIndex)
-                  : ""
+              zoneWallForm.get("exteriorWallSame")?.value === false ||
+              buildingType == 1
+              ? " : " + getDirection(wallIndex)
+              : ""
               }}
             </h4>
             <div class="col-md-6" *ngIf="buildingType != 0">
               <div class="select-box">
                 <label class="required"> Adjacent To </label>
-                <ng-select
-                  [items]="adjacentToOptions"
-                  bindLabel="name"
-                  [clearable]="true"
-                  [closeOnSelect]="true"
-                  bindValue="value"
-                  placeholder="Adjacent To"
-                  id="adjacentTo"
-                  formControlName="adjacentTo"
-                >
+                <ng-select [items]="adjacentToOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+                  bindValue="value" placeholder="Adjacent To" id="adjacentTo" formControlName="adjacentTo">
                 </ng-select>
-                <div
-                  class="errormsg"
-                  *ngIf="
+                <div class="errormsg" *ngIf="
                     (wallItem.get('adjacentTo')?.touched ||
                       wallItem.get('adjacentTo')?.dirty) &&
                     wallItem.get('adjacentTo')?.invalid
-                  "
-                >
+                  ">
                   <label class="text-danger fw-semibold position-absolute">
                     Adjacent To is invalid
                   </label>
                 </div>
               </div>
             </div>
-            <ng-container
-              *ngIf="
+            <ng-container *ngIf="
                 wallItem.get('adjacentTo')?.value === 'Outside' ||
                 wallItem.get('adjacentTo')?.value !== 'Other Unit'
-              "
-            >
-              <ng-container
-                *ngIf="wallItem.get('adjacentTo')?.value === 'Outside'"
-              >
+              ">
+              <ng-container *ngIf="wallItem.get('adjacentTo')?.value === 'Outside'">
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Construction</label>
-                    <ng-select
-                      [items]="wallConstructionOptions"
-                      bindLabel="name"
-                      [clearable]="true"
-                      [closeOnSelect]="true"
-                      bindValue="value"
-                      placeholder="Construction"
-                      id="construction"
-                      formControlName="construction"
-                    >
+                    <ng-select [items]="wallConstructionOptions" bindLabel="name" [clearable]="true"
+                      [closeOnSelect]="true" bindValue="value" placeholder="Construction" id="construction"
+                      formControlName="construction">
                     </ng-select>
-                    <div
-                      class="errormsg"
-                      *ngIf="
+                    <div class="errormsg" *ngIf="
                         (wallItem.get('construction')?.touched ||
                           wallItem.get('construction')?.dirty) &&
                         wallItem.get('construction')?.invalid
-                      "
-                    >
+                      ">
                       <label class="text-danger fw-semibold position-absolute">
                         Construction is invalid
                       </label>
@@ -110,25 +72,15 @@
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Exterior Finish</label>
-                    <ng-select
-                      [items]="wallItem.get('exteriorFinishOptions')?.value"
-                      bindLabel="name"
-                      [clearable]="true"
-                      [closeOnSelect]="true"
-                      bindValue="value"
-                      placeholder="Exterior Finish"
-                      id="exteriorFinish"
-                      formControlName="exteriorFinish"
-                    >
+                    <ng-select [items]="wallItem.get('exteriorFinishOptions')?.value" bindLabel="name"
+                      [clearable]="true" [closeOnSelect]="true" bindValue="value" placeholder="Exterior Finish"
+                      id="exteriorFinish" formControlName="exteriorFinish">
                     </ng-select>
-                    <div
-                      class="errormsg"
-                      *ngIf="
+                    <div class="errormsg" *ngIf="
                         (wallItem.get('exteriorFinish')?.touched ||
                           wallItem.get('exteriorFinish')?.dirty) &&
                         wallItem.get('exteriorFinish')?.invalid
-                      "
-                    >
+                      ">
                       <label class="text-danger fw-semibold position-absolute">
                         Exterior Finish is invalid
                       </label>
@@ -139,25 +91,15 @@
               <div class="col-md-6">
                 <div class="select-box">
                   <label class="required"> Wall Insulation Level</label>
-                  <ng-select
-                    [items]="wallItem.get('wallInsulationOptions')?.value"
-                    bindLabel="name"
-                    [clearable]="true"
-                    [closeOnSelect]="true"
-                    bindValue="value"
-                    placeholder="Wall Insulation Level"
-                    id="wallInsulationLevel"
-                    formControlName="wallInsulationLevel"
-                  >
+                  <ng-select [items]="wallItem.get('wallInsulationOptions')?.value" bindLabel="name" [clearable]="true"
+                    [closeOnSelect]="true" bindValue="value" placeholder="Wall Insulation Level"
+                    id="wallInsulationLevel" formControlName="wallInsulationLevel">
                   </ng-select>
-                  <div
-                    class="errormsg"
-                    *ngIf="
+                  <div class="errormsg" *ngIf="
                       (wallItem.get('wallInsulationLevel')?.touched ||
                         wallItem.get('wallInsulationLevel')?.dirty) &&
                       wallItem.get('wallInsulationLevel')?.invalid
-                    "
-                  >
+                    ">
                     <label class="text-danger fw-semibold position-absolute">
                       Wall Insulation Level is invalid
                     </label>
@@ -169,13 +111,18 @@
         </ng-container>
       </ng-container>
     </div>
-    <div class="d-flex justify-content-end gap-3 mt-4">
-      <button type="button" class="bg-primary btn-style" (click)="onSave()">
-        {{ this.zoneWallForm.value?.id ? "Update" : "Save" }}
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="bg-secondary btn-style" (click)="move.emit(false)">
+        Back
       </button>
-      <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
-        Next
-      </button>
+      <div class="d-flex justify-content-end gap-3 ">
+        <button type="button" class="bg-primary btn-style" (click)="onSave()">
+          {{ this.zoneWallForm.value?.id ? "Update" : "Save" }}
+        </button>
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+          Next
+        </button>
+      </div>
     </div>
   </form>
 </div>

@@ -9,25 +9,15 @@
               home performance improvement to the home, and the improvement is
               compliant with Home Performance with ENERGY STAR®.
             </label>
-            <ng-select
-              [items]="booleanOptions"
-              bindLabel="name"
-              [clearable]="true"
-              [closeOnSelect]="true"
-              bindValue="value"
-              placeholder="Energy Star Present"
-              id="energyStarPresent"
-              formControlName="energyStarPresent"
-            >
+            <ng-select [items]="booleanOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Energy Star Present" id="energyStarPresent"
+              formControlName="energyStarPresent">
             </ng-select>
-            <div
-              class="errormsg"
-              *ngIf="
+            <div class="errormsg" *ngIf="
                 (energyStarControl['energyStarPresent']?.touched ||
                   energyStarControl['energyStarPresent']?.dirty) &&
                 energyStarControl['energyStarPresent']?.invalid
-              "
-            >
+              ">
               <label class="text-danger fw-semibold position-absolute">
                 Energy Star Present is invalid
               </label>
@@ -40,25 +30,13 @@
               <label for="startDate" class="required">
                 Improvement installation Start Date
               </label>
-              <input
-                formControlName="startDate"
-                type="text"
-                id="startDate"
-                placeholder="Start Date"
-                bsDatepicker
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <input formControlName="startDate" type="text" id="startDate" placeholder="Start Date" bsDatepicker />
+              <div class="errormsg" *ngIf="
                   (energyStarControl['startDate']?.touched ||
                     energyStarControl['startDate']?.dirty) &&
                   energyStarControl['startDate']?.invalid
-                "
-              >
-                <label
-                  for="startDate"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="startDate" class="text-danger fw-semibold position-absolute">
                   Start Date is invalid
                 </label>
               </div>
@@ -69,25 +47,14 @@
               <label for="completionDate" class="required">
                 Improvement installation Completion Date
               </label>
-              <input
-                formControlName="completionDate"
-                type="text"
-                id="completionDate"
-                placeholder="Completion Date"
-                bsDatepicker
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <input formControlName="completionDate" type="text" id="completionDate" placeholder="Completion Date"
+                bsDatepicker />
+              <div class="errormsg" *ngIf="
                   (energyStarControl['completionDate']?.touched ||
                     energyStarControl['completionDate']?.dirty) &&
                   energyStarControl['completionDate']?.invalid
-                "
-              >
-                <label
-                  for="completionDate"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="completionDate" class="text-danger fw-semibold position-absolute">
                   Completion Date is invalid
                 </label>
               </div>
@@ -98,24 +65,14 @@
               <label for="contractorBusinessName" class="required">
                 Contractor Business Name
               </label>
-              <input
-                formControlName="contractorBusinessName"
-                type="text"
-                id="contractorBusinessName"
-                placeholder="Contractor Business Name"
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <input formControlName="contractorBusinessName" type="text" id="contractorBusinessName"
+                placeholder="Contractor Business Name" />
+              <div class="errormsg" *ngIf="
                   (energyStarControl['contractorBusinessName']?.touched ||
                     energyStarControl['contractorBusinessName']?.dirty) &&
                   energyStarControl['contractorBusinessName']?.invalid
-                "
-              >
-                <label
-                  for="contractorBusinessName"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="contractorBusinessName" class="text-danger fw-semibold position-absolute">
                   Contractor Business Name is invalid
                 </label>
               </div>
@@ -126,24 +83,14 @@
               <label for="contractorZipCode" class="required">
                 Contractor ZipCode
               </label>
-              <input
-                formControlName="contractorZipCode"
-                type="number"
-                id="contractorZipCode"
-                placeholder="Contractor ZipCode"
-              />
-              <div
-                class="errormsg"
-                *ngIf="
+              <input formControlName="contractorZipCode" type="number" id="contractorZipCode"
+                placeholder="Contractor ZipCode" />
+              <div class="errormsg" *ngIf="
                   (energyStarControl['contractorZipCode']?.touched ||
                     energyStarControl['contractorZipCode']?.dirty) &&
                   energyStarControl['contractorZipCode']?.invalid
-                "
-              >
-                <label
-                  for="contractorZipCode"
-                  class="text-danger fw-semibold position-absolute"
-                >
+                ">
+                <label for="contractorZipCode" class="text-danger fw-semibold position-absolute">
                   Contractor ZipCode is invalid
                 </label>
               </div>
@@ -151,13 +98,18 @@
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end gap-3 mt-4">
-        <button type="button" class="bg-primary btn-style" (click)="onSave()">
-          {{ this.energyStarForm.value?.id ? "Update" : "Save" }}
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="bg-secondary btn-style" (click)="move.emit(false)">
+          Back
         </button>
-        <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
-          Next
-        </button>
+        <div class="d-flex justify-content-end gap-3 ">
+          <button type="button" class="bg-primary btn-style" (click)="onSave()">
+            {{ this.energyStarForm.value?.id ? "Update" : "Save" }}
+          </button>
+          <button type="button" class="bg-secondary btn-style" (click)="move.emit(true)">
+            Next
+          </button>
+        </div>
       </div>
     </form>
   </div>
