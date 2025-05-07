@@ -20,6 +20,8 @@ import { PVSystemComponent } from './pv-system/pv-system.component';
 import { WaterHeaterComponent } from './water-heater/water-heater.component';
 import { HeatingCoolingSystemComponent } from './heating-cooling-system/heating-cooling-system.component';
 import { EnergyStarComponent } from './energy-star/energy-star.component';
+import { CommonInsulationModelComponent } from './common-insulation-model/common-insulation-model.component';
+import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { EnergyStarComponent } from './energy-star/energy-star.component';
     WaterHeaterComponent,
     HeatingCoolingSystemComponent,
     EnergyStarComponent,
+    CommonInsulationModelComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +50,10 @@ import { EnergyStarComponent } from './energy-star/energy-star.component';
     NgxJsonViewerModule,
     BsDatepickerModule,
     UnsubscribeModule,
+    ModalModule
   ],
+  providers:[
+    BsModalService
+  ]
 })
 export class ViewsModule { }

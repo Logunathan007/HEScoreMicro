@@ -128,6 +128,8 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Roof Insulation </label>
+                <img src="/assets/images/calculator.png" (click)="openModalComponent('roof',roofAtticIndex)"
+                  class="ms-3 cursor-pointer" width="20px" alt="">
                 <ng-select [items]="roofAtticItem.get('roofInsulationOptions')?.value" bindLabel="name"
                   [clearable]="true" [closeOnSelect]="true" bindValue="value" placeholder="Roof Insulation"
                   id="roofInsulation" formControlName="roofInsulation">
@@ -458,7 +460,8 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.zoneRoofForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" [disabled]="!this.zoneRoofForm.value?.id" (click)="move.emit(true)">
+        <button type="button" class="bg-secondary btn-style" [disabled]="!this.zoneRoofForm.value?.id"
+          (click)="move.emit(true)">
           Next
         </button>
       </div>

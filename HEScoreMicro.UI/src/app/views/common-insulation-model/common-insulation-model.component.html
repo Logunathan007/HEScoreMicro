@@ -1,0 +1,137 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body px-lg-4 p-md-2 p-1">
+  <form [formGroup]="insulationForm">
+    <div class="row">
+      <ng-container formGroupName="calculatedRValue">
+        <div class="col-md-6">
+          <div class="select-box">
+            <label> Insulation Type </label>
+            <ng-select [items]="insulationTypeOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Insulation Type" id="insulationType" formControlName="insulationType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6"
+          *ngIf="calculatedRValueObj.get('insulationType')?.value === 3.4 || calculatedRValueObj.get('insulationType')?.value === 3.1">
+          <div class="select-box">
+            <label> Choose Type </label>
+            <ng-select [items]="insulationSubTypeOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Choose Type" id="insulationSubType" formControlName="insulationSubType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6" *ngIf="calculatedRValueObj.get('insulationSubType')?.value  === 'Batt'">
+          <div class="select-box">
+            <label> Insulation Quality </label>
+            <ng-select [items]="insulationQualityOptions" bindLabel="name" [clearable]="true" [closeOnSelect]="true"
+              bindValue="value" placeholder="Insulation Quality" id="insulationQuality"
+              formControlName="insulationQuality">
+            </ng-select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-box">
+            <label for="insulationDepth">
+              Insulation Depth
+            </label>
+            <input formControlName="insulationDepth" type="number" id="insulationDepth"
+              placeholder="Insulation Depth" />
+          </div>
+        </div>
+        <div class="d-flex justify-content-around gap-3 col-12 my-3">
+          <div>
+            <h5>Calculated R-Value</h5>
+            <h3 class="fw-bold border rounded-2 m-0 p-3 text-center">
+              {{
+              math.round(calculatedRValueObj.get('insulationType')?.value *
+              calculatedRValueObj.get('insulationDepth')?.value *
+              ((calculatedRValueObj.get('insulationSubType')?.value ===
+              'Batt')?calculatedRValueObj.get('insulationQuality')?.value :1))
+              }}
+            </h3>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-success py-2 px-3"
+              [disabled]="calculatedRValueObj.invalid">Use Calculate R-Value</button>
+          </div>
+        </div>
+      </ng-container>
+      <div class="w-100 border mt-3 mb-4"></div>
+
+      <ng-container class="col-12" formArrayName="avgWeightedRValues">
+        <div class="row row-gap-4">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-4 mb-3 text-center">Column-A</div>
+              <div class="col-4 mb-3 text-center">Column-B</div>
+              <div class="col-4 mb-3"></div>
+              <ng-container *ngFor="let rValuesItem of avgWeightedRValuesObj.controls;let rValuesIndex=index;">
+                <ng-container [formGroupName]="rValuesIndex">
+                  <div class="col-4">
+                    <div class="input-box mt-0 mb-1">
+                      <label for="columnA" class="">
+                        Component {{rValuesIndex+1}} R-Value
+                      </label>
+                      <input formControlName="columnA" type="number" id="columnA"
+                        [placeholder]="'Component '+(rValuesIndex+1)+' R-Value'" />
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="input-box mt-0 mb-1">
+                      <label for="columnB" class="">
+                        Component {{rValuesIndex+1}} Area
+                      </label>
+                      <input formControlName="columnB" type="number" id="columnB"
+                        [placeholder]="'Component '+(rValuesIndex+1)+' Area'" />
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="input-box mt-0 mb-1 d-flex flex-column h-100">
+                      <label for="columnB" class="">
+                        Component {{rValuesIndex+1}} UA
+                      </label>
+                      <h6 class="border flex-grow-1 mb-1 d-flex align-items-center ps-3">
+                        {{
+                        (rValuesItem.get('columnA')?.value *
+                        rValuesItem.get('columnB')?.value)
+                        }}
+                      </h6>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex flex-md-column justify-content-between gap-3">
+            <div class="mb-3 border p-2 rounded-2">
+              <h5>Cavity U-Factor</h5>
+              <h3 class="fw-bold border rounded-2 m-0 p-3 text-center">
+                20
+              </h3>
+            </div>
+            <div class="mb-3 border p-2 rounded-2 border-success">
+              <h5>Weighted Avg. R-Value</h5>
+              <h3 class="fw-bold border rounded-2 m-0 p-3 text-center">
+                10
+              </h3>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center col-12">
+            <button class="btn btn-success py-2 px-3">Use Weighted Avg. R-Value</button>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default border" (click)="bsModalRef.hide()">Cancel</button>
+</div>

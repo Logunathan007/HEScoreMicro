@@ -13,6 +13,8 @@ import { AtticOrCeilingTypeOptions, FrameMaterialOptions, GlazingTypeOptions, Pa
 import { RoofAtticReadModel } from '../../shared/models/zone-roof/roof-attic.read.model';
 import { isValidKneeWallArea, isValidRoofArea, resetValues, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { CommonInsulationModelComponent } from '../common-insulation-model/common-insulation-model.component';
 
 @Component({
   selector: 'app-zone-roof',
@@ -22,6 +24,9 @@ import { EmitterModel } from '../../shared/models/common/emitter.model';
 })
 
 export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges {
+
+
+
   //variable initializations
   zoneRoofForm!: FormGroup | any;
   @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
@@ -44,6 +49,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   glazingTypeOptions = GlazingTypeOptions
   kneeWallInsulationOptions = KneeWallInsulationOptions
   atticFloorInsulationOptions = AtticFloorInsulationOptions
+  bsModalRef?: BsModalRef;
 
   get zoneRoofControl() {
     return this.zoneRoofForm.controls;
@@ -57,6 +63,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     private zoneRoofService: ZoneRoofService,
     private roofAtticService: RoofAtticService,
     public fb: FormBuilder,
+    private modalService: BsModalService
   ) {
     super()
   }
@@ -64,6 +71,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   ngOnInit(): void {
     this.variableDeclaration();
     this.getData();
+    this.openModalComponent('roof', 0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -270,6 +278,22 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
       }
     })
     return found;
+  }
+
+  openModalComponent(type: string, index: number) {
+    const initialState: ModalOptions = {
+      initialState: {
+        title: 'Insulation De-Rate Calculator',
+        type: type,
+        arrayIndex: index,
+      },
+    };
+    this.bsModalRef = this.modalService.show(CommonInsulationModelComponent, initialState);
+    // Subscribe to modal result
+    this.bsModalRef.content.onClose.subscribe((result: any) => {
+      console.log('Data from modal:', result);
+      // Do something with the result
+    });
   }
 
   getData() {

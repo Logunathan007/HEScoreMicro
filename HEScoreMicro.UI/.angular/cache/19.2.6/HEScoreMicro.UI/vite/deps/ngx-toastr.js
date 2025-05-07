@@ -1,3 +1,8 @@
+import {
+  DomSanitizer
+} from "./chunk-HRAFOYSA.js";
+import "./chunk-XRI6KQNG.js";
+import "./chunk-IEA7SQXC.js";
 import "./chunk-QXDPPV54.js";
 import {
   animate,
@@ -6,11 +11,6 @@ import {
   transition,
   trigger
 } from "./chunk-GWHRO46I.js";
-import {
-  DomSanitizer
-} from "./chunk-HRAFOYSA.js";
-import "./chunk-XRI6KQNG.js";
-import "./chunk-IEA7SQXC.js";
 import {
   NgIf
 } from "./chunk-7RGBBEMV.js";

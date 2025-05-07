@@ -1,16 +1,16 @@
 <div class="d-md-flex">
   <div
-    class="bg-white z-1 h-fit overflow-auto position-sticky top-0 px-4 pt-lg-1 pt-1 border-end flex-md-column justify-content-md-start flex-md-nowrap gap-md-0 d-flex justify-content-around flex-wrap gap-3"
+    class="bg-white z-1 h-fit overflow-auto position-sticky top-0 px-4 pt-lg-1 pt-1 border-end flex-md-column justify-content-md-start flex-md-nowrap gap-md-0 d-flex justify-content-sm-around flex-wrap gap-3"
   >
     <h6
-      class="cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
+      class="cursor-pointer text-sm-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
       [routerLink]="['/create-building']"
     >
-      New <br class="d-md-block d-none" />
+      New <br class="d-md-block d-sm-none" />
       Building
     </h6>
     <button
-      class="border-0 bg-white cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0"
+      class="border-0 bg-white cursor-pointer text-center my-lg-1 rounded-2 py-md-3 py-1 mb-0 d-sm-block d-none"
       *ngFor="let item of navs; let ind = index"
       [class.fw-bolder]="selectedIndex === ind"
       (click)="move(ind)"

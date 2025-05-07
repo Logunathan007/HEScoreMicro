@@ -51,7 +51,7 @@ export class ViewsComponent extends Unsubscriber implements OnInit {
   //variable declarations
   variableDeclaration() {
     this.updateNav()
-    this.selectedIndex = 0;
+    this.selectedIndex = 1;
   }
 
   updateNav() {
