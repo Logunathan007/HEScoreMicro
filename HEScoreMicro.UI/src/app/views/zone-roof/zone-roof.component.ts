@@ -25,8 +25,6 @@ import { CommonInsulationModelComponent } from '../common-insulation-model/commo
 
 export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges {
 
-
-
   //variable initializations
   zoneRoofForm!: FormGroup | any;
   @Input('input') zoneRoofReadModel!: ZoneRoofReadModel;
@@ -50,6 +48,7 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   kneeWallInsulationOptions = KneeWallInsulationOptions
   atticFloorInsulationOptions = AtticFloorInsulationOptions
   bsModalRef?: BsModalRef;
+  hashModel: any = {};
 
   get zoneRoofControl() {
     return this.zoneRoofForm.controls;
@@ -71,7 +70,6 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
   ngOnInit(): void {
     this.variableDeclaration();
     this.getData();
-    this.openModalComponent('roof', 0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -280,19 +278,34 @@ export class ZoneRoofComponent extends Unsubscriber implements OnInit, OnChanges
     return found;
   }
 
-  openModalComponent(type: string, index: number) {
+  openModalComponent(type: string, index: number, rValues: any[]) {
     const initialState: ModalOptions = {
       initialState: {
         title: 'Insulation De-Rate Calculator',
         type: type,
         arrayIndex: index,
+        rValues: rValues.map((item: any) => item.value),
+        previousValue: this.hashModel[type + '-' + index],
       },
+      backdrop: 'static',
     };
     this.bsModalRef = this.modalService.show(CommonInsulationModelComponent, initialState);
     // Subscribe to modal result
     this.bsModalRef.content.onClose.subscribe((result: any) => {
-      console.log('Data from modal:', result);
-      // Do something with the result
+      if (result) {
+        // result.type must be roof or atticFloor or kneeWall
+        if (result?.type && result?.index !== null) {
+          let control = this.roofAtticsObj?.at(result?.index)?.get(result?.type + 'Insulation') as AbstractControl
+          if (control && result?.rValue) {
+            control.setValue(result?.rValue);
+            control.markAsDirty();
+            control.markAsTouched();
+          }
+          if (result?.previousValue) {
+            this.hashModel[result?.type + '-' + result?.index] = result?.previousValue;
+          }
+        }
+      };
     });
   }
 

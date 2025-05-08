@@ -128,7 +128,8 @@
             <div class="col-md-6">
               <div class="select-box">
                 <label class="required"> Roof Insulation </label>
-                <img src="/assets/images/calculator.png" (click)="openModalComponent('roof',roofAtticIndex)"
+                <img src="/assets/images/calculator.png"
+                  (click)="openModalComponent('roof',roofAtticIndex,(roofAtticItem.get('roofInsulationOptions')?.value))"
                   class="ms-3 cursor-pointer" width="20px" alt="">
                 <ng-select [items]="roofAtticItem.get('roofInsulationOptions')?.value" bindLabel="name"
                   [clearable]="true" [closeOnSelect]="true" bindValue="value" placeholder="Roof Insulation"
@@ -374,6 +375,9 @@
               <div class="col-md-6">
                 <div class="select-box">
                   <label class="required"> Attic Floor Insulation </label>
+                  <img src="/assets/images/calculator.png"
+                    (click)="openModalComponent('atticFloor',roofAtticIndex,atticFloorInsulationOptions)"
+                    class="ms-3 cursor-pointer" width="20px" alt="">
                   <ng-select [items]="atticFloorInsulationOptions" bindLabel="name" [clearable]="true"
                     [closeOnSelect]="true" bindValue="value" placeholder="Attic Floor Insulation"
                     id="atticFloorInsulation" formControlName="atticFloorInsulation">
@@ -431,6 +435,9 @@
                 <div class="col-md-6">
                   <div class="select-box">
                     <label class="required"> Knee Wall Insulation </label>
+                    <img src="/assets/images/calculator.png"
+                      (click)="openModalComponent('kneeWall',roofAtticIndex,kneeWallInsulationOptions)"
+                      class="ms-3 cursor-pointer" width="20px" alt="">
                     <ng-select [items]="kneeWallInsulationOptions" bindLabel="name" [clearable]="true"
                       [closeOnSelect]="true" bindValue="value" placeholder="Knee Wall Insulation"
                       id="kneeWallInsulation" formControlName="kneeWallInsulation">
