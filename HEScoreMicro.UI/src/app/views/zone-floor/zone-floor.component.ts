@@ -12,6 +12,8 @@ import { removeNullIdProperties } from '../../shared/modules/Transformers/Transo
 import { FoundationReadModel } from '../../shared/models/zone-floor/foundation.read.model';
 import { isValidFoundationArea, resetValuesAndValidations, setValidations } from '../../shared/modules/Validators/validators.module';
 import { EmitterModel } from '../../shared/models/common/emitter.model';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { CommonInsulationModelComponent } from '../common-insulation-model/common-insulation-model.component';
 
 @Component({
   selector: 'app-zone-floor',
@@ -36,6 +38,8 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
   foundationSlabInsulationOptions = FoundationSlabInsulationOptions
   foundationFloorInsulationOptions = FoundationFloorInsulationOptions
   foundationWallInsulationOptions = FoundationWallInsulationOptions
+  bsModalRef?: BsModalRef;
+  hashModel: any = {};
 
   get zoneFloorControl() {
     return this.zoneFloorForm.controls;
@@ -48,6 +52,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     private zoneFloorService: ZoneFloorService,
     private foundationService: FoundationService,
     public fb: FormBuilder,
+    private modalService: BsModalService
   ) {
     super()
   }
@@ -103,7 +108,7 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     var found = this.fb.group({
       id: [null,],
       foundationType: [null, [Validators.required]],
-      foundationArea: [null, [Validators.required,Validators.min(1),Validators.max(25000)]],
+      foundationArea: [null, [Validators.required, Validators.min(1), Validators.max(25000)]],
       tracker: [{ wall: false, floor: false, slab: false }],
       slabInsulationLevel: [null,],
       floorInsulationLevel: [null,],
@@ -150,7 +155,36 @@ export class ZoneFloorComponent extends Unsubscriber implements OnInit, OnChange
     })
     return found;
   }
-
+  openModalComponent(type: string, index: number, rValues: any[]) {
+    const initialState: ModalOptions = {
+      initialState: {
+        title: 'Insulation De-Rate Calculator',
+        type: type,
+        arrayIndex: index,
+        rValues: rValues.map((item: any) => item.value),
+        previousValue: this.hashModel[type + '-' + index],
+      },
+      backdrop: 'static',
+    };
+    this.bsModalRef = this.modalService.show(CommonInsulationModelComponent, initialState);
+    // Subscribe to modal result
+    this.bsModalRef.content.onClose.subscribe((result: any) => {
+      if (result) {
+        // result.type must be roof or atticFloor or kneeWall
+        if (result?.type && result?.index !== null) {
+          let control = this.foundationsObj?.at(result?.index)?.get(result?.type + 'InsulationLevel') as AbstractControl
+          if (control && result?.rValue) {
+            control.setValue(result?.rValue);
+            control.markAsDirty();
+            control.markAsTouched();
+          }
+          if (result?.previousValue) {
+            this.hashModel[result?.type + '-' + result?.index] = result?.previousValue;
+          }
+        }
+      };
+    });
+  }
   getData() {
     if (this.zoneFloorReadModel) {
       if (this.zoneFloorReadModel?.enableSecondFoundation) {

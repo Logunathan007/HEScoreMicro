@@ -77,6 +77,9 @@
             <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.slab">
               <div class="select-box">
                 <label class="required"> Slab Insulation Level </label>
+                <img src="/assets/images/calculator.png"
+                  (click)="openModalComponent('slab',foundationIndex,foundationSlabInsulationOptions)"
+                  class="ms-3 cursor-pointer" width="20px" alt="">
                 <ng-select [items]="foundationSlabInsulationOptions" bindLabel="name" [clearable]="true"
                   [closeOnSelect]="true" bindValue="value" placeholder="Slab Insulation Level" id="slabInsulationLevel"
                   formControlName="slabInsulationLevel">
@@ -95,6 +98,9 @@
             <div class="col-md-6" *ngIf="foundationItem.get('tracker')?.value?.floor">
               <div class="select-box">
                 <label class="required"> Floor Insulation Level </label>
+                <img src="/assets/images/calculator.png"
+                  (click)="openModalComponent('floor',foundationIndex,foundationFloorInsulationOptions)"
+                  class="ms-3 cursor-pointer" width="20px" alt="">
                 <ng-select [items]="foundationFloorInsulationOptions" bindLabel="name" [clearable]="true"
                   [closeOnSelect]="true" bindValue="value" placeholder="Floor Insulation Level"
                   id="floorInsulationLevel" formControlName="floorInsulationLevel">
@@ -115,6 +121,9 @@
                 <label class="required">
                   Foundationwall Insulation Level
                 </label>
+                <img src="/assets/images/calculator.png"
+                  (click)="openModalComponent('foundationwalls',foundationIndex,foundationWallInsulationOptions)"
+                  class="ms-3 cursor-pointer" width="20px" alt="">
                 <ng-select [items]="foundationWallInsulationOptions" bindLabel="name" [clearable]="true"
                   [closeOnSelect]="true" bindValue="value" placeholder="Foundationwall Insulation Level"
                   id="foundationwallsInsulationLevel" formControlName="foundationwallsInsulationLevel">
@@ -145,7 +154,8 @@
         <button type="button" class="bg-primary btn-style" (click)="onSave()">
           {{ this.zoneFloorForm.value?.id ? "Update" : "Save" }}
         </button>
-        <button type="button" class="bg-secondary btn-style" [disabled]="!this.zoneFloorForm.value?.id" (click)="move.emit(true)">
+        <button type="button" class="bg-secondary btn-style" [disabled]="!this.zoneFloorForm.value?.id"
+          (click)="move.emit(true)">
           Next
         </button>
       </div>
